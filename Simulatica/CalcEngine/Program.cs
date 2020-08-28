@@ -7,6 +7,10 @@ namespace CalcEngine
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+
+            MyTypeBuilder.CreateNewObject();
+
+            
         }
     }
 }
