@@ -16,7 +16,7 @@ namespace CalcEngine
         public string Name, Type;
     }
 
-    public static class MyTypeBuilder
+    public class MyTypeBuilder
     {
 
         private static List<Property> lists = new List<Property>();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CalcEngine
 {
@@ -6,11 +7,21 @@ namespace CalcEngine
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            IServiceCollection services = new ServiceCollection();
 
-            MyTypeBuilder.CreateNewObject();
+            Startup startup = new Startup();
 
-            
+            ServiceProvider provider = startup.ConfigureServices(services);
+
+            Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
+
+
+            //Test t = new Test();
+            provider.GetRequiredService<SimulationConfig>().testDeseri();
+            //TODO: system uruchomieniowy
+
+            //Console.WriteLine(provider.GetService<MyTypeBuilder>().ToString());
+            //Console.WriteLine(provider.GetService<SimulationConfig>().ToString());
         }
     }
 }

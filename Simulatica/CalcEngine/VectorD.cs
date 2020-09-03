@@ -7,11 +7,12 @@ namespace CalcEngine
 {
     /// <summary>
     /// TODO: Reflect (collision management)
-    /// Vec4 operator ^.
     /// </summary>
     public partial struct VectorD3{
 
-        public double X, Y, Z;
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
 
         public VectorD3(double x, double y, double z)
         {
@@ -74,6 +75,10 @@ namespace CalcEngine
             return new VectorD3(this.X/tmp, this.Y / tmp, this.Z / tmp);
         }
 
+        public override string ToString()
+        {
+            return "["+X + "," + Y  + "," + Z+"]";
+        }
     }
 
 
@@ -116,6 +121,16 @@ namespace CalcEngine
         {
             return new VectorD4(left.X / right.X, left.Y / right.Y, left.Z / right.Z, left.W / right.W);
         }
+        /// <summary>
+        /// This method has NO representation in standard mathematical models.
+        /// </summary>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        public static VectorD4 operator ^(VectorD4 left, VectorD4 right)
+        {
+            return new VectorD4(left.Y * right.Z - left.Z * right.Y, left.Z * right.X - left.X * right.Z, left.X * right.Y - left.Y * right.X, (left.W + right.W)/2);
+        }
         #endregion
 
         public double Length()
@@ -141,6 +156,10 @@ namespace CalcEngine
             return new VectorD4(this.X / tmp, this.Y / tmp, this.Z / tmp, this.W / tmp);
         }
 
+        public override string ToString()
+        {
+            return "[" + X + "," + Y + "," + Z + ","+W+"]";
+        }
     }
 
 
