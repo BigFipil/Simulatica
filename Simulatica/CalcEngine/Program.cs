@@ -16,8 +16,9 @@ namespace CalcEngine
             Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
 
 
-            //Test t = new Test();
-            provider.GetRequiredService<SimulationConfig>().testDeseri();
+            Test t = new Test();
+            t.testDeseri();
+            //provider.GetRequiredService<SimulationConfig>().testDeseri();
             //TODO: system uruchomieniowy
 
             //Console.WriteLine(provider.GetService<MyTypeBuilder>().ToString());

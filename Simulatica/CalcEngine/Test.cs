@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -41,18 +42,19 @@ namespace CalcEngine
                 p1, p2,
             };
 
-            //config.SimulationBoxSize = new VectorD3(2, 2, 2);
-            //config.Threads = 5;
+            //config.SimulationBoxSize = new VectorD3(5, 12, 20);
+            //config.Threads = 128;
             
-            string jsonString = JsonSerializer.Serialize(config);
+            string jsonString = JsonConvert.SerializeObject(config);
             Console.Write(jsonString);
-            File.WriteAllText("configTestowy", jsonString);
+            File.WriteAllText("c2", jsonString);
         } 
 
         public void testDeseri()
         {
-            string jsonString = File.ReadAllText("configTestowy");
-            SimulationConfig config = JsonSerializer.Deserialize<SimulationConfig>(jsonString);
+            string jsonString = File.ReadAllText("c2");
+            SimulationConfig config = JsonConvert.DeserializeObject<SimulationConfig>(jsonString);
+            //SimulationConfig config = JsonSerializer.Deserialize<SimulationConfig>(jsonString);
 
             Console.Write(config.ToString());
         }

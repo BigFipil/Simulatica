@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace CalcEngine
 {
     /// <summary>
     /// TODO: Reflect (collision management)
     /// </summary>
-    public partial struct VectorD3{
-
+    public partial struct VectorD3
+    {
+        /*
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
+        */
+        [JsonProperty]
+        public double X, Y, Z;
 
         public VectorD3(double x, double y, double z)
         {
@@ -78,6 +84,14 @@ namespace CalcEngine
         public override string ToString()
         {
             return "["+X + "," + Y  + "," + Z+"]";
+        }
+        
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            Console.WriteLine("\n\nSerialization Overloading\n\n\n");
+            info.AddValue("X", X);
+            info.AddValue("Y", Y);
+            info.AddValue("Z", Z);
         }
     }
 

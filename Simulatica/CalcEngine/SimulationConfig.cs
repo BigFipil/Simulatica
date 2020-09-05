@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace CalcEngine
 {
@@ -20,27 +21,35 @@ namespace CalcEngine
         /*
          * Simulation configuration settings below
          */
-
+        [JsonProperty]
         /// <summary>
         /// Defines number of Threads being used in simulation
         /// </summary>
-        public int Threads { get;  internal set;}
+        public int Threads { get;  private set;}
+
+        [JsonProperty]
         /// <summary>
         /// Defines Size of a Box, inside of which the simulation is performed. This Box is also natural constrain for all particles included in simulation
         /// </summary>
-        public VectorD3 SimulationBoxSize { get;  set; }
+        public VectorD3 SimulationBoxSize { get; private set; }
+
+        [JsonProperty]
         /// <summary>
         /// Represents the period of time for simulation. 
         /// </summary>
-        public double TimeRangeSeconds { get;  set; }
+        public double TimeRangeSeconds { get; private set; }
+
+        [JsonProperty]
         /// <summary>
         /// Represents the step of time that is the smallest time in which simulation state is calculated. SImulation starts in time t = 0
         /// </summary>
-        public double SimulationStepTime { get;  set; }
+        public double SimulationStepTime { get; private set; }
+
+        [JsonProperty]
         /// <summary>
         /// Represents the step of time, after which actuall state of simulation is captured and saved to file; 
         /// </summary>
-        public double DataSaveStepTime { get;  set; }
+        public double DataSaveStepTime { get; private set; }
 
 
         public override string ToString()
@@ -69,12 +78,5 @@ namespace CalcEngine
             return s;
         }
 
-        public void testDeseri()
-        {
-            string jsonString = File.ReadAllText("configTestowy");
-            SimulationConfig config = JsonSerializer.Deserialize<SimulationConfig>(jsonString);
-
-            Console.Write(config.ToString());
-        }
     }
 }
