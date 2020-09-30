@@ -8,13 +8,14 @@ namespace CalcEngine
 
     public class Startup
     {
-        //IServiceProvider serviceProvider;
+        public string Path { get; set; } = "";
+        public int Port { get; set; } = 6060;   //Default Port
 
         public ServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<SimulationConfig>();
             services.AddSingleton<SimulationState>();
-            services.AddSingleton<ParticleBlueprint>();
+            //services.AddSingleton<ParticleBlueprint>();
 
             return services.BuildServiceProvider();
         }

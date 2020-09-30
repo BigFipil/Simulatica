@@ -13,7 +13,20 @@ namespace CalcEngine
 
             ServiceProvider provider = startup.ConfigureServices(services);
 
-            Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
+
+            if(args.Length > 0)
+            {
+                if(Char.IsDigit(args[0][0]))
+                {
+                    startup.Port = Int32.Parse(args[0]);
+                }
+                else
+                {
+                    startup.Path = args[0];
+                }
+            }
+
+            //Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
 
 
             Test t = new Test();
