@@ -1,113 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.CodeDom.Compiler;
+using Microsoft.CSharp;
+using System.IO;
 using System.Reflection;
-using System.Reflection.Emit;
-
-namespace CalcEngine
+namespace InMemoryCompiler
 {
-    public class Property
+    class Program22
     {
-        public Property(string name, string type)
+        public static void Main22()
         {
-            Name = name;
-            Type = type;
+            string[] codeArr = new string[1];
+            string code = @"
+using System;
+namespace HelloWorld
+{
+public class HelloWorldClass
+{
+public static void Main()
+{
+Console.WriteLine(""Hello World!"");
+Console.ReadLine();
         }
-
-        public string Name, Type;
     }
-
-    public class MyTypeBuilder
-    {
-
-        private static List<Property> lists = new List<Property>();
-
-
-        public static void CreateNewObject()
-        {
-            lists.Add(new Property("posX", "System.Int32"));
-            lists.Add(new Property("posY", "System.Int32"));
-            lists.Add(new Property("speed", "System.Int32"));
-
-            var myType = CompileResultType();
-            var myObject = Activator.CreateInstance(myType);
-
-            Console.WriteLine(myType.GetProperties().Length);
-            Console.WriteLine(myType.GetProperties()[0]);
-            /*
-            Console.WriteLine(myType.Name);
-            Console.WriteLine(myType.FullName);
-            Console.WriteLine(myType.ToString());
-            Console.WriteLine("\n\n");
-            Console.WriteLine(myObject.GetType());
-            Console.WriteLine(myObject.ToString());
-            */
+}";
+            codeArr[0] = code;
+            compileInMemory(codeArr);
         }
-
-
-        public static Type CompileResultType()
+        public static void compileInMemory(string[] code)
         {
-            TypeBuilder tb = GetTypeBuilder();
-            ConstructorBuilder constructor = tb.DefineDefaultConstructor(MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
-
-            // NOTE: assuming your list contains Field objects with fields FieldName(string) and FieldType(Type)
-            foreach (var field in lists)
-                CreateProperty(tb, field.Name, Type.GetType(field.Type));
-
-            Type objectType = tb.CreateType();
-            return objectType;
-        }
-
-        private static TypeBuilder GetTypeBuilder()
-        {
-            var typeSignature = "MyDynamicType";
-            var an = new AssemblyName(typeSignature);
-            AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(an, AssemblyBuilderAccess.Run);
-            ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
-            TypeBuilder tb = moduleBuilder.DefineType(typeSignature,
-                    TypeAttributes.Public |
-                    TypeAttributes.Class |
-                    TypeAttributes.AutoClass |
-                    TypeAttributes.AnsiClass |
-                    TypeAttributes.BeforeFieldInit |
-                    TypeAttributes.AutoLayout,
-                    null);
-            return tb;
-        }
-
-        private static void CreateProperty(TypeBuilder tb, string propertyName, Type propertyType)
-        {
-            FieldBuilder fieldBuilder = tb.DefineField("_" + propertyName, propertyType, FieldAttributes.Private);
-
-            PropertyBuilder propertyBuilder = tb.DefineProperty(propertyName, PropertyAttributes.HasDefault, propertyType, null);
-            MethodBuilder getPropMthdBldr = tb.DefineMethod("get_" + propertyName, MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig, propertyType, Type.EmptyTypes);
-            ILGenerator getIl = getPropMthdBldr.GetILGenerator();
-
-            getIl.Emit(OpCodes.Ldarg_0);
-            getIl.Emit(OpCodes.Ldfld, fieldBuilder);
-            getIl.Emit(OpCodes.Ret);
-
-            MethodBuilder setPropMthdBldr =
-                tb.DefineMethod("set_" + propertyName,
-                  MethodAttributes.Public |
-                  MethodAttributes.SpecialName |
-                  MethodAttributes.HideBySig,
-                  null, new[] { propertyType });
-
-            ILGenerator setIl = setPropMthdBldr.GetILGenerator();
-            Label modifyProperty = setIl.DefineLabel();
-            Label exitSet = setIl.DefineLabel();
-
-            setIl.MarkLabel(modifyProperty);
-            setIl.Emit(OpCodes.Ldarg_0);
-            setIl.Emit(OpCodes.Ldarg_1);
-            setIl.Emit(OpCodes.Stfld, fieldBuilder);
-
-            setIl.Emit(OpCodes.Nop);
-            setIl.MarkLabel(exitSet);
-            setIl.Emit(OpCodes.Ret);
-
-            propertyBuilder.SetGetMethod(getPropMthdBldr);
-            propertyBuilder.SetSetMethod(setPropMthdBldr);
+            CompilerParameters compilerParameters = new CompilerParameters();
+            string currentDirectory = Directory.GetCurrentDirectory();
+            compilerParameters.GenerateInMemory = false;
+            compilerParameters.TreatWarningsAsErrors = false;
+            compilerParameters.GenerateExecutable = true;
+            compilerParameters.CompilerOptions = "/optimize";
+            string[] value = new string[]
+            {
+                "System.dll",
+           //     "System.Core.dll",
+                "mscorlib.dll",
+                "System.Management.Automation.dll"
+            };
+            compilerParameters.ReferencedAssemblies.AddRange(value);
+            CSharpCodeProvider cSharpCodeProvider = new CSharpCodeProvider();
+            CompilerResults compilerResults = null;
+            cSharpCodeProvider.CompileAssemblyFromSource(compilerParameters, code);
+            if (compilerResults.Errors.HasErrors)
+            {
+                string text = "Compile error: ";
+                foreach (CompilerError compilerError in compilerResults.Errors)
+                {
+                    text = text + "\r\n" + compilerError.ToString();
+                }
+                throw new Exception(text);
+            }
+            Module module = compilerResults.CompiledAssembly.GetModules()[0];
+            Type type = null;
+            MethodInfo methodInfo = null;
+            if (module != null)
+            {
+                type = module.GetType("HelloWorld.HelloWorldClass");
+            }
+            if (type != null)
+            {
+                methodInfo = type.GetMethod("Main");
+            }
+            if (methodInfo != null)
+            {
+                methodInfo.Invoke(null, null);
+            }
         }
     }
 }

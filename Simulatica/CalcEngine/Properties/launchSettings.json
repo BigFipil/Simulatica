@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CalcEngine": {
+      "commandName": "Project",
+      "commandLineArgs": "c2"
+    }
+  }
+}

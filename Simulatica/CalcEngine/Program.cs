@@ -23,14 +23,26 @@ namespace CalcEngine
                 else
                 {
                     startup.Path = args[0];
+
+                    if (!provider.GetService<Services.Loader>().Load(startup.Path))
+                    {
+                        var st = provider.GetService<SimulationState>();
+                        Console.WriteLine("Loading Exeption. Error message:\n\n\t{0}", st.ErrorList[st.ErrorList.Count - 1]);
+
+                        return;
+                    }
                 }
             }
 
             //Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
 
-
-            Test t = new Test();
+            /*
+            var t = provider.GetService<Test>();
             t.testDeseri();
+            */
+            InMemoryCompiler.Program22.Main22();
+            //provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
+            
             //provider.GetRequiredService<SimulationConfig>().testDeseri();
             //TODO: system uruchomieniowy
 

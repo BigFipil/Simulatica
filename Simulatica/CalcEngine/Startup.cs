@@ -17,6 +17,10 @@ namespace CalcEngine
             services.AddSingleton<SimulationState>();
             //services.AddSingleton<ParticleBlueprint>();
 
+            services.AddTransient<Test>();
+            services.AddTransient<Services.Loader>();
+            services.AddTransient<Services.Emitter>();
+
             return services.BuildServiceProvider();
         }
     }

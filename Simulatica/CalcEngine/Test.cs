@@ -7,8 +7,15 @@ using System.Text.Json;
 
 namespace CalcEngine
 {
-    class Test
+    public class Test
     {
+        private SimulationConfig config;
+
+        public Test(SimulationConfig Config)
+        {
+            config = Config;
+        }
+
         public void testSeri()
         {
             ParticleBlueprint p1 = new ParticleBlueprint();
@@ -53,7 +60,7 @@ namespace CalcEngine
         public void testDeseri()
         {
             string jsonString = File.ReadAllText("c2");
-            SimulationConfig config = JsonConvert.DeserializeObject<SimulationConfig>(jsonString);
+            JsonConvert.PopulateObject(jsonString, config);
             //SimulationConfig config = JsonSerializer.Deserialize<SimulationConfig>(jsonString);
 
             Console.Write(config.ToString());

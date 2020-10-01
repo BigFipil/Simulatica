@@ -25,7 +25,7 @@ namespace CalcEngine
         /// <summary>
         /// Defines number of Threads being used in simulation
         /// </summary>
-        public int Threads { get;  private set;}
+        public int Threads { get;  set;}
 
         [JsonProperty]
         /// <summary>
