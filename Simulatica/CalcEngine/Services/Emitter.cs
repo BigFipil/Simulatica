@@ -54,9 +54,12 @@ namespace Particles
 
         public string ClassSyntaxGenerator(ParticleBlueprint pb)
         {
-            string code = "public class "+ pb.Name +"{\n";
+            string code = "public class "+ pb.Name +"{\n\n";
 
-            //if(pb.properties.ContainsKey("Name"))
+            foreach(var t in pb.properties)
+            {
+                code += "\tpublic " + t.Value + " " + t.Key + " { get; set; }\n";
+            }
 
             return code + "}";
         }

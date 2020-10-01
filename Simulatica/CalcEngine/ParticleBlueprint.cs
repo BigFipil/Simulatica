@@ -6,7 +6,7 @@ namespace CalcEngine
 {
     public class ParticleBlueprint
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = "";
         public Dictionary<string, string> properties { get; set; }
         public Dictionary<string, string> methods { get; set; }
     }

@@ -30,11 +30,11 @@ namespace HelloWorld
     {
         public static void Main()
         {
-            //Console.WriteLine(""Hello World!"");
-            //System.Console.ReadLine();
+            Console.WriteLine(""Hello World!"");
+            Console.ReadLine();
 
-            double d = Math.PI;
-            List<int> a = new List<int>();
+            //double d = Math.PI;
+            //List<int> a = new List<int>();
             VectorD3 pos;
         }
     }
@@ -45,17 +45,22 @@ namespace HelloWorld
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
 
             Console.WriteLine(syntaxTree);
-            Console.WriteLine("\n\n"+ typeof(Enumerable).Assembly.Location);
+            Console.WriteLine("\n\n"+ typeof(Enumerable).Assembly.Location+"\n\n");
 
             string assemblyName = Path.GetRandomFileName();
-            MetadataReference[] references = new MetadataReference[]
+            /*MetadataReference[] references = new MetadataReference[]
             {
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
                 MetadataReference.CreateFromFile(@"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\CalcEngine.dll"),
-                //MetadataReference.CreateFromFile(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.5\System.dll"),
+                MetadataReference.CreateFromFile(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.5\System.Console.dll"),
                 //MetadataReference.CreateFromFile(@"C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.5\System.IO.dll"),
                 MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location)
-            };
+            };*/
+            IEnumerable<MetadataReference> references = Directory.GetFiles(Path.GetDirectoryName(typeof(object).Assembly.Location))
+                .Where((val)=>val.EndsWith(".dll"))
+                .Where((val)=>val.Contains("System."))
+                .Append(typeof(CalcEngine.Program).Assembly.Location)
+                .Select((str)=>MetadataReference.CreateFromFile(str));
 
             CSharpCompilation compilation = CSharpCompilation.Create(
                 assemblyName,

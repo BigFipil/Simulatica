@@ -44,8 +44,8 @@ namespace CalcEngine
             //Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
 
             
-            var t = provider.GetService<Test>();
-            t.testDeseri();
+            //var t = provider.GetService<Test>();
+            //t.testDeseri();
             
             InMemoryCompiler.Program22.Main22();
             //provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
