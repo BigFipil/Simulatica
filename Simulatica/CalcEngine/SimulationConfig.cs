@@ -58,7 +58,8 @@ namespace CalcEngine
 
             foreach(var p in particleBlueprints)
             {
-                s += "\tParticle: \n";
+                s += "\tParticle: "+p.Name+"\n";
+
                 foreach (var prop in p.properties)
                 {
                     s += "\t\t" + prop.Key + " " + prop.Value + "\n";

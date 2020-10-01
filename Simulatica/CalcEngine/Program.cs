@@ -3,6 +3,13 @@ using System;
 
 namespace CalcEngine
 {
+    //TODO: Emiter zamienić na ClassicEmitter, który implementuje interfejs. w przyszłości może dojść jeszcze Emitter Refleksyjny, 
+    //i clasa CodeProvider która wyznaczy odpowiedni serwis z DI contenter.
+
+    /*
+     * Każda cząstka będzie sprawdzana z każdą, nawet sobą samą. to domyślnie. Zapobieganie będzie w bluprincie.
+     * porónywanie kolizji będzie domyślnie w silniku, w bluprincie będzie można przeciążyć metodę wywoływaną w trakcie kolizji
+     */
     class Program
     {
         static void Main(string[] args)
@@ -36,10 +43,10 @@ namespace CalcEngine
 
             //Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
 
-            /*
+            
             var t = provider.GetService<Test>();
             t.testDeseri();
-            */
+            
             InMemoryCompiler.Program22.Main22();
             //provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
             

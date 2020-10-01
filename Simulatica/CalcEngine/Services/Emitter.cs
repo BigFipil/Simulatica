@@ -22,20 +22,43 @@ namespace CalcEngine.Services
 
         public void CompileParticlesBlueprints()
         {
-            string code = "using System;using System.Collections.Generic;using System.Text;namespace CalcEngine.Services{public class Hello0{public void Test(){Console.WriteLine(\"no dziala no\");}}}";
+            string tmp = "";
+            string code = @"
+using System;
+using System.IO;
+using System.Runtime;
+using System.Collections.Generic;
+using CalcEngine;
 
+namespace Particles
+{
+";
+
+
+
+            tmp += "";
+
+            code += @"}";
+
+
+            /*
             CompilerResults results;
-
             //ICodeCompiler cscp = new CodeDomProvider();
-
             CompilerParameters param = new CompilerParameters(new[] { "Assembly"});
-
             param.GenerateExecutable = false;
             param.GenerateInMemory = true;
-
             //results = cscp.CompileAssemblyFromSource(param, code);
-
             //Console.WriteLine(results);
+            */
+        }
+
+        public string ClassSyntaxGenerator(ParticleBlueprint pb)
+        {
+            string code = "public class "+ pb.Name +"{\n";
+
+            //if(pb.properties.ContainsKey("Name"))
+
+            return code + "}";
         }
     }
 }

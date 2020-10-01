@@ -26,14 +26,16 @@ namespace CalcEngine
             p2.properties = new Dictionary<string, string>();
             p2.methods = new Dictionary<string, string>();
 
-            p1.properties.Add("name", "kapitan");
+            p1.Name = "kapitan";
+            //p1.properties.Add("name", "kapitan");
             p1.properties.Add("position", "VectorD3");
             p1.properties.Add("force", "double");
 
             p1.methods.Add("to_kapitan(kapitan p)", "position += new VectorD3(1,2,3)");
             p1.methods.Add("to_bomba(bomba p)", "position += p.position");
 
-            p2.properties.Add("name", "bomba");
+            p2.Name = "Bomba";
+            //p2.properties.Add("name", "bomba");
             p2.properties.Add("position", "VectorD3");
             p2.properties.Add("force", "double");
             p2.properties.Add("rotation", "double");
@@ -54,13 +56,13 @@ namespace CalcEngine
             
             string jsonString = JsonConvert.SerializeObject(config);
             Console.Write(jsonString);
-            File.WriteAllText("c2", jsonString);
+            File.WriteAllText("c2Name", jsonString);
         } 
 
         public void testDeseri()
         {
-            string jsonString = File.ReadAllText("c2");
-            JsonConvert.PopulateObject(jsonString, config);
+            //string jsonString = File.ReadAllText("c2");
+            //JsonConvert.PopulateObject(jsonString, config);
             //SimulationConfig config = JsonSerializer.Deserialize<SimulationConfig>(jsonString);
 
             Console.Write(config.ToString());
