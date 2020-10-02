@@ -1,7 +1,13 @@
-﻿using Microsoft.CSharp;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CSharp;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace CalcEngine.Services
@@ -9,20 +15,93 @@ namespace CalcEngine.Services
     public class Emitter
     {
         private readonly SimulationConfig config;
+        private readonly SimulationState state;
 
-        public Emitter(SimulationConfig Config)
+        public Emitter(SimulationConfig Config, SimulationState State)
         {
             config = Config;
+            state = State;
         }
 
         public void Test()
         {
-            Console.WriteLine("\t\n" + config.ToString());
+            //Console.WriteLine("\t\n" + config.ToString());
+            Console.WriteLine(WholeSyntaxGenerator(config));
         }
 
         public void CompileParticlesBlueprints()
         {
-            string tmp = "";
+            string code = WholeSyntaxGenerator(config);
+
+            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
+
+            string assemblyName = Path.GetRandomFileName();
+            
+
+
+            IEnumerable<MetadataReference> references = Directory.GetFiles(Path.GetDirectoryName(typeof(object).Assembly.Location))
+                .Where((val) => val.EndsWith(".dll"))
+                .Where((val) => val.Contains("System."))
+                .Append(typeof(CalcEngine.Program).Assembly.Location)
+                .Select((str) => MetadataReference.CreateFromFile(str));
+
+            CSharpCompilation compilation = CSharpCompilation.Create(
+                assemblyName,
+                syntaxTrees: new[] { syntaxTree },
+                references: references,
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+
+
+
+            using (var ms = new MemoryStream())
+            {
+                EmitResult result = compilation.Emit(ms);
+
+                if (!result.Success)
+                {
+                    IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
+                        diagnostic.IsWarningAsError ||
+                        diagnostic.Severity == DiagnosticSeverity.Error);
+
+                    foreach (Diagnostic diagnostic in failures)
+                    {
+                        Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                    }
+                }
+                else
+                {
+                    ms.Seek(0, SeekOrigin.Begin);
+                    Assembly assembly = Assembly.Load(ms.ToArray());
+
+                    Console.WriteLine("\n\n" + assembly.FullName + "   " + assembly.ToString());
+                }
+            }
+
+        }
+
+        public string ClassSyntaxGenerator(ParticleBlueprint pb)
+        {
+            string code = "\npublic class "+ pb.Name +"{\n\n";
+
+            foreach(var t in pb.properties)
+            {
+                code += "\tpublic " + t.Value + " " + t.Key + " { get; set; }\n\n";
+            }
+
+            foreach(var m in pb.methods)
+            {
+                code += "\n\tpublic void " + m.Key + "{\n";
+
+                code += "\t\t" + m.Value;
+
+                code += "\n\t}\n";
+            }
+
+            return code + "}\n\n";
+        }
+
+        public string WholeSyntaxGenerator(SimulationConfig config)
+        {
             string code = @"
 using System;
 using System.IO;
@@ -36,32 +115,14 @@ namespace Particles
 
 
 
-            tmp += "";
-
-            code += @"}";
-
-
-            /*
-            CompilerResults results;
-            //ICodeCompiler cscp = new CodeDomProvider();
-            CompilerParameters param = new CompilerParameters(new[] { "Assembly"});
-            param.GenerateExecutable = false;
-            param.GenerateInMemory = true;
-            //results = cscp.CompileAssemblyFromSource(param, code);
-            //Console.WriteLine(results);
-            */
-        }
-
-        public string ClassSyntaxGenerator(ParticleBlueprint pb)
-        {
-            string code = "public class "+ pb.Name +"{\n\n";
-
-            foreach(var t in pb.properties)
+            foreach (var p in config.particleBlueprints)
             {
-                code += "\tpublic " + t.Value + " " + t.Key + " { get; set; }\n";
+                code += ClassSyntaxGenerator(p);
             }
 
-            return code + "}";
+            code += "}";
+
+            return code;
         }
     }
 }

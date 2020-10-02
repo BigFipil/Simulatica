@@ -43,13 +43,14 @@ namespace CalcEngine
 
             //Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
 
-            
+
             //var t = provider.GetService<Test>();
             //t.testDeseri();
-            
-            InMemoryCompiler.Program22.Main22();
+
+            InMemoryCompiler.Program22.Main22(provider.GetService<Services.Emitter>());
             //provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
-            
+            //provider.GetService<Services.Emitter>().Test();
+
             //provider.GetRequiredService<SimulationConfig>().testDeseri();
             //TODO: system uruchomieniowy
 

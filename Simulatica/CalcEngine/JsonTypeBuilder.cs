@@ -14,8 +14,9 @@ namespace InMemoryCompiler
 {
     class Program22
     {
-        public static void Main22()
+        public static void Main22(CalcEngine.Services.Emitter e)
         {
+            /*
             string[] codeArr = new string[1];
             string code = @"
 using System;
@@ -40,12 +41,14 @@ namespace HelloWorld
     }
 }";
             codeArr[0] = code;
+            */
 
+            string code = e.WholeSyntaxGenerator(e.config);
 
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
 
-            Console.WriteLine(syntaxTree);
-            Console.WriteLine("\n\n"+ typeof(Enumerable).Assembly.Location+"\n\n");
+            Console.WriteLine(syntaxTree.GetRoot());
+            //Console.WriteLine("\n\n"+ typeof(Enumerable).Assembly.Location+"\n\n");
 
             string assemblyName = Path.GetRandomFileName();
             /*MetadataReference[] references = new MetadataReference[]
