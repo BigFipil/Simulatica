@@ -43,7 +43,7 @@ namespace HelloWorld
             codeArr[0] = code;
             */
 
-            string code = e.WholeSyntaxGenerator(e.config);
+            string code = "";// e.WholeSyntaxGenerator(e.config);
 
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
 

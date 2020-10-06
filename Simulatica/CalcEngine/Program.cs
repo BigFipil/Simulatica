@@ -47,12 +47,10 @@ namespace CalcEngine
             //var t = provider.GetService<Test>();
             //t.testDeseri();
 
-            InMemoryCompiler.Program22.Main22(provider.GetService<Services.Emitter>());
-            //provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
+            //InMemoryCompiler.Program22.Main22(provider.GetService<Services.Emitter>());
+            provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
             //provider.GetService<Services.Emitter>().Test();
 
-            //provider.GetRequiredService<SimulationConfig>().testDeseri();
-            //TODO: system uruchomieniowy
 
             //Console.WriteLine(provider.GetService<MyTypeBuilder>().ToString());
             //Console.WriteLine(provider.GetService<SimulationConfig>().ToString());
