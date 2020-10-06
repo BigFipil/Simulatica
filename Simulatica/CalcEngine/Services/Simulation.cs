@@ -7,7 +7,7 @@ namespace CalcEngine
 {
     // IOHandler
 
-    public class Simulation : ISymulation
+    public class Simulation : ISimulation
     {
         private readonly SimulationConfig config;
         private SimulationState state;
@@ -23,7 +23,7 @@ namespace CalcEngine
 
         public void Run()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("normal");
         }
     }
 }

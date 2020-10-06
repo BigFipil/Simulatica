@@ -23,6 +23,7 @@ namespace CalcEngine
             {
                 string jsonString = File.ReadAllText(path);
                 JsonConvert.PopulateObject(jsonString, config);
+                //Console.WriteLine(config.ToString());
                 return true;
             }
             catch(Exception ex)

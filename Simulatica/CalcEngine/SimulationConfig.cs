@@ -25,7 +25,7 @@ namespace CalcEngine
         /// <summary>
         /// Defines number of Threads being used in simulation
         /// </summary>
-        public int Threads { get;  set;}
+        public int Threads { get; private set;}
 
         [JsonProperty]
         /// <summary>
@@ -51,6 +51,15 @@ namespace CalcEngine
         /// </summary>
         public double DataSaveStepTime { get; private set; }
 
+        [JsonProperty]
+        /// <summary>
+        /// Defines whether the all particles used in simulation are emitted directly to program memory, and maintain there,
+        /// or they are constantly writted to simulation file, and loading from Hard Drive when needed. If value of this
+        /// property is true, all calculations are performed more quickly, but there is a limitation associated with
+        /// quantity of particles (simulation size limit).
+        /// </summary>
+        public bool FullRamMode { get; private set; }
+
 
         public override string ToString()
         {
@@ -58,7 +67,7 @@ namespace CalcEngine
 
             foreach(var p in particleBlueprints)
             {
-                s += "\tParticle: "+p.Name+"\n";
+                s += "\tParticle: " + p.Name + "   quantity: "+p.Quantity+"\n";
 
                 foreach (var prop in p.properties)
                 {
@@ -75,6 +84,7 @@ namespace CalcEngine
             s += "TimeRangeSeconds: " + TimeRangeSeconds + "\n";
             s += "SimulationStepTime: " + SimulationStepTime + "\n";
             s += "DataSaveStepTime: " + DataSaveStepTime + "\n";
+            s += "FullRamMode: " + FullRamMode + "\n";
 
             return s;
         }

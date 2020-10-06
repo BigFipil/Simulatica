@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace CalcEngine
 {
-    class SmallSimulation : ISymulation
+    class SmallSimulation : ISimulation
     {
         private readonly SimulationConfig config;
         private SimulationState state;
@@ -21,7 +21,7 @@ namespace CalcEngine
 
         public void Run()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("small");
         }
     }
 }

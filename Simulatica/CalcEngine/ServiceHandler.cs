@@ -20,8 +20,8 @@ namespace CalcEngine
             services.AddTransient<Test>();
             services.AddTransient<Loader>();
             services.AddTransient<Emitter>();
-            services.AddTransient<SmallSimulation>();
-            services.AddTransient<Simulation>();
+            services.AddTransient<ISimulation, SmallSimulation>();
+            services.AddTransient<ISimulation, Simulation>();
 
             return services.BuildServiceProvider();
         }

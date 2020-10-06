@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CalcEngine
 {
-    interface ISymulation
+    public interface ISimulation
     {
         public void Run();
     }

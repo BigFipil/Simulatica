@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CalcEngine
 {
     //TODO: Emiter zamienić na ClassicEmitter, który implementuje interfejs. w przyszłości może dojść jeszcze Emitter Refleksyjny, 
-    //i clasa CodeProvider która wyznaczy odpowiedni serwis z DI contenter.
+    //stworzyć własny DI contener
 
     /*
      * Każda cząstka będzie sprawdzana z każdą, nawet sobą samą. to domyślnie. Zapobieganie będzie w bluprincie.
@@ -41,14 +43,25 @@ namespace CalcEngine
                 }
             }
 
-            //Console.WriteLine(provider.GetService<ParticleBlueprint>().ToString());
+            IEnumerable<ISimulation> SimulationTypes = provider.GetServices<ISimulation>();
+            ISimulation simulation;
 
+            if (provider.GetService<SimulationConfig>().FullRamMode)
+            {
+                simulation = SimulationTypes.FirstOrDefault(h => h.GetType().Name == "SmallSimulation");
+            }
+            else
+            {
+                simulation = SimulationTypes.FirstOrDefault(h => h.GetType().Name == "Simulation");
+            }
+
+            simulation?.Run();
 
             //var t = provider.GetService<Test>();
             //t.testDeseri();
 
             //InMemoryCompiler.Program22.Main22(provider.GetService<Services.Emitter>());
-            provider.GetService<Emitter>().CompileParticlesBlueprints();
+            //provider.GetService<Emitter>().CompileParticlesBlueprints();
             //provider.GetService<Services.Emitter>().Test();
 
 
