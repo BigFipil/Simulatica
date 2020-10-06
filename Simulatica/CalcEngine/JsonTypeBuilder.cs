@@ -14,7 +14,7 @@ namespace InMemoryCompiler
 {
     class Program22
     {
-        public static void Main22(CalcEngine.Services.Emitter e)
+        public static void Main22(CalcEngine.Emitter e)
         {
             /*
             string[] codeArr = new string[1];

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CalcEngine.Interfaces
+namespace CalcEngine
 {
     interface ISymulation
     {

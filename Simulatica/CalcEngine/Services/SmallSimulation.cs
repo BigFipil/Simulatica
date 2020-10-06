@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Text;
+using System.Reflection;
 
 namespace CalcEngine
 {
-    // IOHandler
-
-    public class Simulation : Interfaces.ISymulation
+    class SmallSimulation : ISymulation
     {
         private readonly SimulationConfig config;
         private SimulationState state;
-        private Services.Emitter emitter;
+        private Emitter emitter;
         private Assembly assembly;
 
-        public Simulation(SimulationConfig C, SimulationState S, Services.Emitter E)
+        public SmallSimulation(SimulationConfig C, SimulationState S, Emitter E)
         {
             config = C;
             state = S;

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace CalcEngine.Services
+namespace CalcEngine
 {
     public class Emitter
     {

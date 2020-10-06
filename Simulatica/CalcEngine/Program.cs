@@ -16,22 +16,22 @@ namespace CalcEngine
         {
             IServiceCollection services = new ServiceCollection();
 
-            Startup startup = new Startup();
+            ServiceHandler sh = new ServiceHandler();
 
-            ServiceProvider provider = startup.ConfigureServices(services);
+            ServiceProvider provider = sh.ConfigureServices(services);
 
 
             if(args.Length > 0)
             {
                 if(Char.IsDigit(args[0][0]))
                 {
-                    startup.Port = Int32.Parse(args[0]);
+                    sh.Port = Int32.Parse(args[0]);
                 }
                 else
                 {
-                    startup.Path = args[0];
+                    sh.Path = args[0];
 
-                    if (!provider.GetService<Services.Loader>().Load(startup.Path))
+                    if (!provider.GetService<Loader>().Load(sh.Path))
                     {
                         var st = provider.GetService<SimulationState>();
                         Console.WriteLine("Loading Exeption. Error message:\n\n\t{0}", st.ErrorList[st.ErrorList.Count - 1]);
@@ -48,7 +48,7 @@ namespace CalcEngine
             //t.testDeseri();
 
             //InMemoryCompiler.Program22.Main22(provider.GetService<Services.Emitter>());
-            provider.GetService<Services.Emitter>().CompileParticlesBlueprints();
+            provider.GetService<Emitter>().CompileParticlesBlueprints();
             //provider.GetService<Services.Emitter>().Test();
 
 

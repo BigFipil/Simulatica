@@ -6,10 +6,10 @@ using System.Text;
 namespace CalcEngine
 {
 
-    public class Startup
+    public class ServiceHandler
     {
-        public string Path { get; set; } = "";
-        public int Port { get; set; } = 6060;   //Default Port
+        public string Path { get; set; } = "";  //do wywalenia
+        public int Port { get; set; } = 6060;   //Default Port do wywalenia
 
         public ServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -18,8 +18,10 @@ namespace CalcEngine
             //services.AddSingleton<ParticleBlueprint>();
 
             services.AddTransient<Test>();
-            services.AddTransient<Services.Loader>();
-            services.AddTransient<Services.Emitter>();
+            services.AddTransient<Loader>();
+            services.AddTransient<Emitter>();
+            services.AddTransient<SmallSimulation>();
+            services.AddTransient<Simulation>();
 
             return services.BuildServiceProvider();
         }
