@@ -60,6 +60,10 @@ namespace CalcEngine
         /// </summary>
         public bool FullRamMode { get; private set; }
 
+        [JsonIgnore]
+        public string Path { get; set; } = "";  
+        [JsonIgnore]
+        public int Port { get; set; } = 6060;   
 
         public override string ToString()
         {

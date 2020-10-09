@@ -18,12 +18,32 @@ namespace CalcEngine
             //services.AddSingleton<ParticleBlueprint>();
 
             services.AddTransient<Test>();
-            services.AddTransient<Loader>();
+            services.AddTransient<ConfigLoader>();
             services.AddTransient<Emitter>();
-            services.AddTransient<ISimulation, SmallSimulation>();
-            services.AddTransient<ISimulation, Simulation>();
+            services.AddTransient<SmallSimulation>();
+            services.AddTransient<Simulation>();
+            services.AddSingleton<ISimulation>(sim);
 
             return services.BuildServiceProvider();
         }
+
+
+
+
+        Func<IServiceProvider, ISimulation> sim = (var) => {
+
+            var config = var.GetService<SimulationConfig>();
+
+            if (config.FullRamMode)
+            {
+                Console.WriteLine("really");
+                return var.GetService<SmallSimulation>();
+            }
+            else
+            {
+                return var.GetService<Simulation>();
+            }
+
+        };
     }
 }

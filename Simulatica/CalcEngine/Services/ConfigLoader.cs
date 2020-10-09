@@ -6,12 +6,12 @@ using System.Text;
 
 namespace CalcEngine
 {
-    public class Loader
+    public class ConfigLoader : ILoader
     {
         private SimulationConfig config;
         private SimulationState state;
 
-        public Loader(SimulationConfig Config, SimulationState State)
+        public ConfigLoader(SimulationConfig Config, SimulationState State)
         {
             config = Config;
             state = State;

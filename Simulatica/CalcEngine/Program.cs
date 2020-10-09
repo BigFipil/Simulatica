@@ -33,7 +33,7 @@ namespace CalcEngine
                 {
                     sh.Path = args[0];
 
-                    if (!provider.GetService<Loader>().Load(sh.Path))
+                    if (!provider.GetService<ConfigLoader>().Load(sh.Path))
                     {
                         var st = provider.GetService<SimulationState>();
                         Console.WriteLine("Loading Exeption. Error message:\n\n\t{0}", st.ErrorList[st.ErrorList.Count - 1]);
@@ -43,19 +43,13 @@ namespace CalcEngine
                 }
             }
 
-            IEnumerable<ISimulation> SimulationTypes = provider.GetServices<ISimulation>();
-            ISimulation simulation;
 
-            if (provider.GetService<SimulationConfig>().FullRamMode)
-            {
-                simulation = SimulationTypes.FirstOrDefault(h => h.GetType().Name == "SmallSimulation");
-            }
-            else
-            {
-                simulation = SimulationTypes.FirstOrDefault(h => h.GetType().Name == "Simulation");
-            }
 
-            simulation?.Run();
+            ISimulation simulation = provider.GetService<ISimulation>();
+
+            
+
+            simulation.Run();
 
             //var t = provider.GetService<Test>();
             //t.testDeseri();
