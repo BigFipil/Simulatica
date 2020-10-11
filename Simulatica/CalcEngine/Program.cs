@@ -22,32 +22,25 @@ namespace CalcEngine
 
             ServiceProvider provider = sh.ConfigureServices(services);
 
+            SimulationConfig config = provider.GetService<SimulationConfig>();
+
 
             if(args.Length > 0)
             {
                 if(Char.IsDigit(args[0][0]))
                 {
-                    sh.Port = Int32.Parse(args[0]);
+                    config.Port = Int32.Parse(args[0]);
                 }
                 else
                 {
-                    sh.Path = args[0];
-
-                    if (!provider.GetService<ConfigLoader>().Load(sh.Path))
-                    {
-                        var st = provider.GetService<SimulationState>();
-                        Console.WriteLine("Loading Exeption. Error message:\n\n\t{0}", st.ErrorList[st.ErrorList.Count - 1]);
-
-                        return;
-                    }
+                    config.Path = args[0];
+                    provider.GetService<ConfigLoader>().Load(config.Path);
                 }
             }
 
 
 
             ISimulation simulation = provider.GetService<ISimulation>();
-
-            
 
             simulation.Run();
 

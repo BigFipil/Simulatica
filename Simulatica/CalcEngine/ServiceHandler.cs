@@ -8,9 +8,6 @@ namespace CalcEngine
 
     public class ServiceHandler
     {
-        public string Path { get; set; } = "";  //do wywalenia
-        public int Port { get; set; } = 6060;   //Default Port do wywalenia
-
         public ServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<SimulationConfig>();
@@ -19,31 +16,44 @@ namespace CalcEngine
 
             services.AddTransient<Test>();
             services.AddTransient<ConfigLoader>();
+            services.AddTransient<SimulationLoader>();
             services.AddTransient<Emitter>();
             services.AddTransient<SmallSimulation>();
             services.AddTransient<Simulation>();
             services.AddSingleton<ISimulation>(sim);
+            services.AddSingleton<ILoader>(load);
 
             return services.BuildServiceProvider();
         }
 
 
-
-
-        Func<IServiceProvider, ISimulation> sim = (var) => {
-
-            var config = var.GetService<SimulationConfig>();
+        private ISimulation sim(IServiceProvider provider)
+        {
+            var config = provider.GetService<SimulationConfig>();
 
             if (config.FullRamMode)
             {
                 Console.WriteLine("really");
-                return var.GetService<SmallSimulation>();
+                return provider.GetService<SmallSimulation>();
             }
             else
             {
-                return var.GetService<Simulation>();
+                return provider.GetService<Simulation>();
             }
+        }
 
-        };
+        private ILoader load(IServiceProvider provider)
+        {
+            var config = provider.GetService<SimulationConfig>();
+
+            if (config.Path.EndsWith(".sim"))
+            {
+                return provider.GetService<SimulationLoader>();
+            }
+            else
+            {
+                return provider.GetService<ConfigLoader>();
+            }
+        }
     }
 }
