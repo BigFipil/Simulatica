@@ -6,11 +6,14 @@ using System.Linq;
 namespace CalcEngine
 {
     //TODO: Emiter zamienić na ClassicEmitter, który implementuje interfejs. w przyszłości może dojść jeszcze Emitter Refleksyjny, 
-    //stworzyć własny DI contener
+    //stworzyć Logger, do pliku.
+    //Monogame visualisator, opróćz blendera
 
     /*
      * Każda cząstka będzie sprawdzana z każdą, nawet sobą samą. to domyślnie. Zapobieganie będzie w bluprincie.
      * porónywanie kolizji będzie domyślnie w silniku, w bluprincie będzie można przeciążyć metodę wywoływaną w trakcie kolizji
+     * 
+     * Initalize(), Calculate(Patricle type), Update().
      */
     class Program
     {
@@ -38,8 +41,8 @@ namespace CalcEngine
                 }
             }
 
-
-
+            //Test t = provider.GetService<Test>();
+            //t.testSeri();
             ISimulation simulation = provider.GetService<ISimulation>();
 
             simulation.Run();

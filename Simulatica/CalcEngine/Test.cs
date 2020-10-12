@@ -26,22 +26,22 @@ namespace CalcEngine
             p2.properties = new Dictionary<string, string>();
             p2.methods = new Dictionary<string, string>();
 
-            p1.Name = "kapitan";
-            //p1.properties.Add("name", "kapitan");
+            p1.Name = "Point";
             p1.properties.Add("position", "VectorD3");
-            p1.properties.Add("force", "double");
+            p1.properties.Add("tposition", "VectorD3");
+            p1.properties.Add("mass", "double");
 
-            p1.methods.Add("to_kapitan(kapitan p)", "position += new VectorD3(1,2,3)");
-            p1.methods.Add("to_bomba(bomba p)", "position += p.position");
+            p1.methods.Add("Initalize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0); mass = r.NextDouble(); tposition = 0;");
+            p1.methods.Add("Calculate(Point p)", "position += new VectorD3(1,2,3)");
+            p1.methods.Add("Calculate(Hole p)", "position += p.position");
+            p1.methods.Add("Update()", "position += tposition;");
 
-            p2.Name = "Bomba";
-            //p2.properties.Add("name", "bomba");
+            p2.Name = "Hole";
             p2.properties.Add("position", "VectorD3");
-            p2.properties.Add("force", "double");
-            p2.properties.Add("rotation", "double");
 
-            p2.methods.Add("to_kapitan(kapitan p)", "position += new VectorD3(1,2,3)");
-            p2.methods.Add("to_bomba(bomba p)", "position += p.position");
+            p2.methods.Add("Initalize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0);");
+            p2.methods.Add("Calculate(Point p)", "");
+            p2.methods.Add("Calculate(Hole p)", "");
 
 
             SimulationConfig config = new SimulationConfig();
@@ -56,7 +56,7 @@ namespace CalcEngine
             
             string jsonString = JsonConvert.SerializeObject(config);
             Console.Write(jsonString);
-            File.WriteAllText("c2Name", jsonString);
+            File.WriteAllText("PointSim.conig", jsonString);
         } 
 
         public void testDeseri()

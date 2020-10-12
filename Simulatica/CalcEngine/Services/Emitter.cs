@@ -29,7 +29,7 @@ namespace CalcEngine
             Console.WriteLine(WholeSyntaxGenerator(config));
         }
 
-        public void CompileParticlesBlueprints()
+        public Assembly CompileParticlesBlueprints()
         {
             string code = WholeSyntaxGenerator(config);
 
@@ -65,18 +65,20 @@ namespace CalcEngine
 
                     foreach (Diagnostic diagnostic in failures)
                     {
-                        Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                        //Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+                        state.ErrorList.Add(new Exception(diagnostic.Id + ": " + diagnostic.GetMessage()));
                     }
                 }
                 else
                 {
                     ms.Seek(0, SeekOrigin.Begin);
-                    Assembly assembly = Assembly.Load(ms.ToArray());
+                    return Assembly.Load(ms.ToArray());
 
-                    Console.WriteLine("\n\n" + assembly.FullName + "   " + assembly.ToString());
+                    //Console.WriteLine("\n\n" + assembly.FullName + "   " + assembly.ToString());
                 }
             }
 
+            return null;
         }
 
         public string ClassSyntaxGenerator(ParticleBlueprint pb)

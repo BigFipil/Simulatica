@@ -2,7 +2,7 @@
   "profiles": {
     "CalcEngine": {
       "commandName": "Project",
-      "commandLineArgs": "c2QR"
+      "commandLineArgs": "PointSim.conig"
     }
   }
 }
