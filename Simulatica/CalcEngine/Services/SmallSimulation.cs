@@ -102,6 +102,12 @@ namespace CalcEngine
                 }
             }
             #endregion
+
+            //var mi2 = types[0].GetMethod("Calculate", new Type[] { types[0] });
+            //mi2.Invoke(objLists[0][0], new object[] { objLists[0][1]});
+
+            Console.WriteLine(JsonConvert.SerializeObject(objLists[0][0]));
+
             /*
             Console.WriteLine(objLists[0].Count + " " + objLists[1].Count);
             Console.WriteLine(objLists[0][0].ToString());
@@ -110,11 +116,37 @@ namespace CalcEngine
             */
             #region Performing Calculations
 
-            
+            for (double iter = 0; iter < Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
+            {
+                Console.WriteLine(iter);
+
+                for (int i = 0; i < objLists.Length; i++)
+                {
+                    //informacje o obliczanym typie dostepne tutaj
+                    for (ulong j = 0; j < Config.particleBlueprints[i].Quantity; j++)
+                    {
+                        //informacje o oblicznanej czastce dostepne tutaj
+
+                        for (int x = 0; x < objLists.Length; x++)
+                        {
+                            //informacje o porownywanym typie dostepne tutaj
+
+                            for (ulong y = 0; y < Config.particleBlueprints[x].Quantity; y++)
+                            {
+                                var mi2 = types[i].GetMethod("Calculate", new Type[] { types[x] });
+                                mi2.Invoke(objLists[i][(int)j], new object[] { objLists[x][(int)y] });
+                                //informacje o porownywanej czastce dostepne tutaj
+                            }
+                        }
+
+
+                    }
+                }
+            }
 
             #endregion
 
-
+            
 
         }
     }

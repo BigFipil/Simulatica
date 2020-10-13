@@ -33,7 +33,7 @@ namespace CalcEngine
             p1.properties.Add("mass", "double");
 
             p1.methods.Add("Initialize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0); mass = r.NextDouble(); tposition = new VectorD3(0,0,0);");
-            p1.methods.Add("Calculate(Point p)", "position += new VectorD3(1,2,3)");
+            p1.methods.Add("Calculate(Point p)", "tposition += new VectorD3(1,2,3)");
             p1.methods.Add("Calculate(Hole p)", "position += p.position");
             p1.methods.Add("Update()", "position += tposition;");
 
