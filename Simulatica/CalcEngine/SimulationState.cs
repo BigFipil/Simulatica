@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +12,7 @@ namespace CalcEngine
         public long AproxParticleCount { get; private set; }
         public float Progress { get; private set; }
         public int ActiveThreads { get; set; }
+        public SyntaxTree syntaxTree { get; set; }
         public List<Exception> ErrorList { get; set; } = new List<Exception>();
 
         public void NewFrameStatistics(long aproxParticleCount)

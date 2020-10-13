@@ -27,19 +27,21 @@ namespace CalcEngine
             p2.methods = new Dictionary<string, string>();
 
             p1.Name = "Point";
+            p1.Quantity = 1000;
             p1.properties.Add("position", "VectorD3");
             p1.properties.Add("tposition", "VectorD3");
             p1.properties.Add("mass", "double");
 
-            p1.methods.Add("Initalize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0); mass = r.NextDouble(); tposition = 0;");
+            p1.methods.Add("Initialize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0); mass = r.NextDouble(); tposition = new VectorD3(0,0,0);");
             p1.methods.Add("Calculate(Point p)", "position += new VectorD3(1,2,3)");
             p1.methods.Add("Calculate(Hole p)", "position += p.position");
             p1.methods.Add("Update()", "position += tposition;");
 
             p2.Name = "Hole";
+            p2.Quantity = 13;
             p2.properties.Add("position", "VectorD3");
 
-            p2.methods.Add("Initalize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0);");
+            p2.methods.Add("Initialize()", "Random r = new Random(); position = new VectorD3(r.NextDouble() * 10, r.NextDouble() * 10, 0);");
             p2.methods.Add("Calculate(Point p)", "");
             p2.methods.Add("Calculate(Hole p)", "");
 

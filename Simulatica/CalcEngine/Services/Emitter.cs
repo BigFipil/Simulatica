@@ -33,7 +33,7 @@ namespace CalcEngine
         {
             string code = WholeSyntaxGenerator(config);
 
-            SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
+            state.syntaxTree = CSharpSyntaxTree.ParseText(code);
 
             string assemblyName = Path.GetRandomFileName();
             
@@ -47,7 +47,7 @@ namespace CalcEngine
 
             CSharpCompilation compilation = CSharpCompilation.Create(
                 assemblyName,
-                syntaxTrees: new[] { syntaxTree },
+                syntaxTrees: new[] { state.syntaxTree },
                 references: references,
                 options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
@@ -66,7 +66,7 @@ namespace CalcEngine
                     foreach (Diagnostic diagnostic in failures)
                     {
                         //Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
-                        state.ErrorList.Add(new Exception(diagnostic.Id + ": " + diagnostic.GetMessage()));
+                        state.ErrorList.Add(new Exception(diagnostic.Id + ": " + diagnostic.GetMessage() + " line: " +diagnostic.Location));
                     }
                 }
                 else
@@ -87,7 +87,11 @@ namespace CalcEngine
 
             foreach(var t in pb.properties)
             {
-                code += "\tpublic " + t.Value + " " + t.Key + " { get; set; }\n\n";
+                //code += "\tpublic " + t.Value + " " + t.Key + " { get; set; }\n\n";
+                code += "\tpublic " + t.Value + " " + t.Key;// + ";\n\n";
+
+                if (t.Key.EndsWith("}") || t.Key.EndsWith(";")) code += "\n\n";
+                else code += ";\n\n";
             }
 
             foreach(var m in pb.methods)
@@ -95,6 +99,8 @@ namespace CalcEngine
                 code += "\n\tpublic void " + m.Key + "{\n";
 
                 code += "\t\t" + m.Value;
+
+                if (!m.Value.EndsWith(";")) code += ";";
 
                 code += "\n\t}\n";
             }

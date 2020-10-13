@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using Newtonsoft.Json;
 using System.Collections;
+using System.Threading.Tasks;
 
 namespace CalcEngine
 {
@@ -31,6 +32,8 @@ namespace CalcEngine
             Emitter = E;
         }
 
+        //public void
+
         public void Run()
         {
             Console.WriteLine("small");
@@ -48,7 +51,7 @@ namespace CalcEngine
             if(Assembly == null)
             {
                 Console.WriteLine("Compilation errors occured: \n\n");
-
+                Console.WriteLine(State.syntaxTree);
                 foreach(var e in State.ErrorList)
                 {
                     Console.WriteLine("\t"+ e.Message +". "+e.Data+"\n\n");
@@ -56,7 +59,7 @@ namespace CalcEngine
                 return;
             }
             #endregion
-
+            #region List of Simulation Types
             types = new Type[Config.particleBlueprints.Count];
             for (int i = 0; i < types.Length; i++)
             {
@@ -81,11 +84,13 @@ namespace CalcEngine
                 var listType = typeof(List<>).MakeGenericType(types[i]);
                 objLists[i] = (IList)Activator.CreateInstance(listType);
             }
-
-            //Initalizing Particles
-            for(int i = 0; i < objLists.Length; i++)
+            #endregion
+            #region Initalizing Particles
+            for (int i = 0; i < objLists.Length; i++)
             {
                 MethodInfo mi = types[i].GetMethod("Initialize");
+
+                Console.WriteLine(mi.Name);
 
                 for (ulong j = 0; j < Config.particleBlueprints[i].Quantity; j++)
                 {
@@ -96,6 +101,21 @@ namespace CalcEngine
                     objLists[i].Add(particle);
                 }
             }
+            #endregion
+            /*
+            Console.WriteLine(objLists[0].Count + " " + objLists[1].Count);
+            Console.WriteLine(objLists[0][0].ToString());
+            Console.WriteLine(JsonConvert.SerializeObject(objLists[0][0]));
+            Console.WriteLine(JsonConvert.SerializeObject(objLists[1][1]));
+            */
+            #region Performing Calculations
+
+            
+
+            #endregion
+
+
+
         }
     }
 }
