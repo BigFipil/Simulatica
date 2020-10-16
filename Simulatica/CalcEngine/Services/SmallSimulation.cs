@@ -5,6 +5,7 @@ using System.Reflection;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace CalcEngine
 {
@@ -25,11 +26,27 @@ namespace CalcEngine
         [JsonProperty]
         private IList[] objLists;
 
+        [JsonProperty]
+        private List<Thread> threads = new List<Thread>();
+
+        private Mutex mutex = new Mutex();
+        private bool threadActive;
+
+        [JsonProperty]
+        private int typePtr, particlePtr;
+
         public SmallSimulation(SimulationConfig C, SimulationState S, Emitter E)
         {
             Config = C;
             State = S;
             Emitter = E;
+
+            Config.particleBlueprints[0].Quantity = 10;
+
+            for(int i = 0; i < Config.Threads; i++)
+            {
+                threads.Add(new Thread(CalculateParticle));
+            }
         }
 
         //public void
@@ -92,7 +109,7 @@ namespace CalcEngine
 
                 Console.WriteLine(mi.Name);
 
-                for (ulong j = 0; j < Config.particleBlueprints[i].Quantity; j++)
+                for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
                 {
                     Object particle = Activator.CreateInstance(types[i]);
 
@@ -115,39 +132,155 @@ namespace CalcEngine
             Console.WriteLine(JsonConvert.SerializeObject(objLists[1][1]));
             */
             #region Performing Calculations
-
-            for (double iter = 0; iter < Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
+            if(Config.Threads == 1)
+            for (double iter = 1; iter <= Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
             {
-                Console.WriteLine(iter);
+                //Console.WriteLine(iter);
 
                 for (int i = 0; i < objLists.Length; i++)
                 {
                     //informacje o obliczanym typie dostepne tutaj
-                    for (ulong j = 0; j < Config.particleBlueprints[i].Quantity; j++)
+                    for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
                     {
+                        Console.WriteLine(iter+": "+i+" -> "+j);
                         //informacje o oblicznanej czastce dostepne tutaj
 
                         for (int x = 0; x < objLists.Length; x++)
                         {
                             //informacje o porownywanym typie dostepne tutaj
+                            var mi2 = types[i].GetMethod("Calculate", new Type[] { types[x] });
 
-                            for (ulong y = 0; y < Config.particleBlueprints[x].Quantity; y++)
+                            for (int y = 0; y < (int)Config.particleBlueprints[x].Quantity; y++)
                             {
-                                var mi2 = types[i].GetMethod("Calculate", new Type[] { types[x] });
                                 mi2.Invoke(objLists[i][(int)j], new object[] { objLists[x][(int)y] });
                                 //informacje o porownywanej czastce dostepne tutaj
                             }
                         }
 
+                        MethodInfo mi = types[i].GetMethod("Update");
+                        if(mi != null) mi.Invoke(objLists[i][j], null);
+                            //zapis
+                        }
+                }
+            }
+            else
+            {
+                for (double iter = 1; iter <= Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
+                {
+                    threadActive = true;
 
+                    //foreach (var t in threads) t.Start();
+                    //threads.Clear();
+                    for (int i = 0; i < Config.Threads; i++)
+                    {
+                        threads[i] = new Thread(CalculateParticle);
+                        threads[i].Start();
                     }
+
+                    foreach (var t in threads) t.Join();
+
+                    Console.WriteLine("iter: "+iter);
+
+                    //Update for each
+                    for (int i = 0; i < objLists.Length; i++)
+                    {
+                        Console.WriteLine("Method");
+                        MethodInfo mi = types[i].GetMethod("Update");
+                        for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
+                        {
+                            if (mi != null) mi.Invoke(objLists[i][j], null);
+                        }
+                    }
+
+                    typePtr = 0;
+                    particlePtr = 0;
+                    Console.WriteLine(typePtr+particlePtr);
                 }
             }
 
             #endregion
 
-            
 
+        }
+        void CalculateParticle()
+        {
+            int tmpT = 0, tmpP = 0; 
+
+            do
+            {
+                if (mutex.WaitOne())
+                {
+
+                    tmpT = typePtr;
+                    tmpP = particlePtr;
+                    particlePtr++;
+
+                    if(particlePtr > (int)Config.particleBlueprints[typePtr].Quantity)
+                    {
+                        if(typePtr < types.Length-1)
+                        {
+                            typePtr++;
+                            particlePtr = 1;
+                            tmpT = typePtr;
+                            tmpP = 0;
+                        }
+                        else
+                        {
+                            threadActive = false;
+                            mutex.ReleaseMutex();
+                            break;
+                        }
+                    }
+
+                    mutex.ReleaseMutex();
+                }
+                Console.WriteLine(tmpT + "  " + tmpP);
+                //Thread.Sleep(500);
+                //calculation
+
+            } while (threadActive);
+
+        }
+        void CalculateParticle2()
+        {
+            while (typePtr < types.Length && threadActive)
+            {
+                mutex.WaitOne();
+                try
+                {
+                    while (particlePtr < (int)Config.particleBlueprints[typePtr].Quantity - 1 && threadActive)
+                    {
+
+                        //if (mutex.WaitOne())
+                        //{
+                        int calcParticle = particlePtr;
+                        int calcType = typePtr;
+                        Console.WriteLine(Thread.CurrentThread.Name + ": " + typePtr + "  " + particlePtr);
+                        particlePtr++;
+                        //mutex.ReleaseMutex();
+                        //}
+                        mutex.ReleaseMutex();
+                        Thread.Sleep(500);
+                        mutex.WaitOne();
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (e.GetType() != typeof(IndexOutOfRangeException)) State.ErrorList.Add(e);
+                    break;
+                }
+
+                //if (mutex.WaitOne())
+                //{
+                if (particlePtr >= (int)Config.particleBlueprints[typePtr].Quantity - 1)
+                {
+                    typePtr++;
+                    if (typePtr >= types.Length) threadActive = false;
+                    particlePtr = 0;
+                }
+                //mutex.ReleaseMutex();
+                //}
+            }
         }
     }
 }
