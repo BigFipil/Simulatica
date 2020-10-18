@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CalcEngine
@@ -45,7 +46,14 @@ namespace CalcEngine
             //t.testSeri();
             ISimulation simulation = provider.GetService<ISimulation>();
 
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+
             simulation.Run();
+
+            stopWatch.Stop();
+
+            Console.WriteLine("\n\n\t"+((float)stopWatch.ElapsedMilliseconds)/1000);
 
             //var t = provider.GetService<Test>();
             //t.testDeseri();

@@ -33,15 +33,13 @@ namespace CalcEngine
         private bool threadActive;
 
         [JsonProperty]
-        private int typePtr, particlePtr;
+        private int typePtr, particlePtr, threadCounter;
 
         public SmallSimulation(SimulationConfig C, SimulationState S, Emitter E)
         {
             Config = C;
             State = S;
             Emitter = E;
-
-            Config.particleBlueprints[0].Quantity = 10;
 
             for(int i = 0; i < Config.Threads; i++)
             {
@@ -132,17 +130,17 @@ namespace CalcEngine
             Console.WriteLine(JsonConvert.SerializeObject(objLists[1][1]));
             */
             #region Performing Calculations
-            if(Config.Threads == 1)
+            if(Config.Threads == 0)
             for (double iter = 1; iter <= Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
             {
-                //Console.WriteLine(iter);
+                Console.WriteLine(iter);
 
                 for (int i = 0; i < objLists.Length; i++)
                 {
                     //informacje o obliczanym typie dostepne tutaj
                     for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
                     {
-                        Console.WriteLine(iter+": "+i+" -> "+j);
+                        //Console.WriteLine(iter+": "+i+" -> "+j);
                         //informacje o oblicznanej czastce dostepne tutaj
 
                         for (int x = 0; x < objLists.Length; x++)
@@ -168,18 +166,23 @@ namespace CalcEngine
                 for (double iter = 1; iter <= Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
                 {
                     threadActive = true;
+                    threadCounter = 0;
+                    typePtr = 0;
+                    particlePtr = 0;
 
-                    //foreach (var t in threads) t.Start();
-                    //threads.Clear();
+                    //for (int i = 0; i < Config.Threads; i++)
+                    //{
+                    //    threads[i] = new Thread(CalculateParticle);
+                    //    threads[i].Start();
+                    //}
+                    //foreach (var t in threads) t.Join();
+
                     for (int i = 0; i < Config.Threads; i++)
                     {
-                        threads[i] = new Thread(CalculateParticle);
-                        threads[i].Start();
+                        ThreadPool.QueueUserWorkItem(CalculateParticle);
                     }
+                    while (threadCounter < Config.Threads) StatusUpdate();
 
-                    foreach (var t in threads) t.Join();
-
-                    Console.WriteLine("iter: "+iter);
 
                     //Update for each
                     for (int i = 0; i < objLists.Length; i++)
@@ -192,9 +195,7 @@ namespace CalcEngine
                         }
                     }
 
-                    typePtr = 0;
-                    particlePtr = 0;
-                    Console.WriteLine(typePtr+particlePtr);
+                    Console.WriteLine("iter: " + iter);
                 }
             }
 
@@ -202,7 +203,7 @@ namespace CalcEngine
 
 
         }
-        void CalculateParticle()
+        void CalculateParticle(object state)
         {
             int tmpT = 0, tmpP = 0; 
 
@@ -231,56 +232,32 @@ namespace CalcEngine
                             break;
                         }
                     }
-
                     mutex.ReleaseMutex();
                 }
-                Console.WriteLine(tmpT + "  " + tmpP);
-                //Thread.Sleep(500);
-                //calculation
+
+
+                for (int x = 0; x < objLists.Length; x++)
+                {
+                    MethodInfo mi = types[tmpT].GetMethod("Calculate", new Type[] { types[x] });
+
+                    for (int y = 0; y < (int)Config.particleBlueprints[x].Quantity; y++)
+                    {
+                        mi.Invoke(objLists[tmpT][tmpP], new object[] { objLists[x][y] });
+                    }
+                }
 
             } while (threadActive);
 
-        }
-        void CalculateParticle2()
-        {
-            while (typePtr < types.Length && threadActive)
+            if (mutex.WaitOne())
             {
-                mutex.WaitOne();
-                try
-                {
-                    while (particlePtr < (int)Config.particleBlueprints[typePtr].Quantity - 1 && threadActive)
-                    {
-
-                        //if (mutex.WaitOne())
-                        //{
-                        int calcParticle = particlePtr;
-                        int calcType = typePtr;
-                        Console.WriteLine(Thread.CurrentThread.Name + ": " + typePtr + "  " + particlePtr);
-                        particlePtr++;
-                        //mutex.ReleaseMutex();
-                        //}
-                        mutex.ReleaseMutex();
-                        Thread.Sleep(500);
-                        mutex.WaitOne();
-                    }
-                }
-                catch (Exception e)
-                {
-                    if (e.GetType() != typeof(IndexOutOfRangeException)) State.ErrorList.Add(e);
-                    break;
-                }
-
-                //if (mutex.WaitOne())
-                //{
-                if (particlePtr >= (int)Config.particleBlueprints[typePtr].Quantity - 1)
-                {
-                    typePtr++;
-                    if (typePtr >= types.Length) threadActive = false;
-                    particlePtr = 0;
-                }
-                //mutex.ReleaseMutex();
-                //}
+                threadCounter++;
+                mutex.ReleaseMutex();
             }
+        }
+
+        void StatusUpdate()
+        {
+
         }
     }
 }
