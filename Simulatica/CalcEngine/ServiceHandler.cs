@@ -16,6 +16,7 @@ namespace CalcEngine
 
             services.AddTransient<Test>();
             services.AddTransient<ConfigLoader>();
+            services.AddTransient<Writer>();
             services.AddTransient<SimulationLoader>();
             services.AddTransient<Emitter>();
             services.AddTransient<SmallSimulation>();

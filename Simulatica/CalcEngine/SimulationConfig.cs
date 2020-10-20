@@ -33,15 +33,21 @@ namespace CalcEngine
         /// </summary>
         public VectorD3 SimulationBoxSize { get; private set; }
 
+        //[JsonProperty]
+        ///// <summary>
+        ///// Represents the period of time for simulation. 
+        ///// </summary>
+        //public double TimeRangeSeconds { get; private set; }
+
         [JsonProperty]
         /// <summary>
         /// Represents the period of time for simulation. 
         /// </summary>
-        public double TimeRangeSeconds { get; private set; }
+        public ulong IterationCount { get; private set; }
 
         [JsonProperty]
         /// <summary>
-        /// Represents the step of time that is the smallest time in which simulation state is calculated. SImulation starts in time t = 0
+        /// Represents the step of time (in seconds) which passes during every single iteration. Simulation starts in time t = 0.
         /// </summary>
         public double SimulationStepTime { get; private set; }
 
@@ -49,7 +55,7 @@ namespace CalcEngine
         /// <summary>
         /// Represents the step of time, after which actuall state of simulation is captured and saved to file; 
         /// </summary>
-        public double DataSaveStepTime { get; private set; }
+        public ulong DataSaveStepTime { get; private set; }
 
         [JsonProperty]
         /// <summary>
@@ -85,7 +91,7 @@ namespace CalcEngine
 
             s += "\nThreads: " + Threads + "\n";
             s += "SimulationBoxSize: " + SimulationBoxSize.ToString() + "\n";
-            s += "TimeRangeSeconds: " + TimeRangeSeconds + "\n";
+            s += "TimeRangeSeconds: " + IterationCount + "\n";
             s += "SimulationStepTime: " + SimulationStepTime + "\n";
             s += "DataSaveStepTime: " + DataSaveStepTime + "\n";
             s += "FullRamMode: " + FullRamMode + "\n";

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Threading.Tasks;
 using System.Threading;
+using System.IO;
 
 namespace CalcEngine
 {
@@ -17,6 +18,8 @@ namespace CalcEngine
         public SimulationState State { get; private set; }
         [JsonProperty]
         public Emitter Emitter { get; private set; }
+        [JsonProperty]
+        public Writer Writer { get; private set; }
         [JsonProperty]
         public Assembly Assembly { get; private set; }
 
@@ -35,11 +38,12 @@ namespace CalcEngine
         [JsonProperty]
         private int typePtr, particlePtr, threadCounter;
 
-        public SmallSimulation(SimulationConfig C, SimulationState S, Emitter E)
+        public SmallSimulation(SimulationConfig C, SimulationState S, Emitter E, Writer W)
         {
             Config = C;
             State = S;
             Emitter = E;
+            Writer = W;
 
             for(int i = 0; i < Config.Threads; i++)
             {
@@ -53,7 +57,7 @@ namespace CalcEngine
         {
             Console.WriteLine("small");
 
-            if(State.ErrorList.Count > 0)
+            if (State.ErrorList.Count > 0)
             {
                 Console.WriteLine("Loading Exeption. Error message:\n\n\t{0}", State.ErrorList[State.ErrorList.Count - 1]);
                 return;
@@ -121,7 +125,8 @@ namespace CalcEngine
             //var mi2 = types[0].GetMethod("Calculate", new Type[] { types[0] });
             //mi2.Invoke(objLists[0][0], new object[] { objLists[0][1]});
 
-            Console.WriteLine(JsonConvert.SerializeObject(objLists[0][0]));
+            //Console.WriteLine(JsonConvert.SerializeObject(objLists[0][0]));
+            Writer.Write(objLists[0][0], 0);
 
             /*
             Console.WriteLine(objLists[0].Count + " " + objLists[1].Count);
@@ -130,8 +135,12 @@ namespace CalcEngine
             Console.WriteLine(JsonConvert.SerializeObject(objLists[1][1]));
             */
             #region Performing Calculations
-            if(Config.Threads == 0)
-            for (double iter = 1; iter <= Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
+
+            bool write;
+            string tmp = "";
+
+            if (Config.Threads == 0)
+            for (ulong iter = 1; iter <= Config.IterationCount; iter++)
             {
                 Console.WriteLine(iter);
 
@@ -163,8 +172,10 @@ namespace CalcEngine
             }
             else
             {
-                for (double iter = 1; iter <= Config.TimeRangeSeconds; iter += Config.SimulationStepTime)
+                for (ulong iter = 1; iter <= Config.IterationCount; iter++)
                 {
+                    Console.WriteLine("iter: " + iter);
+
                     threadActive = true;
                     threadCounter = 0;
                     typePtr = 0;
@@ -184,6 +195,16 @@ namespace CalcEngine
                     while (threadCounter < Config.Threads) StatusUpdate();
 
 
+                    write = (iter % Config.DataSaveStepTime == 0);
+                    if (write)
+                    {
+                        //write service here
+                        //tmp = Path.GetFullPath(Config.Path) + @"\Result\T=" + iter * Config.SimulationStepTime + ".txt";
+                        tmp = Path.GetFullPath(Config.Path);
+                        tmp = tmp.Replace(Config.Path, ""+iter * Config.SimulationStepTime + ".txt");
+                        Console.WriteLine(tmp);
+                    }
+
                     //Update for each
                     for (int i = 0; i < objLists.Length; i++)
                     {
@@ -192,10 +213,14 @@ namespace CalcEngine
                         for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
                         {
                             if (mi != null) mi.Invoke(objLists[i][j], null);
+                            
                         }
                     }
-
-                    Console.WriteLine("iter: " + iter);
+                    if (write)
+                    {
+                        //write service here
+                        File.WriteAllText(tmp, JsonConvert.SerializeObject(objLists));
+                    }
                 }
             }
 

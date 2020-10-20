@@ -93,7 +93,7 @@ namespace CalcEngine
                 if (t.Key.EndsWith("}") || t.Key.EndsWith(";")) code += "\n\n";
                 else code += ";\n\n";
             }
-
+            //todo: rozpatrzyc ToString tutaj bo jest typu string
             foreach(var m in pb.methods)
             {
                 code += "\n\tpublic void " + m.Key + "{\n";
@@ -104,6 +104,24 @@ namespace CalcEngine
 
                 code += "\n\t}\n";
             }
+
+
+            if (!pb.methods.ContainsKey("ToString()"))
+            {
+                code += "\n\tpublic override string ToString(){\n";
+
+                code += "string tmp = \""+pb.Name+"\";" ;
+
+                foreach(var t in pb.properties)
+                {
+                    code += "tmp += \":\"+"+ t.Key +";";
+                }
+
+                code += "return tmp;";
+
+                code += "\n\t}\n";
+            }
+
 
             return code + "}\n\n";
         }
