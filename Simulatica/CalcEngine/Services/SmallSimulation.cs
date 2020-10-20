@@ -126,7 +126,6 @@ namespace CalcEngine
             //mi2.Invoke(objLists[0][0], new object[] { objLists[0][1]});
 
             //Console.WriteLine(JsonConvert.SerializeObject(objLists[0][0]));
-            Writer.Write(objLists[0][0], 0);
 
             /*
             Console.WriteLine(objLists[0].Count + " " + objLists[1].Count);
@@ -196,14 +195,14 @@ namespace CalcEngine
 
 
                     write = (iter % Config.DataSaveStepTime == 0);
-                    if (write)
-                    {
-                        //write service here
-                        //tmp = Path.GetFullPath(Config.Path) + @"\Result\T=" + iter * Config.SimulationStepTime + ".txt";
-                        tmp = Path.GetFullPath(Config.Path);
-                        tmp = tmp.Replace(Config.Path, ""+iter * Config.SimulationStepTime + ".txt");
-                        Console.WriteLine(tmp);
-                    }
+                    //if (write)
+                    //{
+                    //    //write service here
+                    //    //tmp = Path.GetFullPath(Config.Path) + @"\Result\T=" + iter * Config.SimulationStepTime + ".txt";
+                    //    tmp = Path.GetFullPath(Config.Path);
+                    //    tmp = tmp.Replace(Config.Path, ""+iter * Config.SimulationStepTime + ".txt");
+                    //    Console.WriteLine(tmp);
+                    //}
 
                     //Update for each
                     for (int i = 0; i < objLists.Length; i++)
@@ -213,13 +212,8 @@ namespace CalcEngine
                         for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
                         {
                             if (mi != null) mi.Invoke(objLists[i][j], null);
-                            
+                            if (write) Writer.Write(objLists[i][j], iter);
                         }
-                    }
-                    if (write)
-                    {
-                        //write service here
-                        File.WriteAllText(tmp, JsonConvert.SerializeObject(objLists));
                     }
                 }
             }

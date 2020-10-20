@@ -96,7 +96,14 @@ namespace CalcEngine
             //todo: rozpatrzyc ToString tutaj bo jest typu string
             foreach(var m in pb.methods)
             {
-                code += "\n\tpublic void " + m.Key + "{\n";
+                if(m.Key == "ToString()")
+                {
+                    code += "\n\tpublic override string ToString(){\n";
+                }
+                else
+                {
+                    code += "\n\tpublic void " + m.Key + "{\n";
+                }
 
                 code += "\t\t" + m.Value;
 

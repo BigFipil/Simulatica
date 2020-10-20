@@ -14,11 +14,22 @@ namespace CalcEngine
         {
             Config = C;
             State = S;
+
+            if(Config.OutputPath == "")
+            {
+                Config.OutputPath = Path.GetFullPath(Config.Path).Replace(Config.Path, "Result");
+                if (!Directory.Exists(Config.OutputPath))
+                {
+                    Directory.CreateDirectory(Config.OutputPath);
+                }
+
+                Config.OutputPath += "\\";
+            }
         }
 
         public void Write(Object obj, ulong iteration)
         {
-            Console.WriteLine(obj.ToString());
+            File.AppendAllText(Config.OutputPath+"T="+iteration*Config.SimulationStepTime+".txt", obj.ToString()+"\n");
         }
     }
 }

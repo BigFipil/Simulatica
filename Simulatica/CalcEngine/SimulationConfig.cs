@@ -66,6 +66,12 @@ namespace CalcEngine
         /// </summary>
         public bool FullRamMode { get; private set; }
 
+        [JsonProperty]
+        /// <summary
+        /// Output path to a directory, where the Logg, and simulation result will be written.
+        /// <!summary>
+        public string OutputPath { get; set; } = "";
+
         [JsonIgnore]
         public string Path { get; set; } = "";  
         [JsonIgnore]
