@@ -136,7 +136,6 @@ namespace CalcEngine
             #region Performing Calculations
 
             bool write;
-            string tmp = "";
 
             if (Config.Threads == 0)
             for (ulong iter = 1; iter <= Config.IterationCount; iter++)
