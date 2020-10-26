@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,7 +13,11 @@ namespace Visualizer
 
 		public App()
 		{
-			Content.RootDirectory = "Content";
+			string path = Assembly.GetEntryAssembly().Location;
+			path = Path.GetFullPath(Path.Combine(path, @"..\..\..\..\"));
+			path = Path.Combine(path, @"Content\bin");
+
+			Content.RootDirectory = path;
 
 			var graphics = new GraphicsDeviceManager(this)
 			{
@@ -25,7 +31,7 @@ namespace Visualizer
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			//texture2D = Content.Load<Texture2D>("yourtexturename");
+			texture2D = Content.Load<Texture2D>("Grid");
 
 			base.LoadContent();
 		}
@@ -36,7 +42,7 @@ namespace Visualizer
 
 			spriteBatch.Begin();
 
-			//spriteBatch.Draw(texture2D, Vector2.Zero, Color.White);
+			spriteBatch.Draw(texture2D, Vector2.Zero, Color.White);
 
 			spriteBatch.End();
 		}
