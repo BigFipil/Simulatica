@@ -15,7 +15,7 @@ namespace Visualizer
 		{
 			string path = Assembly.GetEntryAssembly().Location;
 			path = Path.GetFullPath(Path.Combine(path, @"..\..\..\..\"));
-			path = Path.Combine(path, @"Content\bin");
+			path = Path.Combine(path, @"Content");
 
 			Content.RootDirectory = path;
 
