@@ -31,7 +31,7 @@ namespace CalcEngine
         /// <summary>
         /// Defines Size of a Box, inside of which the simulation is performed. This Box is also natural constrain for all particles included in simulation
         /// </summary>
-        public VectorD3 SimulationBoxSize { get; private set; }
+        public Vector3 SimulationBoxSize { get; private set; }
 
         //[JsonProperty]
         ///// <summary>
@@ -68,7 +68,7 @@ namespace CalcEngine
 
         [JsonProperty]
         /// <summary
-        /// Output path to a directory, where the Logg, and simulation result will be written.
+        /// ,Output path to a directory, where the Logg, and simulation result will be written.
         /// <!summary>
         public string OutputPath { get; set; } = "";
 
@@ -101,6 +101,7 @@ namespace CalcEngine
             s += "SimulationStepTime: " + SimulationStepTime + "\n";
             s += "DataSaveStepTime: " + DataSaveStepTime + "\n";
             s += "FullRamMode: " + FullRamMode + "\n";
+            s += "OutputPath: " + OutputPath + "\n";
 
             return s;
         }

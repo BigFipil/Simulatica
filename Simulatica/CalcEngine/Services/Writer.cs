@@ -25,6 +25,15 @@ namespace CalcEngine
 
                 Config.OutputPath += "\\";
             }
+            else
+            {
+                if (!Directory.Exists(Config.OutputPath))
+                {
+                    Directory.CreateDirectory(Config.OutputPath);
+                }
+
+                Config.OutputPath += "\\";
+            }
         }
 
         public void Write(Object obj, ulong iteration)

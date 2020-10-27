@@ -10,9 +10,12 @@ namespace Visualizer
 	{
 		SpriteBatch spriteBatch;
 		Texture2D texture2D;
+		AnimationConfig Config;
 
-		public App()
+		public App(AnimationConfig config)
 		{
+			Config = config;
+
 			string path = Assembly.GetEntryAssembly().Location;
 			path = Path.GetFullPath(Path.Combine(path, @"..\..\..\..\"));
 			path = Path.Combine(path, @"Content");
