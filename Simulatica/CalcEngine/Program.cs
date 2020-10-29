@@ -42,6 +42,8 @@ namespace CalcEngine
                 }
             }
 
+            //Console.WriteLine(config);
+
             //Test t = provider.GetService<Test>();
             //t.testSeri();
             ISimulation simulation = provider.GetService<ISimulation>();

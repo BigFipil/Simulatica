@@ -7,8 +7,17 @@ namespace Visualizer
 {
     public class AnimationConfig
     {
+        public List<ParticleBlueprint> particleBlueprints { get; set; }
         public string OutputPath { get; set; }
-
         public Vector3 SimulationBoxSize { get; set; }
+        public string SimulationType { get; set; }
+        //public string SimulationType { get; set; }
+    }
+
+
+    public class ParticleBlueprint
+    {
+        public string Name { get; set; }
+        public Dictionary<string, string> outputInformations { get; set; }
     }
 }

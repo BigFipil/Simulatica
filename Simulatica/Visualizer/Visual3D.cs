@@ -6,13 +6,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Visualizer
 {
-	public class App : Game
+	public class Visual3D : Game
 	{
 		SpriteBatch spriteBatch;
 		Texture2D texture2D;
 		AnimationConfig Config;
+		Color c = Color.White;
 
-		public App(AnimationConfig config)
+		public Visual3D(AnimationConfig config)
 		{
 			Config = config;
 
@@ -41,6 +42,15 @@ namespace Visualizer
 
 		protected override void Draw(GameTime gameTime)
 		{
+			Color c;
+			var prop = typeof(Color).GetProperty("Red");
+			if (prop != null)
+			{
+				c = (Color)prop.GetValue(null, null);
+			}
+			else c = Color.Black;
+			//Console.WriteLine(c);
+
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			spriteBatch.Begin();

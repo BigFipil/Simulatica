@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 
 namespace Visualizer
@@ -20,11 +21,28 @@ namespace Visualizer
 				string s = File.ReadAllText(path);
 				AnimationConfig Config = JsonConvert.DeserializeObject<AnimationConfig>(s);
 
-				Console.WriteLine(Config.SimulationBoxSize);
+				Console.WriteLine(Config.SimulationType);
 				Console.WriteLine(Config.OutputPath);
+				foreach(var v in Config.particleBlueprints)
+                {
+					Console.WriteLine(v.Name);
+					foreach (var t in v.outputInformations) Console.WriteLine("\t" + t.Key + " " + t.Value);
+                }
 
-				using (var app = new App(Config))
-					app.Run();
+
+				Game game = null;
+
+				if (Config.SimulationType == "3D")
+				{
+					game = new Visual3D(Config);
+				}
+				else
+				{
+					game = new Visual2D(Config);
+				}
+
+				game.Run();
+
 			}
             else
             {

@@ -93,6 +93,10 @@ namespace CalcEngine
                 {
                     s += "\t\t" + met.Key + " " + met.Value + "\n";
                 }
+                foreach (var o in p.outputInformations)
+                {
+                    s += "\t\t" + o.Key + " " + o.Value + "\n";
+                }
             }
 
             s += "\nThreads: " + Threads + "\n";
