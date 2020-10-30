@@ -10,13 +10,18 @@ namespace Visualizer
 		static void Main(string[] args)
 		{
 			string path = "";
+			string resultPath = "";
 
-			if(args.Length > 0)
+			if (args.Length > 0)
             {
 				path = args[0];
             }
+			if (args.Length > 1)
+			{
+				resultPath = args[1];
+			}
 
-            if (File.Exists(path) && path != "")
+			if (File.Exists(path) && path != "")
             {
 				string s = File.ReadAllText(path);
 				AnimationConfig Config = JsonConvert.DeserializeObject<AnimationConfig>(s);
@@ -29,6 +34,7 @@ namespace Visualizer
 					foreach (var t in v.outputInformations) Console.WriteLine("\t" + t.Key + " " + t.Value);
                 }
 
+				if (resultPath != "") Config.OutputPath = resultPath;
 
 				Game game = null;
 

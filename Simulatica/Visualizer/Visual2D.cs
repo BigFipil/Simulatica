@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,8 +17,7 @@ namespace Visualizer
 		Vector2 OutputWindowSize = new Vector2(1920, 1080);
 		Vector2 GridSize;
 
-		//int MaximumX = 1920, MaximumY = 1080; 
-		//int X, Y;
+		IEnumerable<string> Files;
 
 		public Visual2D(AnimationConfig config)
 		{
@@ -40,6 +41,21 @@ namespace Visualizer
 			Window.AllowUserResizing = true;
 
 			GridSize = CalcWindowSize();
+
+			Files = Directory.GetFiles(Config.OutputPath)
+				.Where((val) => val.EndsWith(".txt"))
+				.Where((val) => val.Contains("T="));
+
+			Files = Files.OrderBy(s => double.Parse(s.Substring(s.IndexOf("T=")+2).Replace(".txt","")) );
+
+			if (Files.Count() == 0)
+            {
+				Console.WriteLine("Could not find simulation results in specific directory: "+Config.OutputPath);
+            }
+            else
+            {
+				foreach (var v in Files) Console.WriteLine(v);
+            }
 		}
 
 		protected override void LoadContent()
@@ -70,6 +86,8 @@ namespace Visualizer
 
 			DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
 			//spriteBatch.Draw(pixel, Vector2.Zero, Color.Red);
+
+			//Console.WriteLine(Config.OutputPath);
 
 			DrawParticles(spriteBatch, @"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=0.5.txt");
 
@@ -170,7 +188,6 @@ namespace Visualizer
 				y *= scale;
 
 				batch.Draw(pixel, new Rectangle((int)x, (int)y, 4, 4), c);
-				//Console.WriteLine(new Rectangle((int)x, (int)y, 1, 1) + "   " + c);
 
 			} while(!reader.EndOfStream);
 
@@ -189,3 +206,4 @@ namespace Visualizer
         }
 	}
 }
+ 
