@@ -11,6 +11,9 @@ namespace Visualizer
         public string OutputPath { get; set; }
         public Vector3 SimulationBoxSize { get; set; }
         public string SimulationType { get; set; }
+        public ulong IterationCount { get; private set; }
+        public double SimulationStepTime { get; private set; }
+        public ulong DataSaveStepTime { get; private set; }
         //public string SimulationType { get; set; }
     }
 

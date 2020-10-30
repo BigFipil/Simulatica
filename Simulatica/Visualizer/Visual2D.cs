@@ -71,6 +71,8 @@ namespace Visualizer
 			DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
 			//spriteBatch.Draw(pixel, Vector2.Zero, Color.Red);
 
+			DrawParticles(spriteBatch, @"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=0.5.txt");
+
 			spriteBatch.End();
 		}
 
@@ -109,10 +111,75 @@ namespace Visualizer
 			}
 		}
 		
+		private void DrawParticles(SpriteBatch batch, string path)
+        {
+			StreamReader reader = new StreamReader(path);
+			string line;
+
+			Color c = Color.Black;
+			double x = 0, y = 0;
+
+			do {
+
+				line = reader.ReadLine();
+				line = line.Replace("[", "");
+				line = line.Replace("]", "");
+				line = line.Replace(",", ":");
+
+				var str = line.Split(":");
+
+				foreach(var v in Config.particleBlueprints)
+                {
+					if(v.Name == str[0])
+                    {
+						foreach(var o in v.outputInformations)
+                        {
+                            switch (o.Key.ToLower())
+                            {
+								case "color":
+									var prop = typeof(Color).GetProperty(o.Value);
+									if (prop != null)
+									{
+										c = (Color)prop.GetValue(null, null);
+									}
+									else c = Color.Black;
+									break;
+
+								case "x":
+									string tmp = o.Value.Replace("<", "").Replace(">", "");
+									int index = Int32.Parse(tmp);
+
+									x = double.Parse(str[index]);
+									break;
+
+								case "y":
+									string tmp2 = o.Value.Replace("<", "").Replace(">", "");
+									int index2 = Int32.Parse(tmp2);
+
+									y = double.Parse(str[index2]);
+									break;
+							}
+                        }
+
+						break;
+                    }
+                }
+
+				double scale =  GridSize.X / Config.SimulationBoxSize.X;
+				x *= scale;
+				y *= scale;
+
+				batch.Draw(pixel, new Rectangle((int)x, (int)y, 4, 4), c);
+				//Console.WriteLine(new Rectangle((int)x, (int)y, 1, 1) + "   " + c);
+
+			} while(!reader.EndOfStream);
+
+
+		}
 		private Vector2 CalcWindowSize()
 		{
 			Vector2 NormalGrid = Vector2.Normalize(new Vector2(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y));
-			Vector2 OS = OutputWindowSize - new Vector2(500, 500);
+			Vector2 OS = OutputWindowSize - new Vector2(50, 50);
 
 			NormalGrid *= Math.Max(OS.X, OS.Y);
 

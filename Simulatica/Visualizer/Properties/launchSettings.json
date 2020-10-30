@@ -2,7 +2,7 @@
   "profiles": {
     "Visualizer": {
       "commandName": "Project",
-      "commandLineArgs": "D:\\Development\\Inżynierka\\Simulatica\\CalcEngine\\bin\\Debug\\netcoreapp3.1\\PointSim.conig"
+      "commandLineArgs": "C:\\Development\\Simulatica\\Simulatica\\CalcEngine\\bin\\Debug\\netcoreapp3.1\\PointSim.conig"
     }
   }
 }
