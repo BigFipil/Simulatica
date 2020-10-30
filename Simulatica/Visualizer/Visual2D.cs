@@ -19,6 +19,9 @@ namespace Visualizer
 
 		IEnumerable<string> Files;
 
+
+		RenderTarget2D renderTarget;
+
 		public Visual2D(AnimationConfig config)
 		{
 			Config = config;
@@ -37,10 +40,17 @@ namespace Visualizer
 			};
 			graphics.ApplyChanges();
 
+
+			GridSize = CalcWindowSize();
+
+
+			renderTarget = new RenderTarget2D(GraphicsDevice, (int)GridSize.X, (int)GridSize.Y, false,
+			GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
+
+
 			IsMouseVisible = true;
 			Window.AllowUserResizing = true;
 
-			GridSize = CalcWindowSize();
 
 			Files = Directory.GetFiles(Config.OutputPath)
 				.Where((val) => val.EndsWith(".txt"))
@@ -51,10 +61,6 @@ namespace Visualizer
 			if (Files.Count() == 0)
             {
 				Console.WriteLine("Could not find simulation results in specific directory: "+Config.OutputPath);
-            }
-            else
-            {
-				foreach (var v in Files) Console.WriteLine(v);
             }
 		}
 
@@ -67,6 +73,8 @@ namespace Visualizer
 			pixel = Content.Load<Texture2D>("pixel");
 
 			base.LoadContent();
+
+			SaveFrame(renderTarget, Files.First(), "pic.png");
 		}
 
 		protected override void Draw(GameTime gameTime)
@@ -80,18 +88,18 @@ namespace Visualizer
 			//else c = Color.Black;
 			//Console.WriteLine(c);
 
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			
 
-			spriteBatch.Begin();
+			//spriteBatch.Begin();
 
-			DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
+			//DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
 			//spriteBatch.Draw(pixel, Vector2.Zero, Color.Red);
 
 			//Console.WriteLine(Config.OutputPath);
 
-			DrawParticles(spriteBatch, @"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=0.5.txt");
+			//DrawParticles(spriteBatch, Files.First());
 
-			spriteBatch.End();
+			//spriteBatch.End();
 		}
 
 		private void DrawGrid(SpriteBatch batch, Rectangle rec, float alpha = 0.2f)
@@ -204,6 +212,40 @@ namespace Visualizer
 
 			return NormalGrid*scale;
         }
+
+		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
+		{
+			// Set the render target
+			GraphicsDevice.SetRenderTarget(renderTarget);
+
+			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+
+			// Draw the scene
+			GraphicsDevice.Clear(Color.CornflowerBlue);
+			spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+			DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
+
+			DrawParticles(spriteBatch, path);
+
+			spriteBatch.End();
+
+			// Drop the render target
+			GraphicsDevice.SetRenderTarget(null);
+		}
+
+		private void SaveFrame(RenderTarget2D r, string path, string name)
+        {
+			GraphicsDevice.Clear(Color.White);
+
+			DrawSceneToTexture(renderTarget, path);
+
+			Stream stream = File.Create(Config.OutputPath + "\\pic.png");
+
+			//Save as PNG
+			renderTarget.SaveAsPng(stream, (int)GridSize.X, (int)GridSize.Y);
+			stream.Dispose();
+		}
 	}
 }
  
