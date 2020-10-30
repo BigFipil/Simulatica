@@ -38,6 +38,8 @@ namespace Visualizer
 
 			IsMouseVisible = true;
 			Window.AllowUserResizing = true;
+
+			GridSize = CalcWindowSize();
 		}
 
 		protected override void LoadContent()
@@ -66,7 +68,7 @@ namespace Visualizer
 
 			spriteBatch.Begin();
 
-			DrawGrid(spriteBatch, new Rectangle(200, 200, 800, 533));
+			DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
 			//spriteBatch.Draw(pixel, Vector2.Zero, Color.Red);
 
 			spriteBatch.End();
@@ -106,26 +108,17 @@ namespace Visualizer
 				h += (Width / 50);
 			}
 		}
-		/*
-		private void CalcWindowSize()
-        {
-			float min, max;
+		
+		private Vector2 CalcWindowSize()
+		{
+			Vector2 NormalGrid = Vector2.Normalize(new Vector2(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y));
+			Vector2 OS = OutputWindowSize - new Vector2(500, 500);
 
-			if(Config.SimulationBoxSize.X / Config.SimulationBoxSize.Y < 1)
-			{
-				max = Config.SimulationBoxSize.Y;
-				min = Config.SimulationBoxSize.X;
-            }
-            else
-			{
-				min = Config.SimulationBoxSize.Y;
-				max = Config.SimulationBoxSize.X;
-			}
+			NormalGrid *= Math.Max(OS.X, OS.Y);
 
-			if(MaximumX / (float)MaximumY >= 1)
-            {
-				
-            }
-        }*/
+			float scale = Math.Min(OS.X / NormalGrid.X, OS.Y / NormalGrid.Y);
+
+			return NormalGrid*scale;
+        }
 	}
 }
