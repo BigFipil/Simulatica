@@ -36,18 +36,20 @@ namespace Visualizer
 
 				if (resultPath != "") Config.OutputPath = resultPath;
 
-				Game game = null;
+				//Game game = null;
 
 				if (Config.SimulationType == "3D")
 				{
-					game = new Visual3D(Config);
+					Visual3D v = new Visual3D(Config);
+					v.Run();
 				}
 				else
 				{
-					game = new Visual2D(Config);
+					Visual2D v = new Visual2D(Config);
+					v.BakeAnimation();
 				}
 
-				game.Run();
+				//game.Run();
 
 			}
             else

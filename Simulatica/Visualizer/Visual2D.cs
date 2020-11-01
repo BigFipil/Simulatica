@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using FFMediaToolkit.Encoding;
+using FFMediaToolkit.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+//using System.Drawing;
 
 namespace Visualizer
 {
@@ -48,10 +51,6 @@ namespace Visualizer
 			GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
 
 
-			IsMouseVisible = true;
-			Window.AllowUserResizing = true;
-
-
 			Files = Directory.GetFiles(Config.OutputPath)
 				.Where((val) => val.EndsWith(".txt"))
 				.Where((val) => val.Contains("T="));
@@ -74,32 +73,24 @@ namespace Visualizer
 
 			base.LoadContent();
 
-			SaveFrame(renderTarget, Files.First(), "pic.png");
 		}
 
-		protected override void Draw(GameTime gameTime)
-		{
-			//Color c;
-			//var prop = typeof(Color).GetProperty("Red");
-			//if (prop != null)
-			//{
-			//	c = (Color)prop.GetValue(null, null);
-			//}
-			//else c = Color.Black;
-			//Console.WriteLine(c);
+		public void BakeAnimation()
+        {
+			LoadContent();
 
-			
+			//Creating PNG frame images
+			//for(int i = 0; i < Files.Count(); i++)
+   //         {
+			//	SaveFrame(renderTarget, Files.ElementAt(i), "frame"+i+".png");
+			//	Console.WriteLine(Files.ElementAt(i));
+   //         }
 
-			//spriteBatch.Begin();
-
-			//DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
-			//spriteBatch.Draw(pixel, Vector2.Zero, Color.Red);
-
-			//Console.WriteLine(Config.OutputPath);
-
-			//DrawParticles(spriteBatch, Files.First());
-
-			//spriteBatch.End();
+			//MakeVideo(Config.OutputPath + "\\Simulation.mp4", Config.OutputPath);
+			string filename = "ffmpeg.exe";
+			//var proc = System.Diagnostics.Process.Start(filename, @"ffmpeg -pix_fmts");
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r 1 -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
+			//var prac = System.Diagnostics.Process.Start(filename, @"ffmpeg -f image2 -pattern_type glob -framerate 12 -i '"+Config.OutputPath+"\\frame*.png"+@"' -s WxH foo.avi");
 		}
 
 		private void DrawGrid(SpriteBatch batch, Rectangle rec, float alpha = 0.2f)
@@ -201,18 +192,7 @@ namespace Visualizer
 
 
 		}
-		private Vector2 CalcWindowSize()
-		{
-			Vector2 NormalGrid = Vector2.Normalize(new Vector2(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y));
-			Vector2 OS = OutputWindowSize - new Vector2(50, 50);
-
-			NormalGrid *= Math.Max(OS.X, OS.Y);
-
-			float scale = Math.Min(OS.X / NormalGrid.X, OS.Y / NormalGrid.Y);
-
-			return NormalGrid*scale;
-        }
-
+		
 		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
 		{
 			// Set the render target
@@ -240,12 +220,26 @@ namespace Visualizer
 
 			DrawSceneToTexture(renderTarget, path);
 
-			Stream stream = File.Create(Config.OutputPath + "\\pic.png");
+			Stream stream = File.Create(Config.OutputPath + "\\"+name);
 
 			//Save as PNG
 			renderTarget.SaveAsPng(stream, (int)GridSize.X, (int)GridSize.Y);
 			stream.Dispose();
 		}
+
+
+		private Vector2 CalcWindowSize()
+		{
+			Vector2 NormalGrid = Vector2.Normalize(new Vector2(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y));
+			Vector2 OS = OutputWindowSize - new Vector2(50, 50);
+
+			NormalGrid *= Math.Max(OS.X, OS.Y);
+
+			float scale = Math.Min(OS.X / NormalGrid.X, OS.Y / NormalGrid.Y);
+
+			return NormalGrid * scale;
+		}
+
 	}
 }
  
