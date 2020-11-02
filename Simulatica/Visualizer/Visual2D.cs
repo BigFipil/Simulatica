@@ -21,7 +21,7 @@ namespace Visualizer
 
 		Vector2 MaximumWindowSize { get; set; } = new Vector2(1920, 1080);
 		Vector2 GridSize, OutputWindowSize, MarginOffsetSize = new Vector2(100, 100); //MarginOffsetSize/2 = margin size
-		int LegendSize = 150;
+		int LegendSize = 100;
 
 		IEnumerable<string> Files;
 
@@ -215,10 +215,34 @@ namespace Visualizer
 		}
 		private void DrawLegend(SpriteBatch batch, SpriteFont f)
 		{
+			if(LegendSize != 0)
 			for(int i = 0; i < Config.particleBlueprints.Count; i++)
             {
-				
-            }
+				var size = f.MeasureString(Config.particleBlueprints[i].Name);
+				int tmp = (int)(OutputWindowSize.Y / (Config.particleBlueprints.Count + 1));
+
+				batch.DrawString(f, Config.particleBlueprints[i].Name, OutputWindowSize - new Vector2(0, tmp * (i+1) - size.Y/2), Color.Black, 0.52f, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+					PropertyInfo p = null;
+					if (Config.particleBlueprints[i].outputInformations.ContainsKey("Color")) p = typeof(Color).GetProperty(Config.particleBlueprints[i].outputInformations["Color"]);
+					else if (Config.particleBlueprints[i].outputInformations.ContainsKey("color")) p = typeof(Color).GetProperty(Config.particleBlueprints[i].outputInformations["color"]);
+
+					if(p != null)
+                    {
+						Color c = (Color)p.GetValue(null, null);
+						batch.Draw(pixel, new Rectangle((OutputWindowSize - new Vector2(20, tmp * (i + 1) - size.Y / 2 - 8)).ToPoint(), new Point(5, 5)), c);
+                    }
+					//if(Config.particleBlueprints[i].outputInformations.ContainsKey("Color") || Config.particleBlueprints[i].outputInformations.ContainsKey("color"))
+					//               {
+					//	var prop = typeof(Color).GetProperty(Config.particleBlueprints[i].outputInformations[""]);
+					//	if (prop != null)
+					//	{
+					//		c = (Color)prop.GetValue(null, null);
+					//	}
+					//	else c = Color.Black;
+					//	break;
+					//}
+				}
 		}
 
 		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
@@ -240,6 +264,7 @@ namespace Visualizer
 
 			string title = Path.GetFileName(path);
 			DrawTitle(spriteBatch, basicFont1, title, Color.Black);
+			DrawLegend(spriteBatch, basicFont1);
 
 			spriteBatch.End();
 
