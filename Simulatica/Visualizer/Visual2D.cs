@@ -17,8 +17,11 @@ namespace Visualizer
 		Texture2D Grid, pixel;
 		AnimationConfig Config;
 
-		Vector2 OutputWindowSize = new Vector2(1920, 1080);
-		Vector2 GridSize;
+		SpriteFont basicFont1;
+
+		Vector2 MaximumWindowSize { get; set; } = new Vector2(1920, 1080);
+		Vector2 GridSize, OutputWindowSize, MarginOffsetSize = new Vector2(100, 100); //MarginOffsetSize/2 = margin size
+		int LegendSize = 150;
 
 		IEnumerable<string> Files;
 
@@ -38,16 +41,17 @@ namespace Visualizer
 			var graphics = new GraphicsDeviceManager(this)
 			{
 				IsFullScreen = false,
-				PreferredBackBufferWidth = (int)OutputWindowSize.X,
-				PreferredBackBufferHeight = (int)OutputWindowSize.Y,
+				PreferredBackBufferWidth = (int)MaximumWindowSize.X,
+				PreferredBackBufferHeight = (int)MaximumWindowSize.Y,
 			};
 			graphics.ApplyChanges();
 
 
-			GridSize = CalcWindowSize();
+			OutputWindowSize = CalcWindowSize();
+			GridSize = OutputWindowSize - MarginOffsetSize;
 
 
-			renderTarget = new RenderTarget2D(GraphicsDevice, (int)GridSize.X, (int)GridSize.Y, false,
+			renderTarget = new RenderTarget2D(GraphicsDevice, (int)OutputWindowSize.X+LegendSize, (int)OutputWindowSize.Y, false,
 			GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
 
 
@@ -70,6 +74,7 @@ namespace Visualizer
 
 			Grid = Content.Load<Texture2D>("Grid");
 			pixel = Content.Load<Texture2D>("pixel");
+			basicFont1 = Content.Load<SpriteFont>("BasicFont");
 
 			base.LoadContent();
 
@@ -79,21 +84,26 @@ namespace Visualizer
         {
 			LoadContent();
 
-			//Creating PNG frame images
-			//for(int i = 0; i < Files.Count(); i++)
-   //         {
-			//	SaveFrame(renderTarget, Files.ElementAt(i), "frame"+i+".png");
-			//	Console.WriteLine(Files.ElementAt(i));
-   //         }
+            //Creating PNG frame images
 
-			//MakeVideo(Config.OutputPath + "\\Simulation.mp4", Config.OutputPath);
-			string filename = "ffmpeg.exe";
-			//var proc = System.Diagnostics.Process.Start(filename, @"ffmpeg -pix_fmts");
-			var proc = System.Diagnostics.Process.Start(filename, @" -y -r 1 -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
-			//var prac = System.Diagnostics.Process.Start(filename, @"ffmpeg -f image2 -pattern_type glob -framerate 12 -i '"+Config.OutputPath+"\\frame*.png"+@"' -s WxH foo.avi");
+            for (int i = 0; i < Files.Count(); i++)
+            {
+                SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".png");
+                Console.WriteLine(Files.ElementAt(i));
+            }
+
+            string filename = "ffmpeg.exe";
+			//var proc = System.Diagnostics.Process.Start(filename, @" -y -r 1 -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
+			/*
+			 * -y means overwrite if such video already exists.
+			 * -r stands for framerate
+			 * -start_number wiadomo
+			 * -i path to png's
+			 * -pix_fmt pixel format
+			 * */
 		}
 
-		private void DrawGrid(SpriteBatch batch, Rectangle rec, float alpha = 0.2f)
+		private void DrawGrid(SpriteBatch batch, Rectangle rec, SpriteFont f, float alpha = 0.2f)
         {
 			//float scale = 1, gridScale = 2;
 			int Width = rec.Width;
@@ -103,32 +113,29 @@ namespace Visualizer
 
 			batch.Draw(pixel, new Rectangle(X,Y,Width, Height), Color.White);
 
-			for(int i = 0; i < 10; i++)
-			{
-				batch.Draw(pixel, new Rectangle(X+(int)(Width / 10) * i, Y, 2, Height), Color.Black * alpha);
+			float gridSize = Math.Max(Width, Height) / 50.0f;
 
-				for(int j = 0; j < 5; j++)
-                {
-					batch.Draw(pixel, new Rectangle(X+(int)(Width / 10) * i  +  (int)((Width / 50)*j), Y, 1, Height), Color.DarkGray * alpha);
-				}
-			}
-			int h = 0;
-			while(h < Height - (Width / 50))
+			for(int i = 1; i <= 50; i++)
             {
-				batch.Draw(pixel, new Rectangle(X, Y + h, Width, 2), Color.Black * alpha);
-				h += (Width / 50);
-				batch.Draw(pixel, new Rectangle(X, Y + h, Width, 1), Color.DarkGray * alpha);
-				h += (Width / 50);
-				batch.Draw(pixel, new Rectangle(X, Y + h, Width, 1), Color.DarkGray * alpha);
-				h += (Width / 50);
-				batch.Draw(pixel, new Rectangle(X, Y + h, Width, 1), Color.DarkGray * alpha);
-				h += (Width / 50);
-				if(h < Height) batch.Draw(pixel, new Rectangle(X, Y + h, Width, 1), Color.DarkGray * alpha);
-				h += (Width / 50);
-			}
+				if(i%5 == 0)
+				{
+					if (X + (int)(i * gridSize) < X + Width) batch.Draw(pixel, new Rectangle(X + (int)(i * gridSize), Y-10, 2, Height+10), Color.Black * alpha);
+					if (Y + (int)(i * gridSize) < Y + Height) batch.Draw(pixel, new Rectangle(X-10, Y + (int)(i*gridSize), Width+10, 2), Color.Black * alpha);
+
+					Vector2 size = f.MeasureString("" + Config.SimulationBoxSize.X / 50 * i);
+					batch.DrawString(f, "" + Config.SimulationBoxSize.X / 50 * i, new Vector2(X + (int)(i * gridSize), MarginOffsetSize.Y / 4) - size / 2, Color.Black);
+					batch.DrawString(f, "" + Config.SimulationBoxSize.X / 50 * i, new Vector2(MarginOffsetSize.Y / 4, Y + (int)(i*gridSize)) - size / 2, Color.Black);
+				}
+				else
+				{
+					if (X + (int)(i * gridSize) < X + Width) batch.Draw(pixel, new Rectangle(X + (int)(i*gridSize), Y-10, 1, Height+10), Color.DarkGray * alpha);
+					if (Y + (int)(i * gridSize) < Y + Height) batch.Draw(pixel, new Rectangle(X-10, Y + (int)(i * gridSize), Width+10, 1), Color.DarkGray * alpha);
+				}
+            }
+
 		}
 		
-		private void DrawParticles(SpriteBatch batch, string path)
+		private void DrawParticles(SpriteBatch batch, string path, Rectangle rec)
         {
 			StreamReader reader = new StreamReader(path);
 			string line;
@@ -186,13 +193,34 @@ namespace Visualizer
 				x *= scale;
 				y *= scale;
 
+				//offset
+				x += rec.X;
+				y += rec.Y;
+
+				if (rec.Contains((int)x, (int)y))
 				batch.Draw(pixel, new Rectangle((int)x, (int)y, 4, 4), c);
 
 			} while(!reader.EndOfStream);
 
 
 		}
-		
+
+		private void DrawTitle(SpriteBatch batch, SpriteFont f, string Title, Color c)
+		{
+			Vector2 size = f.MeasureString(Title);
+
+			Vector2 pos = new Vector2(OutputWindowSize.X / 2, OutputWindowSize.Y - MarginOffsetSize.Y / 4) - size / 2;
+
+			batch.DrawString(f, Title, pos, c);
+		}
+		private void DrawLegend(SpriteBatch batch, SpriteFont f)
+		{
+			for(int i = 0; i < Config.particleBlueprints.Count; i++)
+            {
+				
+            }
+		}
+
 		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
 		{
 			// Set the render target
@@ -201,12 +229,17 @@ namespace Visualizer
 			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
 
 			// Draw the scene
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.Gold);
 			spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
 
-			DrawGrid(spriteBatch, new Rectangle(Vector2.Zero.ToPoint(), GridSize.ToPoint()));
+			Rectangle GridRec = new Rectangle((MarginOffsetSize/2).ToPoint(), GridSize.ToPoint());
 
-			DrawParticles(spriteBatch, path);
+			DrawGrid(spriteBatch, GridRec, basicFont1);
+
+			DrawParticles(spriteBatch, path, GridRec);
+
+			string title = Path.GetFileName(path);
+			DrawTitle(spriteBatch, basicFont1, title, Color.Black);
 
 			spriteBatch.End();
 
@@ -223,15 +256,14 @@ namespace Visualizer
 			Stream stream = File.Create(Config.OutputPath + "\\"+name);
 
 			//Save as PNG
-			renderTarget.SaveAsPng(stream, (int)GridSize.X, (int)GridSize.Y);
+			renderTarget.SaveAsPng(stream, (int)OutputWindowSize.X + LegendSize, (int)OutputWindowSize.Y);
 			stream.Dispose();
 		}
-
 
 		private Vector2 CalcWindowSize()
 		{
 			Vector2 NormalGrid = Vector2.Normalize(new Vector2(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y));
-			Vector2 OS = OutputWindowSize - new Vector2(50, 50);
+			Vector2 OS = MaximumWindowSize - MarginOffsetSize - new Vector2(LegendSize, 0);
 
 			NormalGrid *= Math.Max(OS.X, OS.Y);
 
