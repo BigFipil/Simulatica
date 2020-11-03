@@ -55,18 +55,16 @@ namespace CalcEngine
 
             stopWatch.Stop();
 
-            Console.WriteLine("\n\n\t"+((float)stopWatch.ElapsedMilliseconds)/1000);
+            Console.WriteLine("\n\n\tElapsed Time: "+((float)stopWatch.ElapsedMilliseconds)/1000 +"[s]");
+
+
+            if(config.PathToVisualiserEXE != "")
+            {
+                var proc = Process.Start(config.PathToVisualiserEXE, @"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\PointSim.conig C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result");
+            }
 
             //var t = provider.GetService<Test>();
             //t.testDeseri();
-
-            //InMemoryCompiler.Program22.Main22(provider.GetService<Services.Emitter>());
-            //provider.GetService<Emitter>().CompileParticlesBlueprints();
-            //provider.GetService<Services.Emitter>().Test();
-
-
-            //Console.WriteLine(provider.GetService<MyTypeBuilder>().ToString());
-            //Console.WriteLine(provider.GetService<SimulationConfig>().ToString());
         }
     }
 }

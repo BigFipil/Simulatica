@@ -31,6 +31,11 @@ namespace CalcEngine
                 {
                     Directory.CreateDirectory(Config.OutputPath);
                 }
+                else
+                {
+                    Directory.Delete(Config.OutputPath, true);
+                    Directory.CreateDirectory(Config.OutputPath);
+                }
 
                 Config.OutputPath += "\\";
             }
@@ -38,7 +43,7 @@ namespace CalcEngine
 
         public void Write(Object obj, ulong iteration)
         {
-            File.AppendAllText(Config.OutputPath+"T="+iteration*Config.SimulationStepTime+".txt", obj.ToString()+"\n");
+            File.AppendAllText(Config.OutputPath+"T="+iteration*(float)Config.SimulationStepTime+".txt", obj.ToString()+"\n");
         }
     }
 }

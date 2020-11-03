@@ -74,6 +74,16 @@ namespace CalcEngine
 
             return Math.Sqrt(ls);
         }
+        public static double Distance2(VectorD3 value1, VectorD3 value2)
+        {
+            double dx = value1.X - value2.X;
+            double dy = value1.Y - value2.Y;
+            double dz = value1.Z - value2.Z;
+
+            double ls = dx * dx + dy * dy + dz * dz;
+
+            return ls;
+        }
 
         public VectorD3 Normalized()
         {

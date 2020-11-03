@@ -21,7 +21,7 @@ namespace Visualizer
 
 		Vector2 MaximumWindowSize { get; set; } = new Vector2(1920, 1080);
 		Vector2 GridSize, OutputWindowSize, MarginOffsetSize = new Vector2(100, 100); //MarginOffsetSize/2 = margin size
-		int LegendSize = 100;
+		int LegendSize = 50;
 
 		IEnumerable<string> Files;
 
@@ -48,7 +48,7 @@ namespace Visualizer
 
 
 			OutputWindowSize = CalcWindowSize();
-			GridSize = OutputWindowSize - MarginOffsetSize;
+			GridSize = OutputWindowSize - MarginOffsetSize - new Vector2(LegendSize, 0);
 
 
 			renderTarget = new RenderTarget2D(GraphicsDevice, (int)OutputWindowSize.X+LegendSize, (int)OutputWindowSize.Y, false,
@@ -83,9 +83,10 @@ namespace Visualizer
 		public void BakeAnimation()
         {
 			LoadContent();
-
-            //Creating PNG frame images
-
+			Console.WriteLine(GridSize);
+			Console.WriteLine(OutputWindowSize);
+			//Creating PNG frame images
+			
             for (int i = 0; i < Files.Count(); i++)
             {
                 SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".png");
@@ -93,7 +94,7 @@ namespace Visualizer
             }
 
             string filename = "ffmpeg.exe";
-			//var proc = System.Diagnostics.Process.Start(filename, @" -y -r 1 -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r 10 -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
 			/*
 			 * -y means overwrite if such video already exists.
 			 * -r stands for framerate
@@ -111,6 +112,8 @@ namespace Visualizer
 			int X = rec.X;
 			int Y = rec.Y;
 
+			float max = Math.Max(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y);
+
 			batch.Draw(pixel, new Rectangle(X,Y,Width, Height), Color.White);
 
 			float gridSize = Math.Max(Width, Height) / 50.0f;
@@ -122,9 +125,11 @@ namespace Visualizer
 					if (X + (int)(i * gridSize) < X + Width) batch.Draw(pixel, new Rectangle(X + (int)(i * gridSize), Y-10, 2, Height+10), Color.Black * alpha);
 					if (Y + (int)(i * gridSize) < Y + Height) batch.Draw(pixel, new Rectangle(X-10, Y + (int)(i*gridSize), Width+10, 2), Color.Black * alpha);
 
-					Vector2 size = f.MeasureString("" + Config.SimulationBoxSize.X / 50 * i);
-					batch.DrawString(f, "" + Config.SimulationBoxSize.X / 50 * i, new Vector2(X + (int)(i * gridSize), MarginOffsetSize.Y / 4) - size / 2, Color.Black);
-					batch.DrawString(f, "" + Config.SimulationBoxSize.X / 50 * i, new Vector2(MarginOffsetSize.Y / 4, Y + (int)(i*gridSize)) - size / 2, Color.Black);
+					string s = ("" + Math.Round(max / 50 * i, 3));
+
+					Vector2 size = f.MeasureString(s);
+					if (X + (int)(i * gridSize) < X + Width) batch.DrawString(f, s, new Vector2(X + (int)(i * gridSize), MarginOffsetSize.Y / 4) - size / 2, Color.Black);
+					if (Y + (int)(i * gridSize) < Y + Height) batch.DrawString(f, s, new Vector2(MarginOffsetSize.Y / 4, Y + (int)(i*gridSize)) - size / 2, Color.Black);
 				}
 				else
 				{
@@ -232,17 +237,7 @@ namespace Visualizer
 						Color c = (Color)p.GetValue(null, null);
 						batch.Draw(pixel, new Rectangle((OutputWindowSize - new Vector2(20, tmp * (i + 1) - size.Y / 2 - 8)).ToPoint(), new Point(5, 5)), c);
                     }
-					//if(Config.particleBlueprints[i].outputInformations.ContainsKey("Color") || Config.particleBlueprints[i].outputInformations.ContainsKey("color"))
-					//               {
-					//	var prop = typeof(Color).GetProperty(Config.particleBlueprints[i].outputInformations[""]);
-					//	if (prop != null)
-					//	{
-					//		c = (Color)prop.GetValue(null, null);
-					//	}
-					//	else c = Color.Black;
-					//	break;
-					//}
-				}
+			}
 		}
 
 		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
@@ -294,7 +289,7 @@ namespace Visualizer
 
 			float scale = Math.Min(OS.X / NormalGrid.X, OS.Y / NormalGrid.Y);
 
-			return NormalGrid * scale;
+			return (NormalGrid * scale) + MarginOffsetSize + new Vector2(LegendSize, 0);
 		}
 
 	}

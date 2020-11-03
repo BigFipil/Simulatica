@@ -25,7 +25,7 @@ namespace CalcEngine
         /// <summary>
         /// Defines number of Threads being used in simulation
         /// </summary>
-        public int Threads { get; private set;}
+        public int Threads { get; private set; }
 
         [JsonProperty]
         /// <summary>
@@ -73,10 +73,11 @@ namespace CalcEngine
         public string OutputPath { get; set; } = "";
 
         [JsonIgnore]
-        public string Path { get; set; } = "";  
+        public string Path { get; set; } = "";
         [JsonIgnore]
-        public int Port { get; set; } = 6060;   
-
+        public int Port { get; set; } = 6060;
+        [JsonIgnore]
+        public string PathToVisualiserEXE { get; } = @"C:\Development\Simulatica\Simulatica\Visualizer\bin\Debug\netcoreapp3.1\Visualizer.exe";
         public override string ToString()
         {
             string s = "\nSimulation Configuration: \n\n";
