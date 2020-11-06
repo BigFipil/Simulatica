@@ -14,6 +14,7 @@ namespace Visualizer
         public ulong IterationCount { get; private set; }
         public double SimulationStepTime { get; private set; }
         public ulong DataSaveStepTime { get; private set; }
+        public int OutputAnimationFramerate { get; set; } = 5;
         //public string SimulationType { get; set; }
     }
 

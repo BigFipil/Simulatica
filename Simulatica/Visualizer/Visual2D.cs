@@ -94,7 +94,7 @@ namespace Visualizer
             }
 
             string filename = "ffmpeg.exe";
-			var proc = System.Diagnostics.Process.Start(filename, @" -y -r 10 -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r "+Config.OutputAnimationFramerate+" -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
 			/*
 			 * -y means overwrite if such video already exists.
 			 * -r stands for framerate

@@ -25,6 +25,7 @@ namespace CalcEngine
 
         [JsonProperty]
         private Type[] types;
+        private Type simulation;
 
         [JsonProperty]
         private IList[] objLists;
@@ -79,6 +80,8 @@ namespace CalcEngine
             }
             #endregion
             #region List of Simulation Types
+            simulation = Assembly.GetType("Particles.Simulation", false);
+
             types = new Type[Config.particleBlueprints.Count];
             for (int i = 0; i < types.Length; i++)
             {
@@ -136,6 +139,7 @@ namespace CalcEngine
             #region Performing Calculations
 
             bool write;
+            MethodInfo simStatisticsUpdate = simulation.GetMethod("Update", new Type[] { typeof(ulong), typeof(double), typeof(double) });
 
             if (Config.Threads == 0)
             for (ulong iter = 1; iter <= Config.IterationCount; iter++)
@@ -172,19 +176,15 @@ namespace CalcEngine
             {
                 for (ulong iter = 1; iter <= Config.IterationCount; iter++)
                 {
-                    Console.WriteLine("iter: " + iter);
+                    Console.WriteLine("iteration: " + iter);
+
+                    simStatisticsUpdate.Invoke(null, new object[] { iter, Config.SimulationStepTime, iter*Config.SimulationStepTime});
 
                     threadActive = true;
                     threadCounter = 0;
                     typePtr = 0;
                     particlePtr = 0;
 
-                    //for (int i = 0; i < Config.Threads; i++)
-                    //{
-                    //    threads[i] = new Thread(CalculateParticle);
-                    //    threads[i].Start();
-                    //}
-                    //foreach (var t in threads) t.Join();
 
                     for (int i = 0; i < Config.Threads; i++)
                     {
@@ -194,19 +194,11 @@ namespace CalcEngine
 
 
                     write = (iter % Config.DataSaveStepTime == 0);
-                    //if (write)
-                    //{
-                    //    //write service here
-                    //    //tmp = Path.GetFullPath(Config.Path) + @"\Result\T=" + iter * Config.SimulationStepTime + ".txt";
-                    //    tmp = Path.GetFullPath(Config.Path);
-                    //    tmp = tmp.Replace(Config.Path, ""+iter * Config.SimulationStepTime + ".txt");
-                    //    Console.WriteLine(tmp);
-                    //}
 
                     //Update for each
                     for (int i = 0; i < objLists.Length; i++)
                     {
-                        Console.WriteLine("Method");
+                        //Console.WriteLine("Method");
                         MethodInfo mi = types[i].GetMethod("Update");
                         for (int j = 0; j < (int)Config.particleBlueprints[i].Quantity; j++)
                         {

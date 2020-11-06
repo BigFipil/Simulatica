@@ -27,14 +27,14 @@ namespace CalcEngine
             }
             else
             {
-                if (!Directory.Exists(Config.OutputPath))
+                if (!Directory.Exists(Path.GetFullPath(Config.OutputPath)))
                 {
-                    Directory.CreateDirectory(Config.OutputPath);
+                    Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
                 }
                 else
                 {
-                    Directory.Delete(Config.OutputPath, true);
-                    Directory.CreateDirectory(Config.OutputPath);
+                    Directory.Delete(Path.GetFullPath(Config.OutputPath), true);
+                    Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
                 }
 
                 Config.OutputPath += "\\";

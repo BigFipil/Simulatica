@@ -76,8 +76,8 @@ namespace CalcEngine
         public string Path { get; set; } = "";
         [JsonIgnore]
         public int Port { get; set; } = 6060;
-        [JsonIgnore]
-        public string PathToVisualiserEXE { get; } = @"C:\Development\Simulatica\Simulatica\Visualizer\bin\Debug\netcoreapp3.1\Visualizer.exe";
+        //[JsonIgnore]
+        public string PathToVisualiserEXE { get; set; } = @"C:\Development\Simulatica\Simulatica\Visualizer\bin\Debug\netcoreapp3.1\Visualizer.exe";
         public override string ToString()
         {
             string s = "\nSimulation Configuration: \n\n";

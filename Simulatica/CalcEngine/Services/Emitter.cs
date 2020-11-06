@@ -144,6 +144,15 @@ using CalcEngine;
 
 namespace Particles
 {
+    public static class Simulation{
+    
+        public static ulong Iteration;
+        public static double StepTime, ActualTime;
+
+        public static void Update(ulong iter, double sTime, double aTime){
+            Iteration = iter; StepTime = sTime; ActualTime = aTime;
+        }
+    }
 ";
 
 
