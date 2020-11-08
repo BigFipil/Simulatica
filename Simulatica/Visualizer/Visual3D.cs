@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Visualizer
 {
@@ -15,6 +16,11 @@ namespace Visualizer
 		AnimationConfig Config;
 		Color c = Color.White;
         private RenderTarget2D renderTarget;
+
+		Vector3 cameraPosition = new Vector3(-7.5f, 8.5f, 5);
+		Vector3 cameraLookAtVector = Vector3.Zero;
+		Vector3 cameraUpVector = Vector3.UnitZ;
+		Vector3 NormalBox, NegateNormalBox;
 
 		VertexPositionTexture[] floorVerts;
 		BasicEffect effect;
@@ -66,35 +72,24 @@ namespace Visualizer
 
         protected override void Initialize()
         {
-			floorVerts = new VertexPositionTexture[6];
-			floorVerts[0].Position = new Vector3(-20, -20, 0);
-			floorVerts[1].Position = new Vector3(-20, 20, 0);
-			floorVerts[2].Position = new Vector3(20, -20, 0);
-			floorVerts[3].Position = floorVerts[1].Position;
-			floorVerts[4].Position = new Vector3(20, 20, 0);
-			floorVerts[5].Position = floorVerts[2].Position;
+			NormalBox = Vector3.Normalize(new Vector3(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y, Config.SimulationBoxSize.Z));
+			NegateNormalBox = Vector3.Negate(NormalBox);
+			NegateNormalBox.Z *= -1;
 
-			//Textures Coordinates
-			floorVerts[0].TextureCoordinate = new Vector2(0, 0);
-			floorVerts[1].TextureCoordinate = new Vector2(0, 1);
-			floorVerts[2].TextureCoordinate = new Vector2(1, 0);
-
-			floorVerts[3].TextureCoordinate = floorVerts[1].TextureCoordinate;
-			floorVerts[4].TextureCoordinate = new Vector2(1, 1);
-			floorVerts[5].TextureCoordinate = floorVerts[2].TextureCoordinate;
+			cameraLookAtVector = NegateNormalBox / 2 * 10;
+			cameraLookAtVector.Z *= 0.9f;
+			//Console.WriteLine(Config.SimulationBoxSize);
+			//Console.WriteLine(NegateNormalBox / 2 * 10);
 
 			effect = new BasicEffect(graphics.GraphicsDevice);
 
 			base.Initialize();
         }
 
-		public void DrawBox()
+		public void DrawBox(Vector3 cameraPosition, Vector3 cameraLookAtVector, Vector3 cameraUpVector)
         {
 			// The assignment of effect.View and effect.Projection
 			// are nearly identical to the code in the Model drawing code.
-			var cameraPosition = new Vector3(0, 40, 20);
-			var cameraLookAtVector = Vector3.Zero;
-			var cameraUpVector = Vector3.UnitZ;
 
 			effect.TextureEnabled = true;
 			effect.Texture = grid;
@@ -110,16 +105,40 @@ namespace Visualizer
 
 			effect.Projection = Matrix.CreatePerspectiveFieldOfView(
 				fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
+			
+
+			DrawFace(new Vector3(0, 0, 0), new Vector3(0, -10, 0) * NormalBox, new Vector3(-10, 0, 0) * NormalBox, new Vector3(-10, -10, 0) * NormalBox); //floor xy
+			DrawFace(new Vector3(0, -10, 10) * NormalBox, new Vector3(-10, -10, 10) * NormalBox, new Vector3(0, -10, 0) * NormalBox, new Vector3(-10, -10, 0) * NormalBox);   //wall xz
+			DrawFace(new Vector3(0, 0, 10) * NormalBox, new Vector3(0, -10, 10) * NormalBox, new Vector3(0, 0, 0), new Vector3(0, -10, 0) * NormalBox);   //wall yz
+		}
+
+		protected void DrawFace(Vector3 c1, Vector3 c2, Vector3 c3, Vector3 c4)
+		{
+			VertexPositionTexture[] vertex = new VertexPositionTexture[6];
+
+			vertex[0].Position = c1;
+			vertex[1].Position = c2;
+			vertex[2].Position = c3;
+			vertex[3].Position = vertex[1].Position;
+			vertex[4].Position = c4;
+			vertex[5].Position = vertex[2].Position;
+
+			vertex[0].TextureCoordinate = new Vector2(0, 0);
+			vertex[1].TextureCoordinate = new Vector2(0, 1);
+			vertex[2].TextureCoordinate = new Vector2(1, 0);
+
+			vertex[3].TextureCoordinate = vertex[1].TextureCoordinate;
+			vertex[4].TextureCoordinate = new Vector2(1, 1);
+			vertex[5].TextureCoordinate = vertex[2].TextureCoordinate;
 
 			foreach (var pass in effect.CurrentTechnique.Passes)
 			{
 				pass.Apply();
-
 				graphics.GraphicsDevice.DrawUserPrimitives(
 					// We’ll be rendering two trinalges
 					PrimitiveType.TriangleList,
 					// The array of verts that we want to render
-					floorVerts,
+					vertex,
 					// The offset, which is 0 since we want to start
 					// at the beginning of the floorVerts array
 					0,
@@ -130,13 +149,27 @@ namespace Visualizer
 
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.LightGray);
+			KeyboardState state = Keyboard.GetState();
+
+			if (state.IsKeyDown(Keys.Right))
+				cameraPosition.X += 0.1f;
+			if (state.IsKeyDown(Keys.Left))
+				cameraPosition.X -= 0.1f;
+			if (state.IsKeyDown(Keys.Up))
+				cameraPosition.Y -= 0.1f;
+			if (state.IsKeyDown(Keys.Down))
+				cameraPosition.Y += 0.1f;
+			if (state.IsKeyDown(Keys.W))
+				cameraPosition.Z -= 0.1f;
+			if (state.IsKeyDown(Keys.S))
+				cameraPosition.Z += 0.1f;
 
 			spriteBatch.Begin();
 
 			spriteBatch.Draw(grid, Vector2.Zero, Color.White);
 
-			DrawBox();
+			DrawBox(cameraPosition, cameraLookAtVector, cameraUpVector);
 
 			spriteBatch.End();
 		}
