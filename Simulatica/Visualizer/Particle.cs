@@ -142,17 +142,21 @@ namespace Visualizer
 				effect.Texture = SetTextureColorData(graphics, currentTexture, color);
 			}
 
-			x *= -1;
-			y *= -1;
+
+			x *= -1 * (10 / Config.SimulationBoxSize.X);
+			y *= -1 * (10 / Config.SimulationBoxSize.Y);
+			z *= 10 / Config.SimulationBoxSize.Z;
 
 			VertexPositionTexture[] vertex = new VertexPositionTexture[6];
-
+			
 			vertex[0].Position = new Vector3(x, y, z) * NormalBox + new Vector3(-1, 0, -1) * (size/100);
 			vertex[2].Position = new Vector3(x, y, z) * NormalBox + new Vector3(-1, 0, 1) * (size / 100);
 			vertex[1].Position = new Vector3(x, y, z) * NormalBox + new Vector3(1, 0, -1) * (size / 100);
 			vertex[3].Position = vertex[1].Position;
 			vertex[4].Position = new Vector3(x, y, z) * NormalBox + new Vector3(1, 0, 1) * (size / 100);
 			vertex[5].Position = vertex[2].Position;
+
+			//Console.WriteLine(vertex[0]);
 
 			vertex[0].TextureCoordinate = new Vector2(0, 0);
 			vertex[1].TextureCoordinate = new Vector2(0, 1);

@@ -108,7 +108,9 @@ namespace Visualizer
 
 			effect.Projection = Matrix.CreatePerspectiveFieldOfView(
 				fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
-			
+
+			Console.WriteLine(NormalBox);
+
 			DrawFace(new Vector3(0, 0, 0), new Vector3(0, -10, 0) * NormalBox, new Vector3(-10, 0, 0) * NormalBox, new Vector3(-10, -10, 0) * NormalBox); //floor xy
 			DrawFace(new Vector3(0, -10, 10) * NormalBox, new Vector3(-10, -10, 10) * NormalBox, new Vector3(0, -10, 0) * NormalBox, new Vector3(-10, -10, 0) * NormalBox);   //wall xz
 			DrawFace(new Vector3(0, 0, 10) * NormalBox, new Vector3(0, -10, 10) * NormalBox, new Vector3(0, 0, 0), new Vector3(0, -10, 0) * NormalBox);   //wall yz
@@ -196,6 +198,7 @@ namespace Visualizer
 
 							p.Draw3D(effect, graphics, NormalBox);
 
+							//Console.WriteLine(p.x+"  "+p.y+"   "+p.z);
 						}
                     }
                 }
@@ -263,7 +266,7 @@ namespace Visualizer
 
 			DrawBox(cameraPosition, cameraLookAtVector, cameraUpVector);
 
-			DrawParticles(@"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=5.txt");
+			DrawParticles(@"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=2.txt");
 
 			spriteBatch.End();
 		}
