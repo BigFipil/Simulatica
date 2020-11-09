@@ -13,11 +13,12 @@ namespace Visualizer
 	{
 		SpriteBatch spriteBatch;
 		Texture2D grid;
+		Model model;
 		AnimationConfig Config;
 		Color c = Color.White;
-        private RenderTarget2D renderTarget;
+        private RenderTarget2D renderTarget, XZ, XY, YZ;
 
-		Vector3 cameraPosition = new Vector3(-7.5f, 8.5f, 5);
+		Vector3 cameraPosition = new Vector3(-7.6f, 8.7f, 5);
 		Vector3 cameraLookAtVector = Vector3.Zero;
 		Vector3 cameraUpVector = Vector3.UnitZ;
 		Vector3 NormalBox, NegateNormalBox;
@@ -66,6 +67,9 @@ namespace Visualizer
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			grid = Content.Load<Texture2D>("Grid");
+			model = Content.Load<Model>("m");
+
+			Particle.Load(Content, Config);
 
 			base.LoadContent();
 		}
@@ -106,7 +110,6 @@ namespace Visualizer
 			effect.Projection = Matrix.CreatePerspectiveFieldOfView(
 				fieldOfView, aspectRatio, nearClipPlane, farClipPlane);
 			
-
 			DrawFace(new Vector3(0, 0, 0), new Vector3(0, -10, 0) * NormalBox, new Vector3(-10, 0, 0) * NormalBox, new Vector3(-10, -10, 0) * NormalBox); //floor xy
 			DrawFace(new Vector3(0, -10, 10) * NormalBox, new Vector3(-10, -10, 10) * NormalBox, new Vector3(0, -10, 0) * NormalBox, new Vector3(-10, -10, 0) * NormalBox);   //wall xz
 			DrawFace(new Vector3(0, 0, 10) * NormalBox, new Vector3(0, -10, 10) * NormalBox, new Vector3(0, 0, 0), new Vector3(0, -10, 0) * NormalBox);   //wall yz
@@ -147,6 +150,96 @@ namespace Visualizer
 			}
 		}
 
+		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
+		{
+			// Set the render target
+			GraphicsDevice.SetRenderTarget(renderTarget);
+
+			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
+
+			// Draw the scene
+			GraphicsDevice.Clear(Color.Gold);
+			spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+			
+			DrawParticles(path);
+
+
+			spriteBatch.End();
+
+			// Drop the render target
+			GraphicsDevice.SetRenderTarget(null);
+		}
+
+        private void DrawParticles(string path)
+        {
+			StreamReader reader = new StreamReader(path);
+			string line;
+			Particle p = new Particle();
+			//Color c = Color.Black;
+			//double x = 5, y = 5, z = 5, size = 0.1;
+			
+			do
+			{
+				line = reader.ReadLine();
+				p = Particle.FromString(line);
+				
+				if(p.x >= 0 && p.x <= Config.SimulationBoxSize.X)
+                {
+					if(p.y >= 0 && p.y <= Config.SimulationBoxSize.Y)
+                    {
+						if (p.z >= 0 && p.z <= Config.SimulationBoxSize.Z)
+						{
+							/*double scale = NormalBox.X / Config.SimulationBoxSize.X;
+							x *= -scale;
+							y *= -scale;
+							z *= scale;*/
+
+							p.Draw3D(effect, graphics, NormalBox);
+
+						}
+                    }
+                }
+
+			} while (false);
+		}
+
+        public void BakeAnimation()
+		{
+			LoadContent();
+			Initialize();
+			//Creating PNG frame images
+
+			for (int i = 0; i < Files.Count(); i++)
+			{
+				SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".png");
+				Console.WriteLine(Files.ElementAt(i));
+			}
+
+			string filename = "ffmpeg.exe";
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r " + Config.OutputAnimationFramerate + " -start_number 0 -i " + Config.OutputPath + "\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath + "\\out.mp4");
+			/*
+			 * -y means overwrite if such video already exists.
+			 * -r stands for framerate
+			 * -start_number wiadomo
+			 * -i path to png's
+			 * -pix_fmt pixel format
+			 * */
+		}
+
+		private void SaveFrame(RenderTarget2D r, string path, string name)
+		{
+			GraphicsDevice.Clear(Color.White);
+
+			DrawSceneToTexture(renderTarget, path);
+
+			Stream stream = File.Create(Config.OutputPath + "\\" + name);
+
+			//Save as PNG
+			renderTarget.SaveAsPng(stream, 1920, 1080);
+			stream.Dispose();
+		}
+
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.LightGray);
@@ -170,6 +263,8 @@ namespace Visualizer
 			spriteBatch.Draw(grid, Vector2.Zero, Color.White);
 
 			DrawBox(cameraPosition, cameraLookAtVector, cameraUpVector);
+
+			DrawParticles(@"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=5.txt");
 
 			spriteBatch.End();
 		}
