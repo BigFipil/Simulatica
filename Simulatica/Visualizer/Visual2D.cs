@@ -76,6 +76,8 @@ namespace Visualizer
 			pixel = Content.Load<Texture2D>("pixel");
 			basicFont1 = Content.Load<SpriteFont>("BasicFont");
 
+			Particle.Load(Content, Config);
+
 			base.LoadContent();
 
 		}
@@ -144,66 +146,23 @@ namespace Visualizer
         {
 			StreamReader reader = new StreamReader(path);
 			string line;
-
-			Color c = Color.Black;
-			double x = 0, y = 0;
+			Particle p;
 
 			do {
 
 				line = reader.ReadLine();
-				line = line.Replace("[", "");
-				line = line.Replace("]", "");
-				line = line.Replace(",", ":");
+				p = Particle.FromString(line);
 
-				var str = line.Split(":");
-
-				foreach(var v in Config.particleBlueprints)
-                {
-					if(v.Name == str[0])
-                    {
-						foreach(var o in v.outputInformations)
-                        {
-                            switch (o.Key.ToLower())
-                            {
-								case "color":
-									var prop = typeof(Color).GetProperty(o.Value);
-									if (prop != null)
-									{
-										c = (Color)prop.GetValue(null, null);
-									}
-									else c = Color.Black;
-									break;
-
-								case "x":
-									string tmp = o.Value.Replace("<", "").Replace(">", "");
-									int index = Int32.Parse(tmp);
-
-									x = double.Parse(str[index]);
-									break;
-
-								case "y":
-									string tmp2 = o.Value.Replace("<", "").Replace(">", "");
-									int index2 = Int32.Parse(tmp2);
-
-									y = double.Parse(str[index2]);
-									break;
-							}
-                        }
-
-						break;
-                    }
-                }
-
-				double scale =  GridSize.X / Config.SimulationBoxSize.X;
-				x *= scale;
-				y *= scale;
+				float scale =  GridSize.X / Config.SimulationBoxSize.X;
+				p.x *= scale;
+				p.y *= scale;
 
 				//offset
-				x += rec.X;
-				y += rec.Y;
+				p.x += rec.X;
+				p.y += rec.Y;
 
-				if (rec.Contains((int)x, (int)y))
-				batch.Draw(pixel, new Rectangle((int)x, (int)y, 4, 4), c);
+				if (rec.Contains((int)p.x, (int)p.y))
+					p.Draw2D(batch);
 
 			} while(!reader.EndOfStream);
 
