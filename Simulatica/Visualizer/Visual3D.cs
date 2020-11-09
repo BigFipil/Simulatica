@@ -13,7 +13,7 @@ namespace Visualizer
 	{
 		SpriteBatch spriteBatch;
 		Texture2D grid;
-		Model model;
+		//Model model;
 		AnimationConfig Config;
 		Color c = Color.White;
         private RenderTarget2D renderTarget, XZ, XY, YZ;
@@ -23,7 +23,7 @@ namespace Visualizer
 		Vector3 cameraUpVector = Vector3.UnitZ;
 		Vector3 NormalBox, NegateNormalBox;
 
-		VertexPositionTexture[] floorVerts;
+		//VertexPositionTexture[] floorVerts;
 		BasicEffect effect;
 		GraphicsDeviceManager graphics;
 
@@ -67,9 +67,8 @@ namespace Visualizer
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			grid = Content.Load<Texture2D>("Grid");
-			model = Content.Load<Model>("m");
 
-			Particle.Load(Content, Config);
+			Particle.Load(Content, Config, graphics);
 
 			base.LoadContent();
 		}
