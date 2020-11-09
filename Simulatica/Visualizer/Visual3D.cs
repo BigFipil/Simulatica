@@ -201,7 +201,7 @@ namespace Visualizer
                     }
                 }
 
-			} while (false);
+			} while (!reader.EndOfStream);
 		}
 
         public void BakeAnimation()

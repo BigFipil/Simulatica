@@ -76,21 +76,12 @@ namespace Visualizer
 								if (o.Value.ToLower() == "1") currentTexture = texture;
 								else currentTexture = texture;
 								break;
+							case "size":
+								if (!o.Value.Contains("<")) p.size = Int32.Parse(o.Value);
+								break;
 						}
 					}
-					//color adjustment
-					Color[] oryginalData = new Color[currentTexture.Width * currentTexture.Height];
-					Color[] Data = new Color[currentTexture.Width * currentTexture.Height];
-					Color c = p.color;
-					Console.WriteLine("  "+c);
-					//Color c = new Color(Vector4.Normalize(new Vector4(p.color.R, p.color.G, p.color.B, p.alpha)));
-					texture.GetData<Color>(oryginalData);
-					for(int i = 0; i < currentTexture.Width * currentTexture.Height; i++)
-                    {
-						Data[i] = new Color(oryginalData[i].ToVector4() * c.ToVector4());
-						Console.WriteLine(Data[i]);
-					}
-					currentTexture.SetData<Color>(Data);
+					
 
 					break;
 				}
@@ -107,14 +98,14 @@ namespace Visualizer
 
 		public void Draw2D(SpriteBatch batch)
 		{
-			batch.Draw(texture, new Rectangle((int)(x - size / 2), (int)(y - size / 2), (int)size, (int)size), color * alpha);
+			batch.Draw(currentTexture, new Rectangle((int)(x - size / 2), (int)(y - size / 2), (int)size, (int)size), color * alpha);
 		}
 		public void Draw3D(BasicEffect effect, GraphicsDeviceManager graphics, Vector3 NormalBox)
 		{
 
 			//Console.WriteLine(x + "  " + y + "  " + z);
 			//Console.WriteLine(new Vector3(x, y, z) * NormalBox + new Vector3(-1, 0, 1) * (size / 100));
-			effect.Texture = currentTexture;
+			effect.Texture = texture;//SetTextureColorData(graphics, currentTexture);
 
 			x *= -1;
 			y *= -1;
@@ -151,5 +142,26 @@ namespace Visualizer
 					2);
 			}
 		}
+
+		private Texture2D SetTextureColorData(GraphicsDeviceManager graphics, Texture2D texture)
+        {
+			Texture2D t = new Texture2D(graphics.GraphicsDevice, 32, 32);
+
+			//color adjustment
+			Color[] oryginalData = new Color[t.Width * t.Height];
+			Color[] Data = new Color[t.Width * t.Height];
+			Color c = color;
+			//Console.WriteLine("  " + c);
+			//Color c = new Color(Vector4.Normalize(new Vector4(p.color.R, p.color.G, p.color.B, p.alpha)));
+			texture.GetData<Color>(oryginalData);
+			for (int i = 0; i < t.Width * t.Height; i++)
+			{
+				Data[i] = new Color(oryginalData[i].ToVector4() * c.ToVector4());
+				Console.WriteLine(Data[i]);
+			}
+			t.SetData<Color>(Data);
+
+			return t;
+        }
 	}
 }
