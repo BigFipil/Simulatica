@@ -11,9 +11,9 @@ namespace Visualizer
     {
         public static AnimationConfig Config;
 		public static Texture2D dot, ring, cross, currentTexture;
-		public static Dictionary<Color, Texture2D> dotTex = new Dictionary<Color, Texture2D>();
-		public static Dictionary<Color, Texture2D> ringTex = new Dictionary<Color, Texture2D>();
-		public static Dictionary<Color, Texture2D> crossTex = new Dictionary<Color, Texture2D>();
+		public static Dictionary<Color, Texture2D> dotTex;
+		public static Dictionary<Color, Texture2D> ringTex;
+		public static Dictionary<Color, Texture2D> crossTex;
 		private static int textureType = 1;
 
 		public float x, y, z, size = 20;
@@ -108,6 +108,10 @@ namespace Visualizer
 
 			if(graphics != null)
 			{
+				dotTex = new Dictionary<Color, Texture2D>();
+				ringTex = new Dictionary<Color, Texture2D>();
+				crossTex = new Dictionary<Color, Texture2D>();
+
 				var colorList = new List<Color>() { Color.Black, Color.Red, Color.DarkRed, Color.Pink, Color.Purple,
 				Color.Blue, Color.LightBlue, Color.DarkBlue, Color.Green, Color.LightGreen, Color.DarkGreen, Color.LightGray,
 				Color.Gray, Color.DarkGray, Color.Yellow, Color.Orange, Color.Brown };

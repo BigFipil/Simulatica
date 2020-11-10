@@ -91,12 +91,12 @@ namespace Visualizer
 			
             for (int i = 0; i < Files.Count(); i++)
             {
-                SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".png");
+                SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".jpg");
                 Console.WriteLine(Files.ElementAt(i));
             }
 
             string filename = "ffmpeg.exe";
-			var proc = System.Diagnostics.Process.Start(filename, @" -y -r "+Config.OutputAnimationFramerate+" -start_number 0 -i "+ Config.OutputPath+"\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r "+Config.OutputAnimationFramerate+" -start_number 0 -i "+ Config.OutputPath+"\\frame%d.jpg" + @" -pix_fmt rgba " + Config.OutputPath+"\\out.mp4");
 			/*
 			 * -y means overwrite if such video already exists.
 			 * -r stands for framerate
@@ -235,7 +235,7 @@ namespace Visualizer
 			Stream stream = File.Create(Config.OutputPath + "\\"+name);
 
 			//Save as PNG
-			renderTarget.SaveAsPng(stream, (int)OutputWindowSize.X + LegendSize, (int)OutputWindowSize.Y);
+			renderTarget.SaveAsJpeg(stream, (int)OutputWindowSize.X + LegendSize, (int)OutputWindowSize.Y);
 			stream.Dispose();
 		}
 

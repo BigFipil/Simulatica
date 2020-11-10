@@ -154,22 +154,22 @@ namespace Visualizer
 		private void DrawSceneToTexture(RenderTarget2D renderTarget, string path)
 		{
 			// Set the render target
-			GraphicsDevice.SetRenderTarget(renderTarget);
+			//GraphicsDevice.SetRenderTarget(renderTarget);
 
-			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true };
-
-			// Draw the scene
-			GraphicsDevice.Clear(Color.Gold);
-			spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-
+			//GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true, DepthBufferWriteEnable = false};
 			
+			// Draw the scene
+			GraphicsDevice.Clear(Color.LightGray);
+			//spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+			DrawBox(cameraPosition, cameraLookAtVector, cameraUpVector);
 			DrawParticles(path);
 
 
-			spriteBatch.End();
+			//spriteBatch.End();
 
 			// Drop the render target
-			GraphicsDevice.SetRenderTarget(null);
+			//GraphicsDevice.SetRenderTarget(null);
 		}
 
         private void DrawParticles(string path)
@@ -211,15 +211,21 @@ namespace Visualizer
 			LoadContent();
 			Initialize();
 			//Creating PNG frame images
+			Draw(new GameTime());
+
+			GraphicsDevice.SetRenderTarget(renderTarget);
+			GraphicsDevice.DepthStencilState = new DepthStencilState() { DepthBufferEnable = true, DepthBufferWriteEnable = false };
 
 			for (int i = 0; i < Files.Count(); i++)
 			{
-				SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".png");
+				SaveFrame(renderTarget, Files.ElementAt(i), "frame" + i + ".jpg");
 				Console.WriteLine(Files.ElementAt(i));
 			}
 
+			GraphicsDevice.SetRenderTarget(null);
+
 			string filename = "ffmpeg.exe";
-			var proc = System.Diagnostics.Process.Start(filename, @" -y -r " + Config.OutputAnimationFramerate + " -start_number 0 -i " + Config.OutputPath + "\\frame%d.png" + @" -pix_fmt rgba " + Config.OutputPath + "\\out.mp4");
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r " + Config.OutputAnimationFramerate + " -start_number 0 -i " + Config.OutputPath + "\\frame%d.jpg" + @" -pix_fmt rgba " + Config.OutputPath + "\\out.mp4");
 			/*
 			 * -y means overwrite if such video already exists.
 			 * -r stands for framerate
@@ -231,14 +237,14 @@ namespace Visualizer
 
 		private void SaveFrame(RenderTarget2D r, string path, string name)
 		{
-			GraphicsDevice.Clear(Color.White);
+			//GraphicsDevice.Clear(Color.White);
 
 			DrawSceneToTexture(renderTarget, path);
 
 			Stream stream = File.Create(Config.OutputPath + "\\" + name);
 
 			//Save as PNG
-			renderTarget.SaveAsPng(stream, 1920, 1080);
+			renderTarget.SaveAsJpeg(stream, 1920, 1080);
 			stream.Dispose();
 		}
 
@@ -266,7 +272,11 @@ namespace Visualizer
 
 			DrawBox(cameraPosition, cameraLookAtVector, cameraUpVector);
 
-			DrawParticles(@"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result\T=2.txt");
+			try
+			{
+				DrawParticles(Files.FirstOrDefault());
+            }
+            catch { }
 
 			spriteBatch.End();
 		}
