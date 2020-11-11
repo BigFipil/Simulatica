@@ -41,6 +41,7 @@ namespace Visualizer
 				if (Config.SimulationType == "3D")
 				{
 					Visual3D v = new Visual3D(Config);
+					//v.LoadContent();
 					v.BakeAnimation();
 				}
 				else
