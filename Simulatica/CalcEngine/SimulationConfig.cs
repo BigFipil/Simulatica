@@ -65,6 +65,11 @@ namespace CalcEngine
         /// quantity of particles (simulation size limit).
         /// </summary>
         public bool FullRamMode { get; private set; }
+        [JsonProperty]
+        /// <summary>
+        /// Specifies if particles used in simulation should be compared also with themselves, or with only every other particles.
+        /// </summary>
+        public bool SelfComparableParticles { get; private set; }
 
         [JsonProperty]
         /// <summary
@@ -106,6 +111,7 @@ namespace CalcEngine
             s += "SimulationStepTime: " + SimulationStepTime + "\n";
             s += "DataSaveStepTime: " + DataSaveStepTime + "\n";
             s += "FullRamMode: " + FullRamMode + "\n";
+            s += "SelfComparableParticles: " + SelfComparableParticles + "\n";
             s += "OutputPath: " + OutputPath + "\n";
 
             return s;

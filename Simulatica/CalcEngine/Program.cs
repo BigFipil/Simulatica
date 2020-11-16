@@ -45,7 +45,7 @@ namespace CalcEngine
             //Console.WriteLine(config);
 
             //Test t = provider.GetService<Test>();
-            //t.testSeri();
+            //t.testSeri2();
             ISimulation simulation = provider.GetService<ISimulation>();
 
             Stopwatch stopWatch = new Stopwatch();
@@ -60,7 +60,7 @@ namespace CalcEngine
 
             if(config.PathToVisualiserEXE != "")
             {
-                var proc = Process.Start(config.PathToVisualiserEXE, @"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\PointSim.conig C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result");
+                //var proc = Process.Start(config.PathToVisualiserEXE, @"C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\PointSim.conig C:\Development\Simulatica\Simulatica\CalcEngine\bin\Debug\netcoreapp3.1\Result");
             }
 
             //var t = provider.GetService<Test>();

@@ -37,7 +37,8 @@ namespace CalcEngine
 
             string assemblyName = Path.GetRandomFileName();
             
-
+            
+            Console.WriteLine(state.syntaxTree);
 
             IEnumerable<MetadataReference> references = Directory.GetFiles(Path.GetDirectoryName(typeof(object).Assembly.Location))
                 .Where((val) => val.EndsWith(".dll"))
@@ -77,7 +78,6 @@ namespace CalcEngine
                     //Console.WriteLine("\n\n" + assembly.FullName + "   " + assembly.ToString());
                 }
             }
-
             return null;
         }
 
@@ -93,8 +93,18 @@ namespace CalcEngine
                 if (t.Key.EndsWith("}") || t.Key.EndsWith(";")) code += "\n\n";
                 else code += ";\n\n";
             }
-            //todo: rozpatrzyc ToString tutaj bo jest typu string
-            foreach(var m in pb.methods)
+
+            if (!config.SelfComparableParticles)
+            {
+                code += "\tpublic ulong Particle_ID_Numer;\n";
+                code += "\tpublic static ulong Particle_ID_Numer_Count = 0;\n";
+
+                //Constructor that sets ID
+                code += "\tpublic " + pb.Name + "(){ Particle_ID_Numer = Particle_ID_Numer_Count; Particle_ID_Numer_Count++; }\n";
+            }
+
+
+            foreach (var m in pb.methods)
             {
                 if(m.Key == "ToString()")
                 {
@@ -105,11 +115,25 @@ namespace CalcEngine
                     code += "\n\tpublic void " + m.Key + "{\n";
                 }
 
-                code += "\t\t" + m.Value;
 
-                if (!m.Value.EndsWith(";")) code += ";";
+                if (!config.SelfComparableParticles && m.Key.StartsWith("Calculate("))
+                {
+                    code += "\t\tif(Particle_ID_Numer != p.Particle_ID_Numer){\n";
+                    code += "\t\t\t" + m.Value;
 
-                code += "\n\t}\n";
+                    if (!m.Value.EndsWith(";")) code += ";";
+
+                    code += "\n\t\t}";
+                    code += "\n\t}\n";
+                }
+                else
+                {
+                    code += "\t\t" + m.Value;
+
+                    if (!m.Value.EndsWith(";")) code += ";";
+
+                    code += "\n\t}\n";
+                }
             }
 
 

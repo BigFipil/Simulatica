@@ -22,11 +22,12 @@ namespace CalcEngine
                 {
                     Directory.CreateDirectory(Config.OutputPath);
                 }
-
+                Console.WriteLine("debug1");
                 Config.OutputPath += "\\";
             }
             else
             {
+                Console.WriteLine("debug2");
                 if (!Directory.Exists(Path.GetFullPath(Config.OutputPath)))
                 {
                     Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
