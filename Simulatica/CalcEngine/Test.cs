@@ -55,11 +55,17 @@ namespace CalcEngine
 
             //config.SimulationBoxSize = new VectorD3(5, 12, 20);
             //config.Threads = 128;
-            
+
             string jsonString = JsonConvert.SerializeObject(config);
             Console.Write(jsonString);
             File.WriteAllText("PointSim.conig", jsonString);
-        } 
+        }
+        public void testSeri2()
+        {
+            string jsonString = JsonConvert.SerializeObject(config, Formatting.Indented);
+            Console.Write(jsonString);
+            File.WriteAllText("PointSimNew.conig", jsonString);
+        }
 
         public void testDeseri()
         {

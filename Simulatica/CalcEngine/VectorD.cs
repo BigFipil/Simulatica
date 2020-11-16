@@ -57,6 +57,10 @@ namespace CalcEngine
         {
             return new VectorD3(left.X / right.X, left.Y / right.Y, left.Z / right.Z);
         }
+        public static VectorD3 operator /(VectorD3 left, double right)
+        {
+            return new VectorD3(left.X / right, left.Y / right, left.Z / right);
+        }
         #endregion
 
         public double Length()
@@ -87,7 +91,7 @@ namespace CalcEngine
 
         public VectorD3 Normalized()
         {
-            double tmp = this.Length();
+            double tmp = Length();
             return new VectorD3(this.X/tmp, this.Y / tmp, this.Z / tmp);
         }
 
