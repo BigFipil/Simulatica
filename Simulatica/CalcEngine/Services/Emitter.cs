@@ -116,7 +116,7 @@ namespace CalcEngine
                 }
 
 
-                if (!config.SelfComparableParticles && m.Key.StartsWith("Calculate("))
+                if (!config.SelfComparableParticles && m.Key.StartsWith("Calculate("+pb.Name))
                 {
                     code += "\t\tif(Particle_ID_Numer != p.Particle_ID_Numer){\n";
                     code += "\t\t\t" + m.Value;
