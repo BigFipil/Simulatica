@@ -282,10 +282,10 @@ namespace Visualizer
 
 			SpriteBatch batch = new SpriteBatch(graphics.GraphicsDevice);
 			batch.Begin();
-			if(Config.SimulationBoxSize.Z < Math.Max(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y))
-				batch.DrawString(basicFont1, Path.GetFileName(path), new Vector2(960, 70) - basicFont1.MeasureString(Path.GetFileName(path)) / 2, Color.Black);
+			if(Config.SimulationBoxSize.Z <= Math.Max(Config.SimulationBoxSize.X, Config.SimulationBoxSize.Y))
+				batch.DrawString(basicFont1, Path.GetFileName(path), new Vector2(930, 64) , Color.Black);
 			else
-				batch.DrawString(basicFont1, Path.GetFileName(path), new Vector2(160, 70) - basicFont1.MeasureString(Path.GetFileName(path)) / 2, Color.Black);
+				batch.DrawString(basicFont1, Path.GetFileName(path), new Vector2(160, 64) , Color.Black);
 			batch.End();
 		}
 

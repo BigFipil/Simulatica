@@ -38,7 +38,7 @@ namespace CalcEngine
             string assemblyName = Path.GetRandomFileName();
             
             
-            Console.WriteLine(state.syntaxTree);
+            //Console.WriteLine(state.syntaxTree);
 
             IEnumerable<MetadataReference> references = Directory.GetFiles(Path.GetDirectoryName(typeof(object).Assembly.Location))
                 .Where((val) => val.EndsWith(".dll"))
