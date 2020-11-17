@@ -42,12 +42,24 @@ namespace Visualizer
 						switch (o.Key.ToLower())
 						{
 							case "color":
-								var prop = typeof(Color).GetProperty(o.Value);
-								if (prop != null)
-								{
-									p.color = (Color)prop.GetValue(null, null);
+								if (o.Value.Contains("<"))
+                                {
+									string sc = o.Value.Replace("<", "").Replace(">", "");
+									var a = sc.Split(":");
+									string s1 = str[Int32.Parse(a[0])];
+									string s2 = str[Int32.Parse(a[1])];
+									string s3 = str[Int32.Parse(a[2])];
+									p.color = new Color((int)double.Parse(s1), (int)double.Parse(s2), (int)double.Parse(s3));
 								}
-								else p.color = Color.Black;
+                                else
+								{
+									var prop = typeof(Color).GetProperty(o.Value);
+									if (prop != null)
+									{
+										p.color = (Color)prop.GetValue(null, null);
+									}
+									else p.color = Color.CornflowerBlue;
+								}
 								break;
 
 							case "x":
@@ -202,6 +214,8 @@ namespace Visualizer
 				Data[i] = new Color(oryginalData[i].ToVector4() * color.ToVector4());
 			}
 			t.SetData<Color>(Data);
+
+			//graphics.GraphicsDevice.Dispose();
 
 			return t;
         }

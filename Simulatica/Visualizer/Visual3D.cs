@@ -286,6 +286,11 @@ namespace Visualizer
 				batch.DrawString(basicFont1, Path.GetFileName(path), new Vector2(930, 64) , Color.Black);
 			else
 				batch.DrawString(basicFont1, Path.GetFileName(path), new Vector2(160, 64) , Color.Black);
+
+			if(Config.SimulationBoxSize.X <= Math.Max(Config.SimulationBoxSize.Z, Config.SimulationBoxSize.Y))
+            {
+				DrawLegendY(batch, basicFont1, true, new Vector2(1760, 1080));
+            }
 			batch.End();
 		}
 
@@ -470,6 +475,28 @@ namespace Visualizer
 
 			
 			graphics.GraphicsDevice.SetRenderTarget(null);
+		}
+
+		private void DrawLegendY(SpriteBatch batch, SpriteFont f, bool legend, Vector2 OutputWindowSize)
+		{
+			if (legend)
+				for (int i = 0; i < Config.particleBlueprints.Count; i++)
+				{
+					var size = f.MeasureString(Config.particleBlueprints[i].Name);
+					int tmp = (int)(OutputWindowSize.Y / (Config.particleBlueprints.Count + 1));
+
+					batch.DrawString(f, Config.particleBlueprints[i].Name, OutputWindowSize - new Vector2(0, tmp * (i + 1) - size.Y / 2), Color.Black, 0.52f, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+					PropertyInfo p = null;
+					if (Config.particleBlueprints[i].outputInformations.ContainsKey("Color")) p = typeof(Color).GetProperty(Config.particleBlueprints[i].outputInformations["Color"]);
+					else if (Config.particleBlueprints[i].outputInformations.ContainsKey("color")) p = typeof(Color).GetProperty(Config.particleBlueprints[i].outputInformations["color"]);
+
+					if (p != null)
+					{
+						Color c = (Color)p.GetValue(null, null);
+						batch.Draw(pixel, new Rectangle((OutputWindowSize - new Vector2(20, tmp * (i + 1) - size.Y / 2 - 8)).ToPoint(), new Point(5, 5)), c);
+					}
+				}
 		}
 	}
 }
