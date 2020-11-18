@@ -21,12 +21,12 @@ namespace CalcEngine
             services.AddTransient<Emitter>();
             services.AddTransient<SmallSimulation>();
             services.AddTransient<Simulation>();
+            services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ISimulation>(sim);
             services.AddSingleton<ILoader>(load);
 
             return services.BuildServiceProvider();
         }
-
 
         private ISimulation sim(IServiceProvider provider)
         {
@@ -34,7 +34,6 @@ namespace CalcEngine
 
             if (config.FullRamMode)
             {
-                Console.WriteLine("really");
                 return provider.GetService<SmallSimulation>();
             }
             else

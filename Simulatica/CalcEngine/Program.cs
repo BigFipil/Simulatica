@@ -56,8 +56,13 @@ namespace CalcEngine
 
             stopWatch.Stop();
 
-            Console.WriteLine("\n\n\tElapsed Time: "+((float)stopWatch.ElapsedMilliseconds)/1000 +"[s]");
-
+            string time = TimeSpan.FromSeconds(stopWatch.ElapsedMilliseconds / 1000.0f).ToString(@"hh\:mm\:ss\:fff");
+            Console.WriteLine("\n\n\tElapsed Time: "+ time);
+            
+            ulong pc = 0;
+            foreach (var p in config.particleBlueprints) pc += p.Quantity;
+            provider.GetRequiredService<ILogger>().Add("\n\n\n\tSimulation performed succesfully\n\n\t\tTotal particle count: "+pc+
+                "\n\tElapsed Time: " + time);
 
             if(config.PathToVisualiserEXE != "")
             {

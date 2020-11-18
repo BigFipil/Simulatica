@@ -16,11 +16,13 @@ namespace CalcEngine
     {
         private readonly SimulationConfig config;
         private readonly SimulationState state;
+        private readonly ILogger logger;
 
-        public Emitter(SimulationConfig Config, SimulationState State)
+        public Emitter(SimulationConfig Config, SimulationState State, ILogger Logger)
         {
             config = Config;
             state = State;
+            logger = Logger;
         }
 
         public void Test()
@@ -36,8 +38,8 @@ namespace CalcEngine
             state.syntaxTree = CSharpSyntaxTree.ParseText(code);
 
             string assemblyName = Path.GetRandomFileName();
-            
-            
+
+            logger.Add("\n\n\t\tCOMPILATION\n\n\tGenerated C# syntax tree:\n"+state.syntaxTree);
             //Console.WriteLine(state.syntaxTree);
 
             IEnumerable<MetadataReference> references = Directory.GetFiles(Path.GetDirectoryName(typeof(object).Assembly.Location))
@@ -60,6 +62,8 @@ namespace CalcEngine
 
                 if (!result.Success)
                 {
+                    logger.Add("\n\t***** *** Compilation errors occured:\n");
+
                     IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
                         diagnostic.IsWarningAsError ||
                         diagnostic.Severity == DiagnosticSeverity.Error);
@@ -68,14 +72,15 @@ namespace CalcEngine
                     {
                         //Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
                         state.ErrorList.Add(new Exception(diagnostic.Id + ": " + diagnostic.GetMessage() + " line: " +diagnostic.Location));
+                        logger.Add("\t\t"+ diagnostic.Id + ": " + diagnostic.GetMessage() + " line: " + diagnostic.Location + "\n");
                     }
                 }
                 else
                 {
+                    logger.Add("\n\tCompilation Success\n");
+
                     ms.Seek(0, SeekOrigin.Begin);
                     return Assembly.Load(ms.ToArray());
-
-                    //Console.WriteLine("\n\n" + assembly.FullName + "   " + assembly.ToString());
                 }
             }
             return null;
