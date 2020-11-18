@@ -68,7 +68,7 @@ namespace Visualizer
 			}
 		}
 
-		public void LoadContent()
+		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
