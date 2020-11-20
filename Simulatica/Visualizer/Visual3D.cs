@@ -56,7 +56,7 @@ namespace Visualizer
 			GraphicsDevice.PresentationParameters.BackBufferFormat, DepthFormat.Depth24);
 
 
-			Files = Directory.GetFiles(Config.OutputPath)
+			Files = Directory.GetFiles(Config.OutputPath + "\\Data")
 				.Where((val) => val.EndsWith(".txt"))
 				.Where((val) => val.Contains("T="));
 
@@ -64,7 +64,13 @@ namespace Visualizer
 
 			if (Files.Count() == 0)
 			{
-				Console.WriteLine("Could not find simulation results in specific directory: " + Config.OutputPath);
+				Files = Directory.GetFiles(Config.OutputPath)
+				.Where((val) => val.EndsWith(".txt"))
+				.Where((val) => val.Contains("T="));
+
+				Files = Files.OrderBy(s => double.Parse(s.Substring(s.IndexOf("T=") + 2).Replace(".txt", "")));
+
+				Console.WriteLine("***Could not find simulation results in specific directory: " + Config.OutputPath);
 			}
 		}
 
@@ -77,6 +83,16 @@ namespace Visualizer
 			basicFont1 = Content.Load<SpriteFont>("BasicFont");
 
 			Particle.Load(Content, Config, graphics);
+
+			if (!Directory.Exists(Path.GetFullPath(Config.OutputPath+"\\Frames")))
+			{
+				Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath + "\\Frames"));
+			}
+			else
+			{
+				Directory.Delete(Path.GetFullPath(Config.OutputPath + "\\Frames"), true);
+				Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath + "\\Frames"));
+			}
 
 			base.LoadContent();
 		}
@@ -347,7 +363,7 @@ namespace Visualizer
 			GraphicsDevice.SetRenderTarget(null);
 
 			string filename = "ffmpeg.exe";
-			var proc = System.Diagnostics.Process.Start(filename, @" -y -r " + Config.OutputAnimationFramerate + " -start_number 0 -i " + Config.OutputPath + "\\frame%d.jpg" + @" -pix_fmt yuv420p " + Config.OutputPath + "\\SimulationOutput.mp4");
+			var proc = System.Diagnostics.Process.Start(filename, @" -y -r " + Config.OutputAnimationFramerate + " -start_number 0 -i " + Config.OutputPath + "\\Frames\\frame%d.jpg" + @" -pix_fmt yuv420p " + Config.OutputPath + "\\SimulationOutput.mp4");
 			/*
 			 * -y means overwrite if such video already exists.
 			 * -r stands for framerate
@@ -363,7 +379,7 @@ namespace Visualizer
 
 			DrawSceneToTexture(renderTarget, path);
 
-			Stream stream = File.Create(Config.OutputPath + "\\" + name);
+			Stream stream = File.Create(Config.OutputPath + "\\Frames\\" + name);
 
 			//Save as PNG
 			renderTarget.SaveAsJpeg(stream, 1920, 1080);
