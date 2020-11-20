@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Threading;
 
 namespace CalcEngine
 {
@@ -9,6 +10,10 @@ namespace CalcEngine
     {
         private readonly SimulationConfig Config;
         private readonly SimulationState State;
+
+        private string currentPath = "";
+        private FileStream fstream;
+        private StreamWriter swriter;
 
         public Writer(SimulationConfig C, SimulationState S)
         {
@@ -44,7 +49,25 @@ namespace CalcEngine
 
         public void Write(Object obj, ulong iteration)
         {
-            File.AppendAllText(Config.OutputPath+"T="+iteration*(float)Config.SimulationStepTime+".txt", obj.ToString()+"\n");
+            //File.AppendAllText(currentPath, obj.ToString()+"\n");
+            swriter.Write((obj.ToString() + "\n"));
+            swriter.Flush();
+        }
+
+        public void NewFile(ulong iteration)
+        {
+            if (currentPath != "")
+            {
+                fstream.Close();
+                swriter.Close();
+            }
+
+            currentPath = Config.OutputPath + "T=" + iteration * (float)Config.SimulationStepTime + ".txt";
+
+            fstream = new FileStream(currentPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            fstream.Close();
+
+            swriter = new StreamWriter(currentPath);
         }
     }
 }

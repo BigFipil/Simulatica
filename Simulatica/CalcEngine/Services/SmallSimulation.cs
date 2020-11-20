@@ -177,7 +177,7 @@ namespace CalcEngine
                 for (ulong iter = 1; iter <= Config.IterationCount; iter++)
                 {
                     Console.WriteLine("iteration: " + iter);
-
+                    
                     simStatisticsUpdate.Invoke(null, new object[] { iter, Config.SimulationStepTime, iter*Config.SimulationStepTime});
 
                     threadActive = true;
@@ -194,6 +194,7 @@ namespace CalcEngine
 
 
                     write = (iter % Config.DataSaveStepTime == 0);
+                    if(write) Writer.NewFile(iter);
 
                     //Update for each
                     for (int i = 0; i < objLists.Length; i++)
