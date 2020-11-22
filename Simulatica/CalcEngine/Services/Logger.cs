@@ -16,7 +16,12 @@ namespace CalcEngine
             Config = config;
             State = state;
 
-            loggerPath = Path.GetDirectoryName(Path.GetFullPath(Config.Path)) + "\\SimLog.txt";
+            if (!Directory.Exists(Path.GetFullPath(Config.OutputPath)))
+            {
+                Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
+            }
+
+            loggerPath = Path.GetFullPath(Config.OutputPath) + "\\SimLog.txt";
             if (loggerPath == null) loggerPath = "";
 
             File.WriteAllText(loggerPath, "\t\t\tSTANDARD SIMULATION LOGGER\n" +

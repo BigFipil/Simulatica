@@ -37,14 +37,14 @@ namespace CalcEngine
                 {
                     Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
                 }
-                else
-                {
-                    Directory.Delete(Path.GetFullPath(Config.OutputPath), true);
-                    Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
+
+                if (Directory.Exists(Path.GetFullPath(Config.OutputPath) + "\\Data"))
+                { 
+                    Directory.Delete(Path.GetFullPath(Config.OutputPath) + "\\Data", true);
                 }
 
-                Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath)+"\\Data");
-                Config.OutputPath += "\\";
+                Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath) + "\\Data");
+                //Config.OutputPath += "\\";
             }
         }
 
@@ -63,7 +63,7 @@ namespace CalcEngine
                 swriter.Close();
             }
 
-            currentPath = Config.OutputPath + "Data\\" + "T=" + iteration * (float)Config.SimulationStepTime + ".txt";
+            currentPath = Config.OutputPath + "\\Data\\" + "T=" + iteration * (float)Config.SimulationStepTime + ".txt";
 
             fstream = new FileStream(currentPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             fstream.Close();
