@@ -21,6 +21,7 @@ namespace CalcEngine
             services.AddTransient<Emitter>();
             services.AddTransient<SmallSimulation>();
             services.AddTransient<Simulation>();
+            services.AddTransient<MultipleSimulation>();
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ISimulation>(sim);
             services.AddSingleton<ILoader>(load);
@@ -31,15 +32,26 @@ namespace CalcEngine
         private ISimulation sim(IServiceProvider provider)
         {
             var config = provider.GetService<SimulationConfig>();
+            ISimulation s;
 
             if (config.FullRamMode)
             {
-                return provider.GetService<SmallSimulation>();
+                s = provider.GetService<SmallSimulation>();
             }
             else
             {
-                return provider.GetService<Simulation>();
+                s = provider.GetService<Simulation>();
             }
+
+            if (config.MultipleSimulationCount > 1)
+            {
+                var tmp = provider.GetService<MultipleSimulation>();
+                tmp.Simulation = s;
+
+                return tmp;
+            }
+
+            return s;
         }
 
         private ILoader load(IServiceProvider provider)

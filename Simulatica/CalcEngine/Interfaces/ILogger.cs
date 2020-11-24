@@ -8,5 +8,6 @@ namespace CalcEngine
     {
         public void Add(string text);
         public void Add(string text, object[] obj);
+        //public void CreateLogg(string path);
     }
 }

@@ -72,10 +72,28 @@ namespace CalcEngine
         public bool SelfComparableParticles { get; private set; }
 
         [JsonProperty]
-        /// <summary
-        /// ,Output path to a directory, where the Logg, and simulation result will be written.
+        /// <summary>
+        /// Output path to a directory, where the Logg, and simulation result will be written.
         /// <!summary>
         public string OutputPath { get; set; } = "";
+
+        [JsonProperty]
+        /// <summary>
+        /// If value of this parameter is higher than 1, then the MultipleSimulation type of simulation will be choosed to perform calculations.
+        /// <!summary>
+        public int MultipleSimulationCount { get; set; } = 0;
+
+        [JsonProperty]
+        /// <summary>
+        /// Contains name of parameter from the simulation configuration that should be changed between each simulations.
+        /// <!summary>
+        public string MultipleSimulationParameter { get; set; } = "";
+
+        [JsonProperty]
+        /// <summary>
+        /// Determines what action should be performed on 'MultipleSimulationParameter' each next simulation. For example: "+2" or "*10"
+        /// <!summary>
+        public string MultipleSimulationAction { get; set; } = "";
 
         [JsonIgnore]
         public string Path { get; set; } = "";
@@ -113,6 +131,9 @@ namespace CalcEngine
             s += "FullRamMode: " + FullRamMode + "\n";
             s += "SelfComparableParticles: " + SelfComparableParticles + "\n";
             s += "OutputPath: " + OutputPath + "\n";
+            s += "MultipleSimulationCount: " + MultipleSimulationCount + "\n";
+            s += "MultipleSimulationParam: " + MultipleSimulationParameter + "\n";
+            s += "MultipleSimulationCount: " + MultipleSimulationAction + "\n";
 
             return s;
         }
