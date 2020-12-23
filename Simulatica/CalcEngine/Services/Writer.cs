@@ -20,32 +20,6 @@ namespace CalcEngine
             Config = C;
             State = S;
 
-            if(Config.OutputPath == "")
-            {
-                Config.OutputPath = Path.GetFullPath(Config.Path).Replace(Config.Path, "Result");
-                if (!Directory.Exists(Config.OutputPath))
-                {
-                    Directory.CreateDirectory(Config.OutputPath);
-                }
-                Console.WriteLine("debug1");
-                Config.OutputPath += "\\";
-            }
-            else
-            {
-                //Console.WriteLine("debug2");
-                if (!Directory.Exists(Path.GetFullPath(Config.OutputPath)))
-                {
-                    Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
-                }
-
-                if (Directory.Exists(Path.GetFullPath(Config.OutputPath) + "\\Data"))
-                { 
-                    Directory.Delete(Path.GetFullPath(Config.OutputPath) + "\\Data", true);
-                }
-
-                Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath) + "\\Data");
-                //Config.OutputPath += "\\";
-            }
         }
 
         public void Write(Object obj, ulong iteration)

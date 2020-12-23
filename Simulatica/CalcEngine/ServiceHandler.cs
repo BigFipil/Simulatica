@@ -22,6 +22,9 @@ namespace CalcEngine
             services.AddTransient<SmallSimulation>();
             services.AddTransient<Simulation>();
             services.AddTransient<MultipleSimulation>();
+            services.AddTransient<FolderManager>();
+            services.AddTransient<MultipleFolderManager>();
+            services.AddTransient<IFolderManager>(fol);
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ISimulation>(sim);
             services.AddSingleton<ILoader>(load);
@@ -65,6 +68,20 @@ namespace CalcEngine
             else
             {
                 return provider.GetService<ConfigLoader>();
+            }
+        }
+
+        private IFolderManager fol(IServiceProvider provider)
+        {
+            var config = provider.GetService<SimulationConfig>();
+
+            if (config.MultipleSimulationCount > 1)
+            {
+                return provider.GetService<MultipleFolderManager>();
+            }
+            else
+            {
+                return provider.GetService<FolderManager>();
             }
         }
     }

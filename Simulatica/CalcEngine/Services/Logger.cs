@@ -16,11 +16,6 @@ namespace CalcEngine
             Config = config;
             State = state;
 
-            if (!Directory.Exists(Path.GetFullPath(Config.OutputPath)))
-            {
-                Directory.CreateDirectory(Path.GetFullPath(Config.OutputPath));
-            }
-
             loggerPath = Path.GetFullPath(Config.OutputPath) + "\\SimLog.txt";
             if (loggerPath == null) loggerPath = "";
 

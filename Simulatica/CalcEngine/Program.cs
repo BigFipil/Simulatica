@@ -43,10 +43,14 @@ namespace CalcEngine
                 }
             }
 
-            //Console.WriteLine(config);
+            //Folder preparation
+            if (!provider.GetService<IFolderManager>().Create())
+            {
+                Console.WriteLine("Folder creating error has occured:\n\t" + provider.GetService<SimulationState>().ErrorList.Last().Message);
+                Environment.Exit(-1);
+            }
 
-            //Test t = provider.GetService<Test>();
-            //t.testSeri2();
+
             ISimulation simulation = provider.GetService<ISimulation>();
 
             Stopwatch stopWatch = new Stopwatch();
