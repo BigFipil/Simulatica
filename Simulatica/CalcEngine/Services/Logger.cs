@@ -10,16 +10,19 @@ namespace CalcEngine
         private SimulationConfig Config;
         private SimulationState State;
         public string loggerPath = "";
+        public string DefaultPath { get; protected set; }
 
         public Logger(SimulationConfig config, SimulationState state)
         {
             Config = config;
             State = state;
 
-            loggerPath = Path.GetFullPath(Config.OutputPath) + "\\SimLog.txt";
-            if (loggerPath == null) loggerPath = "";
+            DefaultPath = Path.GetFullPath(Config.OutputPath) + "\\SimLog.txt";
+            if (DefaultPath == null) DefaultPath = "";
 
-            File.WriteAllText(loggerPath, "\t\t\tSTANDARD SIMULATION LOGGER\n" +
+            loggerPath = DefaultPath;
+
+            File.WriteAllText(loggerPath, "\t\t\tSIMULATION LOGGER(STANDARD)\n" +
                 "\t\t\t--------------------------\n\n"+
                 "\tDate: "+ DateTime.Now.ToString() +"\n"+
                 "\tHardware information:\n" +
@@ -43,6 +46,11 @@ namespace CalcEngine
         public void Add(string text)
         {
             File.AppendAllText(loggerPath, text);
+        }
+        public void Add(string text, string path)
+        {
+            //This method should not be used in MultipleSimulation mode, for changing the loggerpath. The logerPath should be changed directly instead.
+            File.AppendAllText(path, text);
         }
 
         public void Add(string text, object[] obj)

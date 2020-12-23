@@ -7,6 +7,7 @@ namespace CalcEngine
     public interface ILogger
     {
         public void Add(string text);
+        public void Add(string text, string path);
         public void Add(string text, object[] obj);
         //public void CreateLogg(string path);
     }
