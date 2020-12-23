@@ -14,6 +14,7 @@ namespace CalcEngine
         public int ActiveThreads { get; set; }
         public SyntaxTree syntaxTree { get; set; }
         public List<Exception> ErrorList { get; set; } = new List<Exception>();
+        public string currentPath { get; set; } = "";
 
         public void NewFrameStatistics(long aproxParticleCount)
         {

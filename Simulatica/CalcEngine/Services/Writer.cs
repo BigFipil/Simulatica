@@ -11,7 +11,7 @@ namespace CalcEngine
         private readonly SimulationConfig Config;
         private readonly SimulationState State;
 
-        private string currentPath = "";
+        //private string currentPath = "";
         private FileStream fstream;
         private StreamWriter swriter;
 
@@ -57,18 +57,18 @@ namespace CalcEngine
 
         public void NewFile(ulong iteration)
         {
-            if (currentPath != "")
+            if (State.currentPath != "")
             {
                 fstream.Close();
                 swriter.Close();
             }
 
-            currentPath = Config.OutputPath + "\\Data\\" + "T=" + iteration * (float)Config.SimulationStepTime + ".txt";
+            State.currentPath = Config.OutputPath + "\\Data\\" + "T=" + iteration * (float)Config.SimulationStepTime + ".txt";
 
-            fstream = new FileStream(currentPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            fstream = new FileStream(State.currentPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             fstream.Close();
 
-            swriter = new StreamWriter(currentPath);
+            swriter = new StreamWriter(State.currentPath);
         }
     }
 }
