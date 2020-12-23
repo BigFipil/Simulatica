@@ -42,14 +42,28 @@ namespace Visualizer
 						switch (o.Key.ToLower())
 						{
 							case "color":
-								if (o.Value.Contains("<"))
-                                {
-									string sc = o.Value.Replace("<", "").Replace(">", "");
-									var a = sc.Split(":");
-									string s1 = str[Int32.Parse(a[0])];
-									string s2 = str[Int32.Parse(a[1])];
-									string s3 = str[Int32.Parse(a[2])];
-									p.color = new Color((int)double.Parse(s1), (int)double.Parse(s2), (int)double.Parse(s3));
+								if (o.Value.Contains(":"))
+								{
+									int[] d = new int[3];
+									var a = o.Value.Split(":");
+
+
+									for(int i = 0; i < 3; i++)
+                                    {
+										if (a[i].Contains("<"))
+                                        {
+											a[i] = a[i].Replace("<", "").Replace(">", "");
+											d[i] = (int)double.Parse(str[Int32.Parse(a[i])]);
+											//Console.WriteLine(d[i]);
+										}
+                                        else
+                                        {
+											d[i] = Int32.Parse(a[i]);
+                                        }
+                                    }
+
+
+									p.color = new Color(d[0], d[1], d[2]);
 								}
                                 else
 								{
@@ -124,7 +138,7 @@ namespace Visualizer
 				ringTex = new Dictionary<Color, Texture2D>();
 				crossTex = new Dictionary<Color, Texture2D>();
 
-				var colorList = new List<Color>() { Color.Black, Color.Red, Color.DarkRed, Color.Pink, Color.Purple,
+				var colorList = new List<Color>() { Color.White, Color.Black, Color.Red, Color.DarkRed, Color.Pink, Color.Purple,
 				Color.Blue, Color.LightBlue, Color.DarkBlue, Color.Green, Color.LightGreen, Color.DarkGreen, Color.LightGray,
 				Color.Gray, Color.DarkGray, Color.Yellow, Color.Orange, Color.Brown };
 
@@ -154,8 +168,12 @@ namespace Visualizer
 				else  effect.Texture = dotTex[color];
 			}
             else
-            {
-				effect.Texture = SetTextureColorData(graphics, currentTexture, color);
+			{
+				if (textureType == 3) effect.Texture = cross;
+				else if (textureType == 2) effect.Texture = ring;
+				else effect.Texture = dot;
+
+				effect.DiffuseColor = color.ToVector3();
 			}
 
 
@@ -196,6 +214,8 @@ namespace Visualizer
 					// The number of triangles to draw
 					2);
 			}
+
+			effect.DiffuseColor = new Vector3(1, 1, 1);
 		}
 
 		private static Texture2D SetTextureColorData(GraphicsDeviceManager graphics, Texture2D texture, Color color)

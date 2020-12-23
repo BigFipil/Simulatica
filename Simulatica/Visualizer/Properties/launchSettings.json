@@ -2,7 +2,7 @@
   "profiles": {
     "Visualizer": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Development\\Simulatica\\Simulatica\\CalcEngine\\bin\\Debug\\netcoreapp3.1\\PointSim.conig C:\\Development\\Simulatica\\Simulatica\\CalcEngine\\bin\\Debug\\netcoreapp3.1\\Result"
+      "commandLineArgs": "C:\\Development\\Simulatica\\Simulatica\\CalcEngine\\bin\\Debug\\netcoreapp3.1\\PointSim.conig C:\\Users\\Konce\\Desktop\\PointTest"
     }
   }
 }
