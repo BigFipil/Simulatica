@@ -26,6 +26,7 @@ namespace CalcEngine
             services.AddTransient<MultipleFolderManager>();
             services.AddTransient<IFolderManager>(fol);
             services.AddSingleton<ILogger, Logger>();
+            //services.AddSingleton<Logger>();
             services.AddTransient<ISimulation>(sim);
             services.AddTransient<ILoader>(load);
 

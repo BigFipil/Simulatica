@@ -9,6 +9,9 @@ namespace CalcEngine
         public void Add(string text);
         public void Add(string text, string path);
         public void Add(string text, object[] obj);
+
+        public string loggerPath { get; set; }
+        public string DefaultPath { get; }
         //public void CreateLogg(string path);
     }
 }

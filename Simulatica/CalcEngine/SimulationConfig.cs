@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace CalcEngine
 {
+    //w UIX sprawdzanie refleksja mozliwosc tej wersji silnika do przygotowania symulacji
     public class SimulationConfig
     {
         /// <summary>

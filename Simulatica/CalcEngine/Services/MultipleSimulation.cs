@@ -21,10 +21,10 @@ namespace CalcEngine
         public Emitter Emitter { get; private set; }
         [JsonProperty]
         public Writer Writer { get; private set; }
-        public Logger Logger { get; private set; }
+        public ILogger Logger { get; private set; }
         public ISimulation Simulation { get; set; }
 
-        public MultipleSimulation(SimulationConfig C, SimulationState S, Emitter E, Writer W, Logger L)
+        public MultipleSimulation(SimulationConfig C, SimulationState S, Emitter E, Writer W, ILogger L)
         {
             Config = C;
             State = S;
@@ -54,6 +54,7 @@ namespace CalcEngine
                     double v = (double)typeof(SimulationConfig).GetProperty(Config.MultipleSimulationParameter).GetValue(Config);
                     typeof(SimulationConfig).GetProperty(Config.MultipleSimulationParameter).SetValue(Config, ((int)v+a), null);
                 }
+                //tutaj sie kiedys dorobi kompilator tlumaczacy dowolny ciag polecen na ostateczna operacje (akcje)
 
                 if (Config.PathToVisualiserEXE != "")
                 {

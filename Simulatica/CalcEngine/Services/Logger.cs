@@ -9,7 +9,8 @@ namespace CalcEngine
     {
         private SimulationConfig Config;
         private SimulationState State;
-        public string loggerPath = "";
+        public string loggerPath { get; set; } = "";
+        //public string DefaultPath { get; protected set; }
         public string DefaultPath { get; protected set; }
 
         public Logger(SimulationConfig config, SimulationState state)
