@@ -24,5 +24,21 @@ namespace Simulatica
         {
             InitializeComponent();
         }
+
+        private void BorderMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+
+            this.DragMove();
+        }
+
+        private void ResizeMainWindowWidth(object sender, MouseButtonEventArgs e)
+        {
+            Width = (double) e.GetPosition(this).X + 5;
+        }
+        private void ResizeMainWindowHeight(object sender, MouseButtonEventArgs e)
+        {
+            Height = (double)e.GetPosition(this).Y + 5;
+        }
     }
 }
