@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="Simulatica.User_Controls.ExitBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Simulatica.User_Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="150">
+
+    <UserControl.Resources>
+        <Style x:Key="B" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#565656"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="R" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Red"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        
+
+        <Button x:Name="min" Grid.Column="0" Click="MinimalizeAction" Style="{DynamicResource B}">
+
+            <Canvas Width="23" Height="18">
+
+                <Canvas.RenderTransform>
+                    <ScaleTransform ScaleX="0.8" ScaleY="0.8" CenterX="11.5" CenterY="9"/>
+                </Canvas.RenderTransform>
+
+                <Rectangle Width="23" Height="4" Fill="White" Canvas.Left="0" Canvas.Top="14" />
+
+            </Canvas>
+
+        </Button>
+        <Button x:Name="max" Grid.Column="1" Click="MaximalizeAction"  Style="{DynamicResource B}">
+
+
+            <Canvas Width="23" Height="18">
+
+                <Canvas.RenderTransform>
+                    <ScaleTransform ScaleX="0.8" ScaleY="0.8" CenterX="11.5" CenterY="9"/>
+                </Canvas.RenderTransform>
+                
+                <Rectangle Width="23" Height="4" Fill="White" Canvas.Left="0" Canvas.Top="0" />
+                <Rectangle Width="23" Height="4" Fill="White" Canvas.Left="0" Canvas.Top="14" />
+                <Rectangle Width="3" Height="10" Fill="White" Canvas.Left="0" Canvas.Top="4" />
+                <Rectangle Width="3" Height="10" Fill="White" Canvas.Left="20" Canvas.Top="4" />
+                
+            </Canvas>
+            
+        </Button>
+        <Button x:Name="exit" Grid.Column="2" Click="Exit" Style="{DynamicResource R}">
+
+
+            <Canvas Width="24" Height="24">
+
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="0.8" ScaleY="0.8" CenterX="12" CenterY="12"/>
+                        <RotateTransform CenterX="12" CenterY="12" Angle="45"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+
+                <Rectangle Width="24" Height="4" Fill="White" Canvas.Left="0" Canvas.Top="10" />
+                <Rectangle Width="4" Height="24" Fill="White" Canvas.Left="10" Canvas.Top="0" />
+
+            </Canvas>
+
+        </Button>
+
+    </Grid>
+</UserControl>
