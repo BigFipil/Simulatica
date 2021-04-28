@@ -172,6 +172,7 @@
 
 
 
+
             <Grid Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -220,45 +221,8 @@
                     <RowDefinition Height="*" MinHeight="60"/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="More" Click="ToggleNavMenu" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10, 0, 4">
+                <Button x:Name="More" Style="{StaticResource NavButton}" Click="ToggleNavMenu" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10, 0, 4">
                     <Image Source="/More.png" />
-                    <!--<Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ThicknessAnimation Storyboard.TargetName="More"
-                                                        Storyboard.TargetProperty="Margin"
-                                                        Duration="0:0:0.3" From="0, 10, 0, 4" To="200, 10, 0, 4"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Button.Triggers>-->
-
-                    <Button.Style>
-                        <Style BasedOn="{StaticResource NavButton}" TargetType="Button">
-                            <!--<Style.Triggers>
-                                <DataTrigger Binding="{Binding DataContext.IsMenuCollapsed, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.150" To="100" Storyboard.TargetProperty="Width" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>
-
-                                --><!--<DataTrigger Binding="{Binding Source=IsMenuCollapsed}" Value="false">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="0:0:0.150" To="10" Storyboard.TargetProperty="Width" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>--><!--
-                            </Style.Triggers>-->
-                        </Style>
-                    </Button.Style>
                 </Button>
                 
 
