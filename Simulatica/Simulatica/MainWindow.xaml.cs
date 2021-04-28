@@ -58,28 +58,28 @@ namespace Simulatica
         {
             IsMenuCollapsed = !IsMenuCollapsed;
 
-            //if (!IsMenuCollapsed)
-            //{
-            //    var myDoubleAnimation = new ThicknessAnimation();
-            //    myDoubleAnimation.From = new Thickness(0, 10, 0, 4);
-            //    myDoubleAnimation.To = new Thickness(200, 10, 0, 4); // TODO: binding 200 
-            //    myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
-            //    Storyboard s = new Storyboard();
-            //    s.Children.Add(myDoubleAnimation);
-            //    Storyboard.SetTargetProperty(More, new PropertyPath(Button.MarginProperty));
-            //    //s.Begin();
-            //    //Storyboard.SetTarget(myDoubleAnimation, new DependencyObject(More.Margin));
-            //    //MainGrid.ColumnDefinitions[0].Width = new GridLength(210);
-            //}
-            //else
-            //{
-            //    var myDoubleAnimation = new DoubleAnimation();
-            //    myDoubleAnimation.From = 210;
-            //    myDoubleAnimation.To = 60;
-            //    myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
-            //    //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(More.Margin.Left));
-            //    //MainGrid.ColumnDefinitions[0].Width = new GridLength(60);
-            //}
+            ContentControl target = More;
+
+            ThicknessAnimation animation = new ThicknessAnimation();
+            animation.Duration = TimeSpan.FromSeconds(0.3);
+            animation.FillBehavior = FillBehavior.HoldEnd;
+            animation.AccelerationRatio = 0.5;
+
+            if (!IsMenuCollapsed)
+            {
+                animation.From = new Thickness(0, 10, 0, 4);
+                animation.To = new Thickness(200, 10, 0, 4); // TODO: binding 200
+            }
+            else
+            {
+                animation.From = new Thickness(200, 10, 0, 4);
+                animation.To = new Thickness(0, 10, 0, 4); 
+            }
+
+
+            target.BeginAnimation(ContentControl.MarginProperty, animation);
+
+
         }
 
         public event PropertyChangedEventHandler propChange;

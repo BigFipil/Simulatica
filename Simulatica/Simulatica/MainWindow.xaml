@@ -236,9 +236,8 @@
 
                     <Button.Style>
                         <Style BasedOn="{StaticResource NavButton}" TargetType="Button">
-                            <Style.Triggers>
-                                <DataTrigger Value="true" Binding="{Binding Path=IsMenuCollapsed, Mode=TwoWay}">
-                                    <Setter Property="Background" Value="Red"></Setter>
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding DataContext.IsMenuCollapsed, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -248,7 +247,7 @@
                                     </DataTrigger.EnterActions>
                                 </DataTrigger>
 
-                                <DataTrigger Binding="{Binding Source=IsMenuCollapsed}" Value="false">
+                                --><!--<DataTrigger Binding="{Binding Source=IsMenuCollapsed}" Value="false">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -256,8 +255,8 @@
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.EnterActions>
-                                </DataTrigger>
-                            </Style.Triggers>
+                                </DataTrigger>--><!--
+                            </Style.Triggers>-->
                         </Style>
                     </Button.Style>
                 </Button>
