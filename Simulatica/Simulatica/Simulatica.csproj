@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="ControlPanel.png" />
+    <None Remove="More.png" />
+    <None Remove="Resources\IconsPng\ControlPanel.png" />
+    <None Remove="Resources\IconsPng\More.png" />
     <None Remove="Resources\rysunek2.svg" />
     <None Remove="rysunek2.svg" />
   </ItemGroup>
@@ -22,6 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="ControlPanel.png" />
+    <Resource Include="More.png" />
+    <Resource Include="Resources\IconsPng\ControlPanel.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\More.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\rysunek2.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
