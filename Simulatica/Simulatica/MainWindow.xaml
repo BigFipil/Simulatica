@@ -14,6 +14,7 @@
         Background="Transparent">
     <Border x:Name="Border"
             Background="#696969"
+            BorderThickness="2"
             CornerRadius="0">
 
         <Grid x:Name="MainGrid">
@@ -29,11 +30,11 @@
                 <RowDefinition Height="8" />
             </Grid.RowDefinitions>
 
-            
+
             <!--New Navbar-->
 
-            <DockPanel x:Name="NavBar" Grid.Column="0" Grid.RowSpan="3" Width="60" Background="#565656">
-                
+            <DockPanel x:Name="NavBar" Grid.Column="0" Grid.RowSpan="3" Width="240" Background="#565656">
+
                 <Image x:Name="Logo" Source="/Logo.png" DockPanel.Dock="Top" Margin="2"/>
                 <Grid x:Name="NavBarGrid">
                     <Grid.RowDefinitions>
@@ -43,27 +44,84 @@
                     </Grid.RowDefinitions>
 
                     <Button Grid.Row="0" Style="{StaticResource NavButton}" Click="ToggleNavMenu" HorizontalAlignment="Right">
-                        <Image Source="/More.png"/>
+                        <Image Source="/More.png" Margin="8"/>
                     </Button>
 
-                    <StackPanel x:Name="NavBarStackPanel"  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
-                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" HorizontalAlignment="Left" >
+                    <StackPanel x:Name="NavBarStackPanel" 
+                                Width="{Binding RelativeSource={RelativeSource Self}, Path=Parent.ActualWidth}"
+                                Grid.Row="1" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center" 
+                                Orientation="Vertical" 
+                                Margin="0">
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu">
                             <DockPanel LastChildFill="True">
-                                <Image Source="/ControlPanel.png" Margin="8"/>
-                                <TextBlock Style="{StaticResource NavButtonText}"> Control Panel </TextBlock>
-                            </DockPanel>
-                        </Button>
-                        
-                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" HorizontalAlignment="Left" >
-                            <DockPanel LastChildFill="True">
-                                <Image Source="/ControlPanel.png" Margin="8"/>
+                                <Image Source="/Resources/IconsPng/ControlPanel.png" Margin="18, 8"/>
                                 <TextBlock Style="{StaticResource NavButtonText}"> Control Panel</TextBlock>
                             </DockPanel>
                         </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/List.png" Margin="18, 8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> File Explorer</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/Inspect.png" Margin="18, 8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Inspector</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/Nodes.png" Margin="18, 8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Node Editor</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/Particle.png" Margin="18,8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Particle Editor</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/Relations.png" Margin="18,8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Relationer</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/Render.png" Margin="18,8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Visualizator</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/Stats.png" Margin="18,8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Statistics</TextBlock>
+                            </DockPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource NavButton2}" Click="ToggleNavMenu" >
+                            <DockPanel LastChildFill="True">
+                                <Image Source="/Resources/IconsPng/TextEditor.png" Margin="18,8"/>
+                                <TextBlock Style="{StaticResource NavButtonText}"> Text Editor</TextBlock>
+                            </DockPanel>
+                        </Button>
+
                     </StackPanel>
-                    
+
                 </Grid>
-                
+
 
             </DockPanel>
 

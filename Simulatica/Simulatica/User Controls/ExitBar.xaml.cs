@@ -35,9 +35,17 @@ namespace Simulatica.User_Controls
             Window window = Window.GetWindow(this);
 
             if (window.WindowState != WindowState.Maximized)
+            {
                 window.WindowState = WindowState.Maximized;
+
+                window.BorderThickness = new Thickness(5);
+            }
+
             else
+            {
                 window.WindowState = WindowState.Normal;
+                window.BorderThickness = new Thickness(5);
+            }
         }
 
         void Exit(object sender, RoutedEventArgs e)

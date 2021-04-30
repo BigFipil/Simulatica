@@ -62,14 +62,14 @@ namespace Simulatica
                 marginAnimation.To = new Thickness(54, 4, 54, 4); // TODO: binding 200
 
                 widthAnimation.From = 60;
-                widthAnimation.To = 200;
+                widthAnimation.To = 240;
             }
             else
             {
                 marginAnimation.From = new Thickness(54, 4, 54, 4);
                 marginAnimation.To = new Thickness(2);
 
-                widthAnimation.From = 200;
+                widthAnimation.From = 240;
                 widthAnimation.To = 60;
             }
 

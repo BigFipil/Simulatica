@@ -8,11 +8,24 @@
 
   <ItemGroup>
     <None Remove="ControlPanel.png" />
+    <None Remove="Inspect.png" />
+    <None Remove="List.png" />
     <None Remove="Logo.png" />
     <None Remove="More.png" />
+    <None Remove="Nodes.png" />
+    <None Remove="Particle.png" />
+    <None Remove="Relations.png" />
     <None Remove="Resources\IconsPng\ControlPanel.png" />
+    <None Remove="Resources\IconsPng\Inspect.png" />
+    <None Remove="Resources\IconsPng\List.png" />
     <None Remove="Resources\IconsPng\Logo.png" />
     <None Remove="Resources\IconsPng\More.png" />
+    <None Remove="Resources\IconsPng\Nodes.png" />
+    <None Remove="Resources\IconsPng\Particle.png" />
+    <None Remove="Resources\IconsPng\Relations.png" />
+    <None Remove="Resources\IconsPng\Render.png" />
+    <None Remove="Resources\IconsPng\Stats.png" />
+    <None Remove="Resources\IconsPng\TextEditor.png" />
     <None Remove="Resources\rysunek2.svg" />
     <None Remove="rysunek2.svg" />
   </ItemGroup>
@@ -29,16 +42,45 @@
 
   <ItemGroup>
     <Resource Include="ControlPanel.png" />
+    <Resource Include="Inspect.png" />
+    <Resource Include="List.png" />
     <Resource Include="Logo.png" />
     <Resource Include="More.png" />
+    <Resource Include="Nodes.png" />
+    <Resource Include="Particle.png" />
+    <Resource Include="Relations.png" />
     <Resource Include="Resources\IconsPng\ControlPanel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\Inspect.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\List.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\IconsPng\Logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\IconsPng\More.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\Nodes.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\Particle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\Relations.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\Render.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\Stats.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\IconsPng\TextEditor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\rysunek2.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
