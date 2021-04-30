@@ -23,22 +23,7 @@ namespace Simulatica
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool collapsed;
-        public bool IsMenuCollapsed 
-        {
-            get
-            {
-                return collapsed;
-            }
-            set
-            {
-                if(collapsed != value)
-                {
-                    collapsed = value;
-                    OnToggle();
-                }
-            }
-        }
+        public bool IsMenuCollapsed { get; set; }
 
         public MainWindow()
         {
@@ -58,36 +43,43 @@ namespace Simulatica
         {
             IsMenuCollapsed = !IsMenuCollapsed;
 
-            //if (!IsMenuCollapsed)
-            //{
-            //    var myDoubleAnimation = new ThicknessAnimation();
-            //    myDoubleAnimation.From = new Thickness(0, 10, 0, 4);
-            //    myDoubleAnimation.To = new Thickness(200, 10, 0, 4); // TODO: binding 200 
-            //    myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
-            //    Storyboard s = new Storyboard();
-            //    s.Children.Add(myDoubleAnimation);
-            //    Storyboard.SetTargetProperty(More, new PropertyPath(Button.MarginProperty));
-            //    //s.Begin();
-            //    //Storyboard.SetTarget(myDoubleAnimation, new DependencyObject(More.Margin));
-            //    //MainGrid.ColumnDefinitions[0].Width = new GridLength(210);
-            //}
-            //else
-            //{
-            //    var myDoubleAnimation = new DoubleAnimation();
-            //    myDoubleAnimation.From = 210;
-            //    myDoubleAnimation.To = 60;
-            //    myDoubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.3));
-            //    //Storyboard.SetTargetProperty(myDoubleAnimation, new PropertyPath(More.Margin.Left));
-            //    //MainGrid.ColumnDefinitions[0].Width = new GridLength(60);
-            //}
-        }
+            ContentControl target = More;
+            var t2 = svg8;
 
-        public event PropertyChangedEventHandler propChange;
-        private void OnToggle([CallerMemberName] string propertyName = null)
-        {
-            propChange?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+            ThicknessAnimation animation = new ThicknessAnimation();
+            animation.Duration = TimeSpan.FromSeconds(0.3);
+            animation.FillBehavior = FillBehavior.HoldEnd;
+            animation.AccelerationRatio = 0.8;
 
+            DoubleAnimation anim2 = new DoubleAnimation();
+            anim2.Duration = TimeSpan.FromSeconds(0.3);
+            anim2.FillBehavior = FillBehavior.HoldEnd;
+            anim2.AccelerationRatio = 0.8;
+
+            if (!IsMenuCollapsed)
+            {
+                animation.From = new Thickness(0, 10, 0, 4);
+                animation.To = new Thickness(200, 10, 0, 4); // TODO: binding 200
+
+                anim2.From = 1;
+                anim2.To = 20;
+            }
+            else
+            {
+                animation.From = new Thickness(200, 10, 0, 4);
+                animation.To = new Thickness(0, 10, 0, 4);
+
+                anim2.From = 20;
+                anim2.To = 1;
+            }
+
+
+            target.BeginAnimation(MarginProperty, animation);
+            t2.BeginAnimation(WidthProperty, anim2);
+            //t2.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
+            //t2.BeginAnimation(TranslateTransform.XProperty, anim2);
+            //t2.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
+        }
 
         private void ResizeMainWindowWidth(object sender, MouseButtonEventArgs e)
         {

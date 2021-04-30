@@ -43,7 +43,137 @@
             <!--Logo-->
 
 
-            
+            <Canvas Name="svg8" Width="16.118397" Height="16.199022">
+                <Canvas.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterX="8" CenterY="6" ScaleX="2.5" ScaleY="2.5" />
+                        <RotateTransform Angle="-110"/>
+                        <TranslateTransform X ="-1" Y="25"/>
+                    </TransformGroup>
+                </Canvas.RenderTransform>
+                <Canvas.Resources>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient1020" MappingMode="RelativeToBoundingBox" StartPoint="0,0" EndPoint="1,1">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF070FB4" Offset="0"/>
+                                <GradientStop Color="#FF43F2F8" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient996" MappingMode="RelativeToBoundingBox" StartPoint="0,0" EndPoint="1,1">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF08C6E6" Offset="0"/>
+                                <GradientStop Color="#0008C6E6" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient980" MappingMode="RelativeToBoundingBox" StartPoint="0,0" EndPoint="1,1">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF0DCEF5" Offset="0"/>
+                                <GradientStop Color="#000DCEF5" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient982" MappingMode="Absolute" StartPoint="22,73" EndPoint="29,47">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF0DCEF5" Offset="0"/>
+                                <GradientStop Color="#000DCEF5" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient998" MappingMode="Absolute" StartPoint="61,45" EndPoint="61,27">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF08C6E6" Offset="0"/>
+                                <GradientStop Color="#0008C6E6" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient1022" MappingMode="Absolute" StartPoint="72,77" EndPoint="11,27">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF070FB4" Offset="0"/>
+                                <GradientStop Color="#FF43F2F8" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient1030" MappingMode="Absolute" StartPoint="77,46" EndPoint="21,59">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF070FB4" Offset="0"/>
+                                <GradientStop Color="#FF43F2F8" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                        <LinearGradientBrush.Transform>
+                            <MatrixTransform Matrix="-0.04092842 -0.15535764 0.15274693 -0.04162796 8.3669436 16.897679"/>
+                        </LinearGradientBrush.Transform>
+                    </LinearGradientBrush>
+                    <LinearGradientBrush xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Key="linearGradient1034" MappingMode="Absolute" StartPoint="65,44" EndPoint="54,25">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStopCollection>
+                                <GradientStop Color="#FF08C6E6" Offset="0"/>
+                                <GradientStop Color="#0008C6E6" Offset="1"/>
+                            </GradientStopCollection>
+                        </LinearGradientBrush.GradientStops>
+                        <LinearGradientBrush.Transform>
+                            <MatrixTransform Matrix="-0.04092842 -0.15535764 0.15274693 -0.04162796 8.3669436 16.897679"/>
+                        </LinearGradientBrush.Transform>
+                    </LinearGradientBrush>
+                </Canvas.Resources>
+                <!--Unknown tag: sodipodi:namedview-->
+                <!--Unknown tag: metadata-->
+                <Canvas Name="layer2">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-2.9372881" Y="-4.0509034"/>
+                    </Canvas.RenderTransform>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path1024" Fill="{StaticResource linearGradient1030}" StrokeThickness="0" Stroke="#FF000000" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="m 10.046104 6.2828394 c 0.24908 0.9457 1.09742 1.25224 2.08941 1.27618 1.08475 0.0446 1.168946 1.4411323 1.262116 1.9391123 0.10037 0.5270993 0.224314 1.0949373 0.265814 1.2524473 0.38754 1.47123 1.87436 2.34435 3.32085 1.95007 1.44636 -0.39428 2.165084 -1.874401 1.777464 -3.3454802 -0.506992 -1.5022919 -2.92773 -2.1114853 -3.200676 -2.0641672 -1.44027 0.33456 -2.052424 -0.7575328 -2.287534 -1.8937128 -0.24907 -0.94571 -1.065274 -1.5389694 -1.995064 -1.2855194 -0.92981 0.25334 -1.4816004 1.22541 -1.2324 2.17107 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path1028" Fill="{StaticResource linearGradient1034}" StrokeThickness="0" Stroke="#FF000000" StrokeMiterLimit="4" StrokeLineJoin="Round">
+                        <Path.Data>
+                            <PathGeometry Figures="m 10.046104 6.2828394 c 0.21852 0.8297 0.89836 1.16711 1.73175 1.25365 a 1.691507 1.7204178 0 0 0 1.01283 -2.04326 1.691507 1.7204178 0 0 0 -1.8239 -1.26236 c -0.73644 0.36379 -1.1405104 1.21775 -0.92068 2.05197 z" FillRule="NonZero"/>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+                <Canvas Name="layer1">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="-163.09754" Y="-139.23022"/>
+                    </Canvas.RenderTransform>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path928" Fill="{StaticResource linearGradient1022}" StrokeThickness="0" Stroke="#FF000000" StrokeMiterLimit="4" StrokeLineJoin="Miter" StrokeStartLineCap="Flat" StrokeEndLineCap="Flat">
+                        <Path.Data>
+                            <PathGeometry Figures="m 61 27.337891 c -6.087151 -3.7e-4 -9.316587 4.688124 -11.083984 10.708984 -2.043087 6.554133 -12.276798 4.796654 -15.419922 4.564453 -3.329937 -0.235032 -5.234174 -0.367227 -6.248047 -0.367187 -9.469895 -3.71e-4 -17.146851 7.676589 -17.146485 17.146484 7.09e-4 9.469133 7.677352 17.144902 17.146485 17.144531 9.469132 3.7e-4 17.145775 -7.675399 17.146484 -17.144531 C 45.742584 50.054781 53.791762 48.988622 61 49.380859 67.087151 49.381229 72.021854 44.446526 72.021484 38.359375 72.021854 32.272226 67.087151 27.337521 61 27.337891 Z" FillRule="NonZero"/>
+                        </Path.Data>
+                        <Path.RenderTransform>
+                            <MatrixTransform Matrix="0.26458333 0 0 0.26458333 160.16025 135.17932"/>
+                        </Path.RenderTransform>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path952" Fill="{StaticResource linearGradient982}" StrokeThickness="0" Stroke="#FF000000" StrokeMiterLimit="4" StrokeLineJoin="Round">
+                        <Path.Data>
+                            <PathGeometry Figures="M 47.017578 41.591797 C 43.124695 43.80262 36.84028 42.784507 34.496094 42.611328 31.166157 42.376296 29.26192 42.244101 28.248047 42.244141 18.778152 42.24377 11.101196 49.92073 11.101562 59.390625 c 3.29e-4 4.389909 1.665279 8.3812 4.378907 11.414063 a 24.912377 24.912377 0 0 0 7.24414 1.082031 24.912377 24.912377 0 0 0 24.91211 -24.91211 24.912377 24.912377 0 0 0 -0.619141 -5.382812 z" FillRule="NonZero"/>
+                        </Path.Data>
+                        <Path.RenderTransform>
+                            <MatrixTransform Matrix="0.26458333 0 0 0.26458333 160.16025 135.17932"/>
+                        </Path.RenderTransform>
+                    </Path>
+                    <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path968" Fill="{StaticResource linearGradient998}" StrokeThickness="0" Stroke="#FF000000" StrokeMiterLimit="4" StrokeLineJoin="Round">
+                        <Path.Data>
+                            <PathGeometry Figures="m 61 27.337891 c -5.340502 -3.25e-4 -8.479577 3.609273 -10.363281 8.560547 A 10.696584 10.696584 0 0 0 61.25 45.373047 10.696584 10.696584 0 0 0 71.816406 36.263672 C 70.836934 31.179894 66.369754 27.337564 61 27.337891 Z" FillRule="NonZero"/>
+                        </Path.Data>
+                        <Path.RenderTransform>
+                            <MatrixTransform Matrix="0.26458333 0 0 0.26458333 160.16025 135.17932"/>
+                        </Path.RenderTransform>
+                    </Path>
+                </Canvas>
+            </Canvas>
+
+
+
+
             <Grid Grid.Column="1" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -92,9 +222,9 @@
                     <RowDefinition Height="*" MinHeight="60"/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="More" Click="ToggleNavMenu" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10, 0, 4">
+                <Button x:Name="More" Style="{StaticResource NavButton}" Click="ToggleNavMenu" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10, 0, 4">
                     <Image Source="/More.png" />
-                    --><!--<Button.Triggers>
+                    <!--<Button.Triggers>
                         <EventTrigger RoutedEvent="Button.Click">
                             <BeginStoryboard>
                                 <Storyboard>
@@ -104,7 +234,7 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger>
-                    </Button.Triggers>--><!--
+                    </Button.Triggers>-->
 
                     <Button.Style>
                         <Style BasedOn="{StaticResource NavButton}" TargetType="Button">
