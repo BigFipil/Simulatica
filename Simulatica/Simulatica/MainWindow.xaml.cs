@@ -43,39 +43,39 @@ namespace Simulatica
         {
             IsMenuCollapsed = !IsMenuCollapsed;
 
-            ContentControl target = More;
-            var t2 = svg8;
+            var target = NavBar;
+            var Logotype = Logo;
 
-            ThicknessAnimation animation = new ThicknessAnimation();
-            animation.Duration = TimeSpan.FromSeconds(0.3);
-            animation.FillBehavior = FillBehavior.HoldEnd;
-            animation.AccelerationRatio = 0.8;
+            ThicknessAnimation marginAnimation = new ThicknessAnimation();
+            marginAnimation.Duration = TimeSpan.FromSeconds(0.3);
+            marginAnimation.FillBehavior = FillBehavior.HoldEnd;
+            marginAnimation.AccelerationRatio = 0.8;
 
-            DoubleAnimation anim2 = new DoubleAnimation();
-            anim2.Duration = TimeSpan.FromSeconds(0.3);
-            anim2.FillBehavior = FillBehavior.HoldEnd;
-            anim2.AccelerationRatio = 0.8;
+            DoubleAnimation widthAnimation = new DoubleAnimation();
+            widthAnimation.Duration = TimeSpan.FromSeconds(0.3);
+            widthAnimation.FillBehavior = FillBehavior.HoldEnd;
+            widthAnimation.AccelerationRatio = 0.8;
 
             if (!IsMenuCollapsed)
             {
-                animation.From = new Thickness(0, 10, 0, 4);
-                animation.To = new Thickness(200, 10, 0, 4); // TODO: binding 200
+                marginAnimation.From = new Thickness(2);
+                marginAnimation.To = new Thickness(54, 4, 54, 4); // TODO: binding 200
 
-                anim2.From = 1;
-                anim2.To = 20;
+                widthAnimation.From = 60;
+                widthAnimation.To = 200;
             }
             else
             {
-                animation.From = new Thickness(200, 10, 0, 4);
-                animation.To = new Thickness(0, 10, 0, 4);
+                marginAnimation.From = new Thickness(54, 4, 54, 4);
+                marginAnimation.To = new Thickness(2);
 
-                anim2.From = 20;
-                anim2.To = 1;
+                widthAnimation.From = 200;
+                widthAnimation.To = 60;
             }
 
 
-            target.BeginAnimation(MarginProperty, animation);
-            t2.BeginAnimation(WidthProperty, anim2);
+            target.BeginAnimation(WidthProperty, widthAnimation);
+            Logotype.BeginAnimation(MarginProperty, marginAnimation);
             //t2.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
             //t2.BeginAnimation(TranslateTransform.XProperty, anim2);
             //t2.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
