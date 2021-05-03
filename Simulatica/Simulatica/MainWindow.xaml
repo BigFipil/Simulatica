@@ -47,9 +47,11 @@
                         <Image Source="/More.png" Margin="8"/>
                     </Button>
 
+                    <ScrollViewer CanContentScroll="True" Grid.Row="1" VerticalScrollBarVisibility="Auto" Style="{StaticResource ViewerScrollBar}">
+                        
                     <StackPanel x:Name="NavBarStackPanel" 
                                 Width="{Binding RelativeSource={RelativeSource Self}, Path=Parent.ActualWidth}"
-                                Grid.Row="1" 
+                                 
                                 HorizontalAlignment="Left" 
                                 VerticalAlignment="Center" 
                                 Orientation="Vertical" 
@@ -119,6 +121,8 @@
                         </Button>
 
                     </StackPanel>
+
+                    </ScrollViewer>
 
                 </Grid>
 
