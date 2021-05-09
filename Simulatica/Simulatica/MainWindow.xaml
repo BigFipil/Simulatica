@@ -33,7 +33,7 @@
 
             <!--New Navbar-->
 
-            <DockPanel x:Name="NavBar" Grid.Column="0" Grid.RowSpan="3" Width="240" Background="#565656">
+            <DockPanel x:Name="NavBar" Grid.Column="0" Grid.RowSpan="3" Width="260" Background="#565656">
 
                 <Image x:Name="Logo" Source="/Logo.png" DockPanel.Dock="Top" Margin="2"/>
                 <Grid x:Name="NavBarGrid">
@@ -133,7 +133,8 @@
             <!--Logo-->
 
 
-
+            <RepeatButton Background="Transparent" Grid.Column="3" Grid.Row="1" Click="ResizeMainWindowWidth" ForceCursor="True" Cursor="SizeWE"/>
+            <RepeatButton Background="Transparent" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Click="ResizeMainWindowHeight" ForceCursor="True" Cursor="SizeNS"/>
 
 
 
@@ -168,10 +169,7 @@
                     </MenuItem>
                 </Menu>
 
-
-                <!--<ContentControl  Content="{StaticResource Exit}" Grid.Column="4">
-                    
-                </ContentControl>-->
+                <Border Grid.Column="1" Background="Transparent" MouseLeftButtonDown="BorderMouseLeftButtonDown"/>
 
                 <local:ExitBar Grid.Column="2" Grid.ColumnSpan="2" />
 

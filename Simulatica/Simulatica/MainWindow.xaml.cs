@@ -76,18 +76,21 @@ namespace Simulatica
 
             target.BeginAnimation(WidthProperty, widthAnimation);
             Logotype.BeginAnimation(MarginProperty, marginAnimation);
-            //t2.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
-            //t2.BeginAnimation(TranslateTransform.XProperty, anim2);
-            //t2.BeginAnimation(ScaleTransform.ScaleYProperty, anim2);
         }
 
-        private void ResizeMainWindowWidth(object sender, MouseButtonEventArgs e)
+        private void ResizeMainWindowWidth(object sender, RoutedEventArgs e)
         {
-            Width = (double) e.GetPosition(this).X + 5;
+            Point p = Mouse.GetPosition(this);
+            Width = p.X + 3;
         }
-        private void ResizeMainWindowHeight(object sender, MouseButtonEventArgs e)
+        private void ResizeMainWindowHeight(object sender, RoutedEventArgs e)
         {
-            Height = (double)e.GetPosition(this).Y + 5;
+            //Height = (double)e.GetPosition(this).Y + 3;
         }
+
+        //private double Dist(Point p1, Point p2)
+        //{
+        //    return Math.Abs((p1.X - p2.X)) + Math.Abs(p1.Y - p2.Y);
+        //}
     }
 }
